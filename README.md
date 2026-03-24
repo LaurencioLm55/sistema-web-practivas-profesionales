@@ -1,1 +1,1 @@
-# sistema-practivas-profesionales
+# sistema-practicas-profesionales
