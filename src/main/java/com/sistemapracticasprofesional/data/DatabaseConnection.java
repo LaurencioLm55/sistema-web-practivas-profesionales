@@ -2,12 +2,14 @@ package com.sistemapracticasprofesional.data;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class DatabaseConnection {
-    private static final String URL = "";
-    private static final String user = "";
-    private static final String password = "";
+    private static final String URL = "jdbc:mysql://localhost:3306/swpp";
+    private static final String user = "adminBDDS2";
+    private static final String password = "Gl01nkSy123";
     
     private static Connection connection = null;
     
@@ -26,4 +28,19 @@ public class DatabaseConnection {
     }
         return connection;
     }
+    
+    public static void endConnection(Connection connection, PreparedStatement prepStatement, ResultSet resultSet) {
+        try {
+            if (resultSet != null) resultSet.close();
+        } catch (SQLException e) {/* log error a futuro*/}
+        
+        try {
+            if (prepStatement != null) prepStatement.close();
+        } catch (SQLException e) {}
+        
+        try {
+            if (connection != null) connection.close();
+        } catch (SQLException e) {}
+    }
+    
 }
