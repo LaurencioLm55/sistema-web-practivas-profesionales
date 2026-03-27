@@ -5,9 +5,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-public class PracticanteDAO {
+public class InternDAO {
 
-    public boolean insertar(PracticanteDTO practicante) {
+    public boolean insertar(InternDTO practicante) {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         boolean registroExitoso = false;

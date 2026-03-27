@@ -1,6 +1,6 @@
 package com.sistemapracticasprofesional.logic;
 
-public class PracticanteDTO {
+public class InternDTO {
     private String matricula;
     private int edad;
     private String nombre;
@@ -10,7 +10,7 @@ public class PracticanteDTO {
     private String genero;
     private String carrera;
 
-    public PracticanteDTO(String matricula, int edad, String nombre, String apellidoPaterno, String apellidoMaterno, String lenguaIndigena, String genero, String carrera) {
+    public InternDTO(String matricula, int edad, String nombre, String apellidoPaterno, String apellidoMaterno, String lenguaIndigena, String genero, String carrera) {
         this.matricula = matricula;
         this.edad = edad;
         this.nombre = nombre;
