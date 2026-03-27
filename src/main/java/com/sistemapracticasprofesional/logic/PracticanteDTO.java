@@ -1,7 +1,6 @@
 package com.sistemapracticasprofesional.logic;
 
 public class PracticanteDTO {
-    private int id;
     private String matricula;
     private int edad;
     private String nombre;
@@ -9,15 +8,21 @@ public class PracticanteDTO {
     private String apellidoMaterno;
     private String lenguaIndigena;
     private String genero;
+    private String carrera;
 
-    public int getId() {
-        return id;
+    public PracticanteDTO(String matricula, int edad, String nombre, String apellidoPaterno, String apellidoMaterno, String lenguaIndigena, String genero, String carrera) {
+        this.matricula = matricula;
+        this.edad = edad;
+        this.nombre = nombre;
+        this.apellidoPaterno = apellidoPaterno;
+        this.apellidoMaterno = apellidoMaterno;
+        this.lenguaIndigena = lenguaIndigena;
+        this.genero = genero;
+        this.carrera = carrera;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
+    
+    
     public String getMatricula() {
         return matricula;
     }
@@ -72,6 +77,14 @@ public class PracticanteDTO {
 
     public void setGenero(String genero) {
         this.genero = genero;
+    }
+
+    public String getCarrera() {
+        return carrera;
+    }
+
+    public void setCarrera(String carrera) {
+        this.carrera = carrera;
     }
     
     
