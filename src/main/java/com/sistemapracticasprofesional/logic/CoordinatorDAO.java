@@ -4,58 +4,66 @@
  */
 package com.sistemapracticasprofesional.logic;
 
-import com.sistemapracticasprofesional.data.DatabaseConnection;
-import java.sql.*;
+import com.sistemapracticasprofesional.dataaccess.DatabaseConnection;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.sql.Date;
 import java.util.List;
 
 /**
  *
  * @author Dario Padilla
  */
-public class CoordinatorDAO 
+public class CoordinatorDAO
 {
-    CoordinatorDTO getCoordinator(Integer id) throws SQLException
+    public CoordinatorDTO getCoordinator(int id) throws SQLException
     {
         Connection connection = null;
-        PreparedStatement prepStatement = null;
+        PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         CoordinatorDTO coordinator = null;
         String query = "SELECT * FROM coordinador WHERE Id_usuario = ?";
         
-        try {
+        try
+        {
             connection = DatabaseConnection.getConnection();
-            prepStatement = connection.prepareStatement(query);
-            prepStatement.setInt(1, id);
-            resultSet = prepStatement.executeQuery();
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, id);
+            resultSet = preparedStatement.executeQuery();
 
-            if (resultSet.next()) {
+            if (resultSet.next())
+            {
                 coordinator = convertResultSetToDTO(resultSet);
             }
-        } finally {
-            DatabaseConnection.endConnection(connection, prepStatement, resultSet);
+        } finally 
+        {
+            DatabaseConnection.endConnection(connection, preparedStatement, resultSet);
         }
+        
         return coordinator;
     }
     
-    List<CoordinatorDTO> getAllCoordinators() throws SQLException
+    public List<CoordinatorDTO> getAllCoordinators() throws SQLException
     {
         Connection connection = null;
-        PreparedStatement prepStatement = null;
+        PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         List<CoordinatorDTO> coordinatorList = new ArrayList<>();
         String query = "SELECT * FROM coordinador";
 
         try {
             connection = DatabaseConnection.getConnection();
-            prepStatement = connection.prepareStatement(query);
-            resultSet = prepStatement.executeQuery();
+            preparedStatement = connection.prepareStatement(query);
+            resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
                 coordinatorList.add(convertResultSetToDTO(resultSet));
             }
         } finally {
-            DatabaseConnection.endConnection(connection, prepStatement, resultSet);
+            DatabaseConnection.endConnection(connection, preparedStatement, resultSet);
         }
         return coordinatorList;
     }
@@ -63,87 +71,86 @@ public class CoordinatorDAO
     void insertCoordinator(CoordinatorDTO coordinator) throws SQLException
     {
         Connection connection = null;
-        PreparedStatement prepStatement = null;
+        PreparedStatement preparedStatement = null;
         String query = "INSERT INTO coordinador (Id_usuario, Nombre, Estado, "
-                + "Fecha_de_registro, Fecha_de_termino) VALUES (?, ?, ?, ?, ?)";
-
+                + "Fecha_de_registro, Fecha_de_termino) VALUES (?, ?, ?, ?, ?)"; 
         try {
             connection = DatabaseConnection.getConnection();
-            prepStatement = connection.prepareStatement(query);
+            preparedStatement = connection.prepareStatement(query);
 
-            prepStatement.setInt(1, coordinator.getUserId());
-            prepStatement.setString(2, coordinator.getName());
-            prepStatement.setString(3, coordinator.getState());
-            prepStatement.setDate(4, coordinator.getEntryDate() != null ? 
+            preparedStatement.setInt(1, coordinator.getUserId());
+            preparedStatement.setString(2, coordinator.getName());
+            preparedStatement.setString(3, coordinator.getState());
+            preparedStatement.setDate(4, coordinator.getEntryDate() != null ? 
                     Date.valueOf(coordinator.getEntryDate()) : null);
-            prepStatement.setDate(5, coordinator.getExitDate() != null ? 
+            preparedStatement.setDate(5, coordinator.getExitDate() != null ? 
                     Date.valueOf(coordinator.getExitDate()) : null);
 
-            prepStatement.executeUpdate();
+            preparedStatement.executeUpdate();
         } finally {
-            DatabaseConnection.endConnection(connection, prepStatement, null);
+            DatabaseConnection.endConnection(connection, preparedStatement, null);
         }
     }
     
     void updateCoordinator(CoordinatorDTO coordinator) throws SQLException
     {
         Connection connection = null;
-        PreparedStatement prepStatement = null;
+        PreparedStatement preparedStatement = null;
         String query = "UPDATE coordinador SET Nombre = ?, Estado = ?,"
                 + " Fecha_de_registro = ?, Fecha_de_termino = ? WHERE Id_usuario = ?";
 
         try {
             connection = DatabaseConnection.getConnection();
-            prepStatement = connection.prepareStatement(query);
+            preparedStatement = connection.prepareStatement(query);
 
-            prepStatement.setString(1, coordinator.getName());
-            prepStatement.setString(2, coordinator.getState());
-            prepStatement.setDate(3, coordinator.getEntryDate() != null ? 
+            preparedStatement.setString(1, coordinator.getName());
+            preparedStatement.setString(2, coordinator.getState());
+            preparedStatement.setDate(3, coordinator.getEntryDate() != null ? 
                     Date.valueOf(coordinator.getEntryDate()) : null);
-            prepStatement.setDate(4, coordinator.getExitDate() != null ? 
+            preparedStatement.setDate(4, coordinator.getExitDate() != null ? 
                     Date.valueOf(coordinator.getExitDate()) : null);
-            prepStatement.setInt(5, coordinator.getUserId());
+            preparedStatement.setInt(5, coordinator.getUserId());
 
-            prepStatement.executeUpdate();
+            preparedStatement.executeUpdate();
         } finally {
-            DatabaseConnection.endConnection(connection, prepStatement, null);
+            DatabaseConnection.endConnection(connection, preparedStatement, null);
         }
     }
     
     void deleteCoord(CoordinatorDTO coordinator) throws SQLException
     {
         Connection connection = null;
-        PreparedStatement prepStatement = null;
+        PreparedStatement preparedStatement = null;
         String query = "DELETE FROM coordinador WHERE Id_usuario = ?";
 
         try {
             connection = DatabaseConnection.getConnection();
-            prepStatement = connection.prepareStatement(query);
+            preparedStatement = connection.prepareStatement(query);
 
-            prepStatement.setInt(1, coordinator.getUserId());
-            prepStatement.executeUpdate();
+            preparedStatement.setInt(1, coordinator.getUserId());
+            preparedStatement.executeUpdate();
         } finally {
-            DatabaseConnection.endConnection(connection, prepStatement, null);
+            DatabaseConnection.endConnection(connection, preparedStatement, null);
         }
     }
     
     private CoordinatorDTO convertResultSetToDTO(ResultSet resultSet) throws SQLException 
     {
-        CoordinatorDTO dto = new CoordinatorDTO();
-        dto.setUserId(resultSet.getInt("Id_usuario"));
-        dto.setName(resultSet.getString("Nombre"));
-        dto.setState(resultSet.getString("Estado"));
+        CoordinatorDTO coordinatorObject = new CoordinatorDTO();
+        coordinatorObject.setUserId(resultSet.getInt("Id_usuario"));
+        coordinatorObject.setName(resultSet.getString("Nombre"));
+        coordinatorObject.setState(resultSet.getString("Estado"));
 
         Date entryDate = resultSet.getDate("Fecha_de_registro");
         if (entryDate != null) {
-            dto.setEntryDate(entryDate.toLocalDate());
+            coordinatorObject.setEntryDate(entryDate.toLocalDate());
         }
 
         Date exitDate = resultSet.getDate("Fecha_de_termino");
         if (exitDate != null) {
-            dto.setExitDate(exitDate.toLocalDate());
+            coordinatorObject.setExitDate(exitDate.toLocalDate());
         }
 
-        return dto;
+        return coordinatorObject;
     }
 }

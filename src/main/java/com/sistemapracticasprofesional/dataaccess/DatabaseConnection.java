@@ -1,4 +1,4 @@
-package com.sistemapracticasprofesional.data;
+package com.sistemapracticasprofesional.dataaccess;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -8,8 +8,8 @@ import java.sql.SQLException;
 
 public class DatabaseConnection {
     private static final String URL = "jdbc:mysql://localhost:3306/swpp";
-    private static final String user = "adminBDDS2";
-    private static final String password = "Gl01nkSy123";
+    private static final String USER = "adminBDDS2";
+    private static final String PASSWORD = "Gl01nkSy123";
     
     private static Connection connection = null;
     
@@ -20,7 +20,7 @@ public class DatabaseConnection {
         try{
             if(connection == null || connection.isClosed()){
             
-                connection = DriverManager.getConnection(URL,user,password);
+                connection = DriverManager.getConnection(URL,USER,PASSWORD);
             
             }
         }catch (SQLException e) {
@@ -29,10 +29,12 @@ public class DatabaseConnection {
         return connection;
     }
     
-    public static void endConnection(Connection connection, PreparedStatement prepStatement, ResultSet resultSet) {
+    public static void endConnection(Connection connection, PreparedStatement
+            prepStatement, ResultSet resultSet)
+    { /*
         try {
             if (resultSet != null) resultSet.close();
-        } catch (SQLException e) {/* log error a futuro*/}
+        } catch (SQLException e) {}
         
         try {
             if (prepStatement != null) prepStatement.close();
@@ -40,7 +42,8 @@ public class DatabaseConnection {
         
         try {
             if (connection != null) connection.close();
-        } catch (SQLException e) {}
+        } catch (SQLException e) {} 
+        */ // redo this shit
     }
     
 }

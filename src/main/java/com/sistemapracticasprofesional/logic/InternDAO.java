@@ -1,6 +1,6 @@
 package com.sistemapracticasprofesional.logic;
 
-import com.sistemapracticasprofesional.data.DatabaseConnection;
+import com.sistemapracticasprofesional.dataaccess.DatabaseConnection;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -34,7 +34,7 @@ public class InternDAO {
                 registroExitoso = true;
             }
 
-        } catch (SQLException e) {
+        } catch (SQLException e) { 
             System.err.println("Error al intentar registrar practicante: " + e.getMessage());
         } finally {
             
