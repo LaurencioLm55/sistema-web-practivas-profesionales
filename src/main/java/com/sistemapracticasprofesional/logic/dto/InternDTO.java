@@ -1,4 +1,4 @@
-package com.sistemapracticasprofesional.logic;
+package com.sistemapracticasprofesional.logic.dto;
 
 public class InternDTO {
     private String matricula;

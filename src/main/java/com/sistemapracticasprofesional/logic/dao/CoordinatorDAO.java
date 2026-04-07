@@ -2,8 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.sistemapracticasprofesional.logic;
+package com.sistemapracticasprofesional.logic.dao;
 
+import com.sistemapracticasprofesional.logic.dto.CoordinatorDTO;
 import com.sistemapracticasprofesional.dataaccess.DatabaseConnection;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -40,7 +41,7 @@ public class CoordinatorDAO
             }
         } finally 
         {
-            DatabaseConnection.endConnection(connection, preparedStatement, resultSet);
+            DatabaseConnection.closeConnection();
         }
         
         return coordinator;
@@ -63,7 +64,7 @@ public class CoordinatorDAO
                 coordinatorList.add(convertResultSetToDTO(resultSet));
             }
         } finally {
-            DatabaseConnection.endConnection(connection, preparedStatement, resultSet);
+            DatabaseConnection.closeConnection();
         }
         return coordinatorList;
     }
@@ -88,7 +89,7 @@ public class CoordinatorDAO
 
             preparedStatement.executeUpdate();
         } finally {
-            DatabaseConnection.closeConnection(connection, preparedStatement, null);
+            DatabaseConnection.closeConnection();
         }
     }
     
@@ -113,7 +114,7 @@ public class CoordinatorDAO
 
             preparedStatement.executeUpdate();
         } finally {
-            DatabaseConnection.endConnection(connection, preparedStatement, null);
+            DatabaseConnection.closeConnection();
         }
     }
     
@@ -130,7 +131,7 @@ public class CoordinatorDAO
             preparedStatement.setInt(1, coordinator.getUserId());
             preparedStatement.executeUpdate();
         } finally {
-            DatabaseConnection.endConnection(connection, preparedStatement, null);
+            DatabaseConnection.closeConnection();
         }
     }
     

@@ -1,6 +1,7 @@
-package com.sistemapracticasprofesional.logic;
+package com.sistemapracticasprofesional.logic.dao;
 
 import com.sistemapracticasprofesional.dataaccess.DatabaseConnection;
+import com.sistemapracticasprofesional.logic.dto.InternDTO;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;

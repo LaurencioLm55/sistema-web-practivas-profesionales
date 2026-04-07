@@ -13,7 +13,7 @@ public class DatabaseConnection {
     
     private static Connection connection = null;
     
-    private DatabaseConnection(){}
+    public DatabaseConnection(){}
     
     public static Connection getConnection(){
         
