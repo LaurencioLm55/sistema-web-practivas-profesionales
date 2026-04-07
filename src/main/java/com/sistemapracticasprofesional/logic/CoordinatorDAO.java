@@ -88,7 +88,7 @@ public class CoordinatorDAO
 
             preparedStatement.executeUpdate();
         } finally {
-            DatabaseConnection.endConnection(connection, preparedStatement, null);
+            DatabaseConnection.closeConnection(connection, preparedStatement, null);
         }
     }
     
