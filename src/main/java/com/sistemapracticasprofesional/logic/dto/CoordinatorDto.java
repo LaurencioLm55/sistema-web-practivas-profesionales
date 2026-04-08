@@ -6,10 +6,6 @@ package com.sistemapracticasprofesional.logic.dto;
 
 import java.time.LocalDate;
 
-/**
- *
- * @author Dario Padilla
- */
 public class CoordinatorDto {
     private Integer userId;
     private String name;
