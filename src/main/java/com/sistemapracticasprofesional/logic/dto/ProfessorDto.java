@@ -5,8 +5,7 @@ public class ProfessorDto {
     private int professorPersonnelNumber;
     private String professorName;
     private String professorShift;
-    private String professorCourseId;
-
+    
     public ProfessorDto() {
     }
 
@@ -14,7 +13,6 @@ public class ProfessorDto {
         this.professorPersonnelNumber = professorPersonnelNumber;
         this.professorName = professorName;
         this.professorShift = professorShift;
-        this.professorCourseId = professorCourseId;
     }
 
     public ProfessorDto(int professorPersonnelNumber, int professorUserId, String professorName, String professorShift, String professorCourseId) {
@@ -22,7 +20,6 @@ public class ProfessorDto {
         this.professorUserId = professorUserId;
         this.professorName = professorName;
         this.professorShift = professorShift;
-        this.professorCourseId = professorCourseId;
     }
 
     public int getProfessorUserId() {
@@ -41,10 +38,6 @@ public class ProfessorDto {
         return professorShift;
     }
 
-    public String getProfessorCourseId() {
-        return professorCourseId;
-    }
-
     public void setProfessorUserId(int professorUserId) {
         this.professorUserId = professorUserId;
     }
@@ -59,9 +52,5 @@ public class ProfessorDto {
 
     public void setProfessorShift(String professorShift) {
         this.professorShift = professorShift;
-    }
-
-    public void setProfessorCourseId(String professorCourseId) {
-        this.professorCourseId = professorCourseId;
     }
 }
