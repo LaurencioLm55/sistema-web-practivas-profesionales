@@ -14,10 +14,6 @@ import java.util.ArrayList;
 import java.sql.Date;
 import java.util.List;
 
-/**
- *
- * @author Dario Padilla
- */
 public class CoordinatorDao
 {
     public CoordinatorDto getCoordinator(int id) throws SQLException
