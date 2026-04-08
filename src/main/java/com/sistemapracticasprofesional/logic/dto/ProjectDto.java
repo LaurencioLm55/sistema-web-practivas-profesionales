@@ -8,17 +8,23 @@ public class ProjectDto {
     private String projectMethodology;
     private String projectResources;
     private String midtermProjectObjectives;
-    private String generalProjectObjective;
+    private String generalProjectObjectives;
     private String inmediateProjectObjectives;
     private String projectResponsabilities;
     private String projectAttendantName;
     private String projectAttendantEmail;
-    private String projectAttendantSchedule;
+    private String projectAttendantPosition;
 
     public ProjectDto() {
     }
 
-    public ProjectDto(int projectId, int linkedOrganizationId, String projectName, String projectDescription, String projectMethodology, String projectResources, String midtermProjectObjectives, String generalProjectObjective, String inmediateProjectObjectives, String projectResponsabilities, String projectAttendantName, String projectAttendantEmail, String projectAttendantSchedule) {
+    public ProjectDto(int projectId, int linkedOrganizationId, String projectName,
+            String projectDescription, String projectMethodology, String projectResources,
+            String midtermProjectObjectives, String generalProjectObjectives,
+            String inmediateProjectObjectives, String projectResponsabilities,
+            String projectAttendantName, String projectAttendantEmail,
+            String projectAttendantPosition) {
+        
         this.projectId = projectId;
         this.linkedOrganizationId = linkedOrganizationId;
         this.projectName = projectName;
@@ -26,27 +32,33 @@ public class ProjectDto {
         this.projectMethodology = projectMethodology;
         this.projectResources = projectResources;
         this.midtermProjectObjectives = midtermProjectObjectives;
-        this.generalProjectObjective = generalProjectObjective;
+        this.generalProjectObjectives = generalProjectObjectives;
         this.inmediateProjectObjectives = inmediateProjectObjectives;
         this.projectResponsabilities = projectResponsabilities;
         this.projectAttendantName = projectAttendantName;
         this.projectAttendantEmail = projectAttendantEmail;
-        this.projectAttendantSchedule = projectAttendantSchedule;
+        this.projectAttendantPosition = projectAttendantPosition;
     }
 
-    public ProjectDto(int linkedOrganizationId, String projectName, String projectDescription, String projectMethodology, String projectResources, String midtermProjectObjectives, String generalProjectObjective, String inmediateProjectObjectives, String projectResponsabilities, String projectAttendantName, String projectAttendantEmail, String projectAttendantSchedule) {
+    public ProjectDto(int linkedOrganizationId, String projectName,
+            String projectDescription, String projectMethodology, String projectResources,
+            String midtermProjectObjectives, String generalProjectObjectives,
+            String inmediateProjectObjectives, String projectResponsabilities,
+            String projectAttendantName, String projectAttendantEmail,
+            String projectAttendantPosition) {
+        
         this.linkedOrganizationId = linkedOrganizationId;
         this.projectName = projectName;
         this.projectDescription = projectDescription;
         this.projectMethodology = projectMethodology;
         this.projectResources = projectResources;
         this.midtermProjectObjectives = midtermProjectObjectives;
-        this.generalProjectObjective = generalProjectObjective;
+        this.generalProjectObjectives = generalProjectObjectives;
         this.inmediateProjectObjectives = inmediateProjectObjectives;
         this.projectResponsabilities = projectResponsabilities;
         this.projectAttendantName = projectAttendantName;
         this.projectAttendantEmail = projectAttendantEmail;
-        this.projectAttendantSchedule = projectAttendantSchedule;
+        this.projectAttendantPosition = projectAttendantPosition;
     }   
     
     public int getProjectId() {
@@ -77,8 +89,8 @@ public class ProjectDto {
         return midtermProjectObjectives;
     }
 
-    public String getGeneralProjectObjective() {
-        return generalProjectObjective;
+    public String getGeneralProjectObjectives() {
+        return generalProjectObjectives;
     }
 
     public String getInmediateProjectObjectives() {
@@ -97,9 +109,10 @@ public class ProjectDto {
         return projectAttendantEmail;
     }
 
-    public String getProjectAttendantSchedule() {
-        return projectAttendantSchedule;
+    public String getProjectAttendantPosition() {
+        return projectAttendantPosition;
     }
+
 
     public void setProjectId(int projectId) {
         this.projectId = projectId;
@@ -129,8 +142,8 @@ public class ProjectDto {
         this.midtermProjectObjectives = midtermProjectObjectives;
     }
 
-    public void setGeneralProjectObjective(String generalProjectObjective) {
-        this.generalProjectObjective = generalProjectObjective;
+    public void setGeneralProjectObjectives(String generalProjectObjectives) {
+        this.generalProjectObjectives = generalProjectObjectives;
     }
 
     public void setInmediateProjectObjectives(String inmediateProjectObjectives) {
@@ -149,9 +162,7 @@ public class ProjectDto {
         this.projectAttendantEmail = projectAttendantEmail;
     }
 
-    public void setProjectAttendantSchedule(String projectAttendantSchedule) {
-        this.projectAttendantSchedule = projectAttendantSchedule;
+    public void setProjectAttendantSchedule(String projectAttendantPosition) {
+        this.projectAttendantPosition = projectAttendantPosition;
     }
-    
-    
 }   
