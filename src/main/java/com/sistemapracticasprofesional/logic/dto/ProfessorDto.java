@@ -9,13 +9,15 @@ public class ProfessorDto {
     public ProfessorDto() {
     }
 
-    public ProfessorDto(int professorPersonnelNumber, String professorName, String professorShift, String professorCourseId) {
+    public ProfessorDto(int professorPersonnelNumber, String professorName,
+            String professorShift, String professorCourseId) {
         this.professorPersonnelNumber = professorPersonnelNumber;
         this.professorName = professorName;
         this.professorShift = professorShift;
     }
 
-    public ProfessorDto(int professorPersonnelNumber, int professorUserId, String professorName, String professorShift, String professorCourseId) {
+    public ProfessorDto(int professorPersonnelNumber, int professorUserId,
+            String professorName, String professorShift, String professorCourseId) {
         this.professorPersonnelNumber = professorPersonnelNumber;
         this.professorUserId = professorUserId;
         this.professorName = professorName;
