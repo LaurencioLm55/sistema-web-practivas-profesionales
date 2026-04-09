@@ -10,7 +10,8 @@ public class PartialReportDto {
     public PartialReportDto() {
     }
 
-    public PartialReportDto(int proyectActivityId, String plannedTime, String realTime, String results, String observations) {
+    public PartialReportDto(int proyectActivityId, String plannedTime,
+            String realTime, String results, String observations) {
         this.proyectActivityId = proyectActivityId;
         this.plannedTime = plannedTime;
         this.realTime = realTime;
@@ -18,7 +19,8 @@ public class PartialReportDto {
         this.observations = observations;
     }
 
-    public PartialReportDto(String plannedTime, String realTime, String results, String observations) {
+    public PartialReportDto(String plannedTime, String realTime, String results,
+            String observations) {
         this.plannedTime = plannedTime;
         this.realTime = realTime;
         this.results = results;
