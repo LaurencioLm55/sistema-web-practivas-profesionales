@@ -13,7 +13,7 @@ import java.util.List;
 
 public class ProjectDao {
     
-    private static final String INSERT_QUERY = "INSERT INTO Project (linkedOrganizationId, "
+    private static final String INSERT_QUERY = "INSERT INTO proyecto (Id_organizacion, "
         + "projectName, projectDescription, projectMethodology, projectResources, "
         + "midtermProjectObjectives, generalProjectObjectives, inmediateProjectObjectives, "
         + "projectResponsabilities, projectAttendantName, projectAttendantEmail, "
