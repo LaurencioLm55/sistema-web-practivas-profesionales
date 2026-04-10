@@ -9,20 +9,27 @@ import java.time.LocalDate;
 public class CoordinatorDto {
     private Integer userId;
     private String name;
-    private String state;
+    private boolean active;
     private LocalDate entryDate;
     private LocalDate exitDate;
 
     public CoordinatorDto() 
     {
     }
+
+    public CoordinatorDto(String name, boolean active, LocalDate entryDate, LocalDate exitDate) {
+        this.name = name;
+        this.active = active;
+        this.entryDate = entryDate;
+        this.exitDate = exitDate;
+    }
     
-    public CoordinatorDto(Integer userId, String name, String state,
+    public CoordinatorDto(Integer userId, String name, boolean active,
             LocalDate entryDate, LocalDate exitDate) 
     {
         this.userId = userId;
         this.name = name;
-        this.state = state;
+        this.active = active;
         this.entryDate = entryDate;
         this.exitDate = exitDate;
     }
@@ -35,9 +42,9 @@ public class CoordinatorDto {
     {
         return name;
     }
-    public String getState()
+    public boolean isActive()
     {
-        return state;
+        return active;
     }
     public LocalDate getEntryDate()
     {
@@ -56,9 +63,9 @@ public class CoordinatorDto {
     {
         this.name = name;
     }
-    public void setState(String state)
+    public void setState(boolean active)
     {
-        this.state = state;
+        this.active = active;
     }
     public void setEntryDate(LocalDate entryDate)
     {
