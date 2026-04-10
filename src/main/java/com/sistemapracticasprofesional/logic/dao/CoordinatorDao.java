@@ -120,7 +120,7 @@ public class CoordinatorDao {
         CoordinatorDto coordinatorObject = new CoordinatorDto();
         coordinatorObject.setUserId(resultSet.getInt("Id_usuario"));
         coordinatorObject.setName(resultSet.getString("Nombre"));
-        coordinatorObject.setState(resultSet.getString("Estado"));
+        coordinatorObject.setState(resultSet.getBoolean("Estado"));
 
         Date entryDate = resultSet.getDate("Fecha_de_registro");
         if (entryDate != null) {
