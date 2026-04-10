@@ -6,25 +6,26 @@ public class CoordinatorDto {
 
     private Integer userId;
     private String name;
-    private String state; 
+    private boolean active; 
     private LocalDate entryDate;
     private LocalDate exitDate;
 
     public CoordinatorDto() {
     }
 
-    public CoordinatorDto(String name, String state, LocalDate entryDate, LocalDate exitDate) {
+    public CoordinatorDto(String name, boolean active, LocalDate entryDate,
+            LocalDate exitDate) {
         this.name = name;
-        this.state = state;
+        this.active = active;
         this.entryDate = entryDate;
         this.exitDate = exitDate;
     }
 
-    public CoordinatorDto(Integer userId, String name, String state,
-                          LocalDate entryDate, LocalDate exitDate) {
+    public CoordinatorDto(Integer userId, String name, boolean active, LocalDate entryDate,
+            LocalDate exitDate) {
         this.userId = userId;
         this.name = name;
-        this.state = state;
+        this.active = active;
         this.entryDate = entryDate;
         this.exitDate = exitDate;
     }
@@ -45,12 +46,12 @@ public class CoordinatorDto {
         this.name = name;
     }
 
-    public String getState() {
-        return state;
+    public boolean isActive() {
+        return active;
     }
 
-    public void setState(String state) {
-        this.state = state;
+    public void setState(boolean active) {
+        this.active = active;
     }
 
     public LocalDate getEntryDate() {
