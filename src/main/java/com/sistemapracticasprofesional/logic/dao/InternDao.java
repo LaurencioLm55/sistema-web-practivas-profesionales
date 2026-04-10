@@ -52,4 +52,5 @@ public class InternDao {
 
         return registroExitoso;
     }
+    
 }
