@@ -14,7 +14,7 @@ import org.slf4j.LoggerFactory;
 
 public class CourseDao implements ICourse {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(CourseDao.class);
+   private static final Logger LOGGER = LoggerFactory.getLogger(CourseDao.class);
 
     @Override
     public boolean registerCourse(CourseDto course) {

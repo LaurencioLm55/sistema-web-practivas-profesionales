@@ -1,175 +1,157 @@
 package com.sistemapracticasprofesional.logic.dao;
+
 import com.sistemapracticasprofesional.dataaccess.DatabaseConnection;
 import com.sistemapracticasprofesional.logic.dto.MonthlyReportDto;
+import com.sistemapracticasprofesional.logic.exception.DatabaseOperationException;
 import com.sistemapracticasprofesional.logic.interfaces.IMonthlyReportDao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.List;
-import java.util.ArrayList;
 import java.sql.SQLException;
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-public class MonthlyReportDao implements IMonthlyReportDao{
-    
+public class MonthlyReportDao implements IMonthlyReportDao {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(MonthlyReportDao.class);
+
     @Override
-    public boolean registredReport(MonthlyReportDto monthlyReport) throws SQLException{
-        
-        boolean success = false;
-        DatabaseConnection databaseConnection = new DatabaseConnection();
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        String query = "INSERT INTO reporteavances (IdActividadProyecto,Matricula,Calificacion,ArchivoReporte,"
-                + "Fecha_de_realizacion,Fecha_de_entrega,DescripcionReporte) VALUES (?,?,?,?,?,?,?);";
-        
-        try{
-            
-            connection = databaseConnection.getConnection();
-            preparedStatement = connection.prepareStatement(query);
-            
+    public boolean registredReport(MonthlyReportDto monthlyReport) {
+        String query = "INSERT INTO reporteavances "
+                + "(IdActividadProyecto, Matricula, Calificacion, ArchivoReporte, "
+                + "Fecha_de_realizacion, Fecha_de_entrega, DescripcionReporte) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?)";
+
+        try (Connection connection = new DatabaseConnection().getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
             preparedStatement.setInt(1, monthlyReport.getMonthlyReportId());
             preparedStatement.setString(2, monthlyReport.getInternId());
             preparedStatement.setFloat(3, monthlyReport.getScore());
             preparedStatement.setString(4, monthlyReport.getMonthlyReportFile());
-            preparedStatement.setDate(5, Date.valueOf(monthlyReport.getDateOfCompletion()));
-            preparedStatement.setDate(6, Date.valueOf(monthlyReport.getDeliveryDate()));
-            preparedStatement.setString (7, monthlyReport.getDescription());
-            
-            
-            int affectedRows = preparedStatement.executeUpdate();
-            
-            if (affectedRows > 0){
-                
-                success = true;
-                
-            }
-            
-            
-        }finally{
-            
-            preparedStatement.close();
-            connection.close();
-            
+            preparedStatement.setDate(5, monthlyReport.getDateOfCompletion() != null
+                    ? Date.valueOf(monthlyReport.getDateOfCompletion()) : null);
+            preparedStatement.setDate(6, monthlyReport.getDeliveryDate() != null
+                    ? Date.valueOf(monthlyReport.getDeliveryDate()) : null);
+            preparedStatement.setString(7, monthlyReport.getDescription());
+
+            return preparedStatement.executeUpdate() > 0;
+        } catch (SQLException e) {
+            LOGGER.error("Error registering monthly report for intern {}", monthlyReport.getInternId(), e);
+            throw new DatabaseOperationException("Error al registrar el reporte mensual", e);
         }
-        
-        return success;
-        
     }
-    
+
     @Override
-    public boolean updateMonthlyReport(String data, String newData, int idMonthlyReport) throws SQLException{
-        
-        boolean success = false;
-        DatabaseConnection databaseConnection = new DatabaseConnection();
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        String query = "UPDATE reporteavances SET " + data + " = ? WHERE IdActividadProyecto = ?;";
-        
-        try{
-            connection = databaseConnection.getConnection();
-            preparedStatement = connection.prepareStatement(query);
-            
+    public boolean updateMonthlyReport(String data, String newData, int idMonthlyReport) {
+        Set<String> allowedFields = Set.of(
+                "Matricula",
+                "Calificacion",
+                "ArchivoReporte",
+                "Fecha_de_realizacion",
+                "Fecha_de_entrega",
+                "DescripcionReporte"
+        );
+
+        if (data == null || !allowedFields.contains(data)) {
+            throw new IllegalArgumentException("Campo no permitido: " + data);
+        }
+
+        String query = "UPDATE reporteavances SET " + data + " = ? WHERE IdActividadProyecto = ?";
+
+        try (Connection connection = new DatabaseConnection().getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
             preparedStatement.setString(1, newData);
             preparedStatement.setInt(2, idMonthlyReport);
-            
-            int affectedRows = preparedStatement.executeUpdate();
-            
-            if (affectedRows > 0){
-                
-                success = true;
-                
-            }
-            
-        }finally{
-            
+
+            return preparedStatement.executeUpdate() > 0;
+        } catch (SQLException e) {
+            LOGGER.error("Error updating monthly report id {}", idMonthlyReport, e);
+            throw new DatabaseOperationException("Error al actualizar el reporte mensual", e);
         }
-        
-        return success;
-        
     }
-    
+
     @Override
-    public MonthlyReportDto getMonthlyReport(int idMonthlyReport) throws SQLException{
-        
-        MonthlyReportDto monthlyReport = new MonthlyReportDto();
-        DatabaseConnection databaseConnection = new DatabaseConnection();
-        PreparedStatement preparedStatement = null;
-        Connection connection = null;
-        ResultSet resultSet = null;
-        String query = "SELECT * FROM reporteavances WHERE IdActividadProyecto = ?;";
-        
-        try{
-            
-            connection = databaseConnection.getConnection();
-            preparedStatement = connection.prepareStatement(query);
-            
+    public MonthlyReportDto getMonthlyReport(int idMonthlyReport) {
+        String query = "SELECT * FROM reporteavances WHERE IdActividadProyecto = ?";
+
+        try (Connection connection = new DatabaseConnection().getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
             preparedStatement.setInt(1, idMonthlyReport);
-            
-            resultSet = preparedStatement.executeQuery();
-            
-            if(resultSet.next()){
-               monthlyReport.setInternId(resultSet.getString("Matricula"));
-               monthlyReport.setScore(resultSet.getFloat("Calificacion"));
-               monthlyReport.setMonthlyReportFile(resultSet.getString("ArchivoReporte"));
-               monthlyReport.setDateOfCompletion(resultSet.getDate("Fecha_de_realizacion").toLocalDate());
-               monthlyReport.setDeliveryDate(resultSet.getDate("Fecha_de_entrega").toLocalDate());
-               monthlyReport.setDescription(resultSet.getString("DescripcionReporte"));
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    MonthlyReportDto monthlyReport = new MonthlyReportDto();
+                    monthlyReport.setMonthlyReportId(resultSet.getInt("IdActividadProyecto"));
+                    monthlyReport.setInternId(resultSet.getString("Matricula"));
+                    monthlyReport.setScore(resultSet.getFloat("Calificacion"));
+                    monthlyReport.setMonthlyReportFile(resultSet.getString("ArchivoReporte"));
+
+                    Date completionDate = resultSet.getDate("Fecha_de_realizacion");
+                    if (completionDate != null) {
+                        monthlyReport.setDateOfCompletion(completionDate.toLocalDate());
+                    }
+
+                    Date deliveryDate = resultSet.getDate("Fecha_de_entrega");
+                    if (deliveryDate != null) {
+                        monthlyReport.setDeliveryDate(deliveryDate.toLocalDate());
+                    }
+
+                    monthlyReport.setDescription(resultSet.getString("DescripcionReporte"));
+                    return monthlyReport;
+                }
             }
-            
-        }finally{
-            
-            resultSet.close();
-            preparedStatement.close();
-            connection.close();
-            
+
+            return null;
+        } catch (SQLException e) {
+            LOGGER.error("Error getting monthly report id {}", idMonthlyReport, e);
+            throw new DatabaseOperationException("Error al obtener el reporte mensual", e);
         }
-       
-        return monthlyReport;
-        
     }
-    
+
     @Override
-    public List<MonthlyReportDto> getListMonthlyReport(String idIntern)throws SQLException{
-        
+    public List<MonthlyReportDto> getListMonthlyReport(String idIntern) {
         List<MonthlyReportDto> monthlyReportList = new ArrayList<>();
-        DatabaseConnection databaseConnection = new DatabaseConnection();
-        PreparedStatement preparedStatement = null;
-        Connection connection = null;
-        ResultSet resultSet = null;
-        String query = "SELECT * FROM reporteavances WHERE matricula = ?;";
-        
-        try{
-            
-            connection = databaseConnection.getConnection();
-            preparedStatement = connection.prepareStatement(query);
-            
+        String query = "SELECT * FROM reporteavances WHERE Matricula = ?";
+
+        try (Connection connection = new DatabaseConnection().getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
             preparedStatement.setString(1, idIntern);
-            
-            resultSet = preparedStatement.executeQuery();
-            
-            while(resultSet.next()){
-               
-               MonthlyReportDto monthlyReport = new MonthlyReportDto();
-               
-               monthlyReport.setInternId(resultSet.getString("Matricula"));
-               monthlyReport.setScore(resultSet.getFloat("Calificacion"));
-               monthlyReport.setMonthlyReportFile(resultSet.getString("ArchivoReporte"));
-               monthlyReport.setDateOfCompletion(resultSet.getDate("Fecha_de_realizacion").toLocalDate());
-               monthlyReport.setDeliveryDate(resultSet.getDate("Fecha_de_entrega").toLocalDate());
-               monthlyReport.setDescription(resultSet.getString("DescripcionReporte"));
-               
-               monthlyReportList.add(monthlyReport);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    MonthlyReportDto monthlyReport = new MonthlyReportDto();
+                    monthlyReport.setMonthlyReportId(resultSet.getInt("IdActividadProyecto"));
+                    monthlyReport.setInternId(resultSet.getString("Matricula"));
+                    monthlyReport.setScore(resultSet.getFloat("Calificacion"));
+                    monthlyReport.setMonthlyReportFile(resultSet.getString("ArchivoReporte"));
+
+                    Date completionDate = resultSet.getDate("Fecha_de_realizacion");
+                    if (completionDate != null) {
+                        monthlyReport.setDateOfCompletion(completionDate.toLocalDate());
+                    }
+
+                    Date deliveryDate = resultSet.getDate("Fecha_de_entrega");
+                    if (deliveryDate != null) {
+                        monthlyReport.setDeliveryDate(deliveryDate.toLocalDate());
+                    }
+
+                    monthlyReport.setDescription(resultSet.getString("DescripcionReporte"));
+                    monthlyReportList.add(monthlyReport);
+                }
             }
-            
-        }finally{
-            
-            resultSet.close();
-            preparedStatement.close();
-            connection.close();
-            
+
+            return monthlyReportList;
+        } catch (SQLException e) {
+            LOGGER.error("Error getting monthly reports for intern {}", idIntern, e);
+            throw new DatabaseOperationException("Error al obtener la lista de reportes mensuales", e);
         }
-       
-        return monthlyReportList;
-        
     }
 }
