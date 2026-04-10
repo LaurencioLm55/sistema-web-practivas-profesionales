@@ -3,7 +3,7 @@ import com.sistemapracticasprofesional.logic.dto.UserDto;
 import java.sql.SQLException;
 
 
-public interface IUserDao {
+public interface IUser {
     boolean isUserRegistred(UserDto user) throws SQLException;
     boolean registredUser(int idUSer, String userName, String userPassword) throws SQLException;
     boolean updateName(String newName, int idUser)throws SQLException;

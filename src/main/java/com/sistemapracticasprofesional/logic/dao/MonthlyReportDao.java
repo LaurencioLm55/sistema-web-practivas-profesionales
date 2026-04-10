@@ -3,7 +3,6 @@ package com.sistemapracticasprofesional.logic.dao;
 import com.sistemapracticasprofesional.dataaccess.DatabaseConnection;
 import com.sistemapracticasprofesional.logic.dto.MonthlyReportDto;
 import com.sistemapracticasprofesional.logic.exception.DatabaseOperationException;
-import com.sistemapracticasprofesional.logic.interfaces.IMonthlyReportDao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -14,8 +13,9 @@ import java.util.List;
 import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import com.sistemapracticasprofesional.logic.interfaces.IMonthlyReport;
 
-public class MonthlyReportDao implements IMonthlyReportDao {
+public class MonthlyReportDao implements IMonthlyReport {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MonthlyReportDao.class);
 

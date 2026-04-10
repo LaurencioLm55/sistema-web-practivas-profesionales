@@ -3,15 +3,15 @@ package com.sistemapracticasprofesional.logic.dao;
 import com.sistemapracticasprofesional.dataaccess.DatabaseConnection;
 import com.sistemapracticasprofesional.logic.dto.UserDto;
 import com.sistemapracticasprofesional.logic.exception.DatabaseOperationException;
-import com.sistemapracticasprofesional.logic.interfaces.IUserDao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import com.sistemapracticasprofesional.logic.interfaces.IUser;
 
-public class UserDao implements IUserDao {
+public class UserDao implements IUser {
     
     private static final Logger LOGGER = LoggerFactory.getLogger(UserDao.class);
     
