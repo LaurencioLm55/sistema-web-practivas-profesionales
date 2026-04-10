@@ -12,7 +12,9 @@ public class MonthlyReportDto {
     
     public MonthlyReportDto(){}
     
-    public MonthlyReportDto(int idMonthlyReport, String internId, float score, String monthlyReportFile, LocalDate dateOfCompletion, LocalDate deliveryDate, String description){
+    public MonthlyReportDto(int monthlyReportId, String internId, float score,
+            String monthlyReportFile, LocalDate dateOfCompletion, 
+            LocalDate deliveryDate, String description){
         
         this.monthlyReportId = monthlyReportId;
         this.internId = internId;
@@ -24,7 +26,8 @@ public class MonthlyReportDto {
         
     }
     
-    public MonthlyReportDto(String internId, float score, String monthlyReportFile, LocalDate dateOfCompletion, LocalDate deliveryDate, String description){
+    public MonthlyReportDto(String internId, float score, String monthlyReportFile,
+            LocalDate dateOfCompletion, LocalDate deliveryDate, String description){
         
         this.internId = internId;
         this.score = score;
