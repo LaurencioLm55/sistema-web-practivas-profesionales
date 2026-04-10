@@ -67,7 +67,7 @@ public class CoordinatorDao {
 
             preparedStatement.setInt(1, coordinator.getUserId());
             preparedStatement.setString(2, coordinator.getName());
-            preparedStatement.setString(3, coordinator.getState());
+            preparedStatement.setBoolean(3, coordinator.isActive());
             preparedStatement.setDate(4, coordinator.getEntryDate() != null
                     ? Date.valueOf(coordinator.getEntryDate()) : null);
             preparedStatement.setDate(5, coordinator.getExitDate() != null
@@ -88,7 +88,7 @@ public class CoordinatorDao {
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             preparedStatement.setString(1, coordinator.getName());
-            preparedStatement.setString(2, coordinator.getState());
+            preparedStatement.setBoolean(2, coordinator.isActive());
             preparedStatement.setDate(3, coordinator.getEntryDate() != null
                     ? Date.valueOf(coordinator.getEntryDate()) : null);
             preparedStatement.setDate(4, coordinator.getExitDate() != null
