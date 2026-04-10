@@ -86,7 +86,5 @@ public class InternDto {
     public void setCarrera(String carrera) {
         this.carrera = carrera;
     }
-    
-    
-    
+     
 }
