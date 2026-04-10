@@ -1,71 +1,51 @@
 package com.sistemapracticasprofesional.logic.dto;
 
 public class ProfessorDto {
-    private int professorUserId;
-    private int professorPersonnelNumber;
-    private String professorName;
-    private String professorShift;
-    private boolean professorState;
-    
+
+    private int staffNumber;
+    private Integer userId;
+    private String name;
+    private String shift;
+
     public ProfessorDto() {
     }
 
-    public ProfessorDto(int professorPersonnelNumber, String professorName,
-            String professorShift, String professorCourseId,boolean professorState ) {
-        this.professorPersonnelNumber = professorPersonnelNumber;
-        this.professorName = professorName;
-        this.professorShift = professorShift;
-        this.professorState = professorState;
+    public ProfessorDto(int staffNumber, Integer userId, String name, String shift) {
+        this.staffNumber = staffNumber;
+        this.userId = userId;
+        this.name = name;
+        this.shift = shift;
     }
 
-    public ProfessorDto(int professorPersonnelNumber, int professorUserId,
-            String professorName, String professorShift, String professorCourseId,
-            boolean professorState) {
-        this.professorPersonnelNumber = professorPersonnelNumber;
-        this.professorUserId = professorUserId;
-        this.professorName = professorName;
-        this.professorShift = professorShift;
-        this.professorState = professorState;
+    public int getStaffNumber() {
+        return staffNumber;
     }
 
-    public int getProfessorUserId() {
-        return professorUserId;
+    public void setStaffNumber(int staffNumber) {
+        this.staffNumber = staffNumber;
     }
 
-    public int getProfessorPersonnelNumber() {
-        return professorPersonnelNumber;
+    public Integer getUserId() {
+        return userId;
     }
 
-    public String getProfessorName() {
-        return professorName;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
-    public String getProfessorShift() {
-        return professorShift;
+    public String getName() {
+        return name;
     }
 
-    public boolean isProfessorState() {
-        return professorState;
-    }
-    
-    public void setProfessorUserId(int professorUserId) {
-        this.professorUserId = professorUserId;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public void setProfessorPersonnelNumber(int professorPersonnelNumber) {
-        this.professorPersonnelNumber = professorPersonnelNumber;
+    public String getShift() {
+        return shift;
     }
 
-    public void setProfessorName(String professorName) {
-        this.professorName = professorName;
+    public void setShift(String shift) {
+        this.shift = shift;
     }
-
-    public void setProfessorShift(String professorShift) {
-        this.professorShift = professorShift;
-    }
-
-    public void setProfessorState(boolean professorState) {
-        this.professorState = professorState;
-    }
-    
 }

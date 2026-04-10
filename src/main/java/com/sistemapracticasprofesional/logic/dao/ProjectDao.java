@@ -3,6 +3,7 @@ package com.sistemapracticasprofesional.logic.dao;
 import com.sistemapracticasprofesional.dataaccess.DatabaseConnection;
 import com.sistemapracticasprofesional.logic.dto.ProjectDto;
 import com.sistemapracticasprofesional.logic.exception.DatabaseOperationException;
+import com.sistemapracticasprofesional.logic.interfaces.IProject;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -11,50 +12,50 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProjectDao {
+public class ProjectDao implements IProject{
     
     private static final String INSERT_QUERY = "INSERT INTO proyecto (Id_organizacion, "
-        + "projectName, projectDescription, projectMethodology, projectResources, "
-        + "midtermProjectObjectives, generalProjectObjectives, inmediateProjectObjectives, "
-        + "projectResponsabilities, projectAttendantName, projectAttendantEmail, "
-        + "projectAttendantPosition) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-    
-    private static final String UPDATE_QUERY = "UPDATE Project SET linkedOrganizationId = ?, "
-        + "projectName = ?, projectDescription = ?, projectMethodology = ?, "
-        + "projectResources = ?, midtermProjectObjectives = ?,generalProjectObjectives = ?, "
-        + "inmediateProjectObjectives = ?, projectResponsabilities = ?, projectAttendantName = ?, "
-        + "projectAttendantEmail = ?, projectAttendantPosition = ? WHERE projectId = ?";
-    
-    private static final String DELETE_QUERY = "DELETE FROM Project WHERE projectId = ?";
-    
-    private static final String SELECT_BY_ID_QUERY = "SELECT * FROM Project WHERE projectId = ?";
-    
-    private static final String SELECT_ALL_QUERY = "SELECT * FROM Project";
+        + "Nombre, Descripcion_general, Metodologia, Recursos, Objetivos_medios, "
+        + "Objetivo_general, Objetivos_inmediatos, Responsabilidades, "
+        + "Nombre_Encargado, e_mail_Encargado, cargo_Encargado) "
+        + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-    public int insertProject(ProjectDto project) throws DatabaseOperationException {
+    private static final String UPDATE_QUERY = "UPDATE proyecto SET Id_organizacion = ?, "
+            + "Nombre = ?, Descripcion_general = ?, Metodologia = ?, Recursos = ?, "
+            + "Objetivos_medios = ?, Objetivo_general = ?, Objetivos_inmediatos = ?, "
+            + "Responsabilidades = ?, Nombre_Encargado = ?, e_mail_Encargado = ?, "
+            + "cargo_Encargado = ? WHERE IdProyecto = ?";
+
+    private static final String DELETE_QUERY = "DELETE FROM proyecto WHERE IdProyecto = ?";
+
+    private static final String SELECT_BY_ID_QUERY = "SELECT * FROM proyecto WHERE IdProyecto = ?";
+
+    private static final String SELECT_ALL_QUERY = "SELECT * FROM proyecto";
+
+    @Override
+    public boolean registerProject(ProjectDto project) throws DatabaseOperationException {
         
-        int generatedId = 0;
+        boolean operationSuccess = false;
+        
         try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement
         (INSERT_QUERY, Statement.RETURN_GENERATED_KEYS)) {
             
             setProjectStatement(preparedStatement, project);
             preparedStatement.executeUpdate();
+            operationSuccess = true;
 
-            try (ResultSet rs = preparedStatement.getGeneratedKeys()) {
-                if (rs.next()) {
-                    generatedId = rs.getInt(1);
-                }
-            }
         } catch (SQLException e) {
             // logger aquí
             throw new DatabaseOperationException("Error al registrar el proyecto: "
                 + project.getProjectName(), e);
         }
-        return generatedId;
+        return operationSuccess;
     }
 
+    @Override
     public boolean updateProject(ProjectDto project) throws DatabaseOperationException {
+        
         boolean updated = false;
         try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_QUERY)) {
@@ -86,7 +87,8 @@ public class ProjectDao {
         return deleted;
     }
 
-    public ProjectDto getProjectById(int projectId) throws DatabaseOperationException {
+    @Override
+    public ProjectDto getProject(int projectId) throws DatabaseOperationException {
         ProjectDto project = null;
         try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(SELECT_BY_ID_QUERY)) {
@@ -105,7 +107,8 @@ public class ProjectDao {
         return project;
     }
 
-    public List<ProjectDto> getAllProjects() throws DatabaseOperationException {
+    @Override
+    public List<ProjectDto> listProyects() throws DatabaseOperationException {
         List<ProjectDto> projects = new ArrayList<>();
         try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_QUERY);
@@ -153,4 +156,5 @@ public class ProjectDao {
             rs.getString("projectAttendantPosition")
         );
     }
+    
 }
