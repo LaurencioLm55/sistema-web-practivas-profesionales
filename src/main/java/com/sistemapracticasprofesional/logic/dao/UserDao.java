@@ -1,190 +1,119 @@
 package com.sistemapracticasprofesional.logic.dao;
+
 import com.sistemapracticasprofesional.dataaccess.DatabaseConnection;
 import com.sistemapracticasprofesional.logic.dto.UserDto;
+import com.sistemapracticasprofesional.logic.exception.DatabaseOperationException;
 import com.sistemapracticasprofesional.logic.interfaces.IUserDao;
-import java.sql.SQLException;
-import java.sql.ResultSet;
-import java.sql.PreparedStatement;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-
-public class UserDao implements IUserDao{
+public class UserDao implements IUserDao {
+    
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserDao.class);
     
     @Override
-    public boolean isUserRegistred(UserDto user) throws SQLException{
-        
-        boolean success = false;
-        int result = 0;
-        DatabaseConnection databaseConnection = new DatabaseConnection();   
-        PreparedStatement preparedStatement = null;
-        Connection connection = null;
-        ResultSet resultSet = null;
-        String query = "SELECT EXISTS ( SELECT 1 FROM usuario WHERE nombre = ? AND contraseña = ?) AS existe;";
-        
-        try{
-            
-            connection = databaseConnection.getConnection();
-            
-            preparedStatement = connection.prepareStatement(query);
+    public boolean isUserRegistred(UserDto user) {
+        String query = "SELECT EXISTS ("
+                + "SELECT 1 FROM usuario WHERE nombre = ? AND Contraseña = ?"
+                + ") AS existe";
+
+        try (Connection connection = new DatabaseConnection().getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
             preparedStatement.setString(1, user.getUserName());
             preparedStatement.setString(2, user.getPassword());
-            
-            resultSet = preparedStatement.executeQuery();
-            
-            if(resultSet.next()){
-                result = resultSet.getInt("Existe");
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    return resultSet.getInt("existe") == 1;
+                }
             }
-            
-            if(result == 1){
-                success = true;
-            }
-           
-            
-        }finally{
-            
-            resultSet.close();
-            preparedStatement.close();
-            connection.close();
-            
+
+            return false;
+        } catch (SQLException e) {
+            LOGGER.error("Error checking if user is registered: {}", user.getUserName(), e);
+            throw new DatabaseOperationException("Error al verificar el usuario", e);
         }
-        return success;
-        
     }
-    
+
     @Override
-    public boolean registredUser(int idUser, String userName, String userPassword) throws SQLException {
-        
-        boolean success = false;
-        Connection connection = null;
-        DatabaseConnection databaseConnection = new DatabaseConnection();
-        PreparedStatement preparedStatement = null;
-        String query = "INSERT INTO usuario (id_usuario,nombre,contraseña) VALUES (?,?,?);";
-        
-        try{
- 
-           connection = databaseConnection.getConnection();
-           preparedStatement = connection.prepareStatement(query);
-           preparedStatement.setInt(1, idUser);
-           preparedStatement.setString(2, userName);
-           preparedStatement.setString(3, userPassword);
-           
-           int affectedRows = preparedStatement.executeUpdate();
-           
-           if(affectedRows > 0){
-               success = true;
-           }
-           
-        }finally{
-            preparedStatement.close();
-            connection.close();
+    public boolean registredUser(int idUser, String userName, String userPassword) {
+        String query = "INSERT INTO usuario (Id_usuario, nombre, Contraseña) VALUES (?, ?, ?)";
+
+        try (Connection connection = new DatabaseConnection().getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+            preparedStatement.setInt(1, idUser);
+            preparedStatement.setString(2, userName);
+            preparedStatement.setString(3, userPassword);
+
+            return preparedStatement.executeUpdate() > 0;
+        } catch (SQLException e) {
+            LOGGER.error("Error registering user with id {}", idUser, e);
+            throw new DatabaseOperationException("Error al registrar el usuario", e);
         }
-        
-        return success;
-        
     }
-    
+
     @Override
-    public boolean updateName(String newName, int idUser)throws SQLException{
-        
-        boolean success = false;
-        DatabaseConnection databaseConnection = new DatabaseConnection();
-        PreparedStatement preparedStatement = null;
-        Connection connection = null;
-        String query = "UPDATE usuario SET nombre = ? WHERE Id_usuario = ?;";
-        
-        try{
-            
-            connection = databaseConnection.getConnection();
-            preparedStatement = connection.prepareStatement(query);
+    public boolean updateName(String newName, int idUser) {
+        String query = "UPDATE usuario SET nombre = ? WHERE Id_usuario = ?";
+
+        try (Connection connection = new DatabaseConnection().getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
             preparedStatement.setString(1, newName);
-            preparedStatement.setInt(2, 1);
-            int affectedRows = preparedStatement.executeUpdate();
-            
-            if(affectedRows > 0){
-                success = true;
-            }
-            
-        }finally{
-            
-            preparedStatement.close();
-            connection.close();
-            
+            preparedStatement.setInt(2, idUser);
+
+            return preparedStatement.executeUpdate() > 0;
+        } catch (SQLException e) {
+            LOGGER.error("Error updating name for user id {}", idUser, e);
+            throw new DatabaseOperationException("Error al actualizar el nombre del usuario", e);
         }
-        
-        return success;
-        
     }
-    
+
     @Override
-    public boolean updatePassword( String newPassword, int idUser) throws SQLException {
-       
-        boolean success = false;
-        DatabaseConnection databaseConnection = new DatabaseConnection();
-        PreparedStatement preparedStatement = null;
-        Connection connection = null;
-        String query = "UPDATE usuario SET contraseña = ? WHERE id_usuario = ?;";
-        
-        try{
-            
-            connection = databaseConnection.getConnection();
-            preparedStatement = connection.prepareStatement(query);
+    public boolean updatePassword(String newPassword, int idUser) {
+        String query = "UPDATE usuario SET Contraseña = ? WHERE Id_usuario = ?";
+
+        try (Connection connection = new DatabaseConnection().getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
             preparedStatement.setString(1, newPassword);
             preparedStatement.setInt(2, idUser);
-            
-            int affectedRows = preparedStatement.executeUpdate();
-            
-            if ( affectedRows > 0 ){
-                
-                success = true;
-                
-            }
-        }finally{
-            
-            preparedStatement.close();
-            connection.close();
-            
+
+            return preparedStatement.executeUpdate() > 0;
+        } catch (SQLException e) {
+            LOGGER.error("Error updating password for user id {}", idUser, e);
+            throw new DatabaseOperationException("Error al actualizar la contraseña del usuario", e);
         }
-        
-        return success;
     }
-    
+
     @Override
-        public UserDto getUser(int idUser) throws SQLException {
+    public UserDto getUser(int idUser) {
+        String query = "SELECT * FROM usuario WHERE Id_usuario = ?";
 
-            UserDto user = new UserDto();
-            DatabaseConnection databaseConnection = new DatabaseConnection();
-            PreparedStatement preparedStatement = null;
-            Connection connection = null;
-            ResultSet resultSet = null;
-            String query = "SELECT * FROM usuario WHERE id_usuario = ?;";
+        try (Connection connection = new DatabaseConnection().getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
-            try{
+            preparedStatement.setInt(1, idUser);
 
-                connection = databaseConnection.getConnection();
-                preparedStatement = connection.prepareStatement(query);
-                preparedStatement.setInt(1, idUser);
-
-                resultSet = preparedStatement.executeQuery();
-                
-                if(resultSet.next()){
-                    
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    UserDto user = new UserDto();
                     user.setUserName(resultSet.getString("nombre"));
-                    user.setPassword(resultSet.getString("contraseña"));
-                    
+                    user.setPassword(resultSet.getString("Contraseña"));
+                    return user;
                 }
-
-
-            }finally{
-                
-                resultSet.close();
-                preparedStatement.close();
-                connection.close();
-
             }
 
-            return user;
-
-        }    
-  
-    
+            return null;
+        } catch (SQLException e) {
+            LOGGER.error("Error getting user with id {}", idUser, e);
+            throw new DatabaseOperationException("Error al obtener el usuario", e);
+        }
+    }
 }
