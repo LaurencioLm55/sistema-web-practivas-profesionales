@@ -2,7 +2,7 @@ package com.sistemapracticasprofesional.logic.dao;
 
 import com.sistemapracticasprofesional.dataaccess.DatabaseConnection;
 import com.sistemapracticasprofesional.logic.dto.ProfessorDto;
-import com.sistemapracticasprofesional.logic.exception.DatabaseOperationException;
+import com.sistemapracticasprofesional.logic.exception.OperationException;
 import com.sistemapracticasprofesional.logic.interfaces.IProfessor;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -54,7 +54,7 @@ public class ProfessorDao implements IProfessor {
 
         } catch (SQLException e) {
             LOGGER.error("Error inserting professor with staff number {}", professor.getStaffNumber(), e);
-            throw new DatabaseOperationException("Error al registrar el profesor", e);
+            throw new OperationException("Error al registrar el profesor", e);
         }
     }
 
@@ -77,7 +77,7 @@ public class ProfessorDao implements IProfessor {
 
         } catch (SQLException e) {
             LOGGER.error("Error updating professor with staff number {}", professor.getStaffNumber(), e);
-            throw new DatabaseOperationException("Error al actualizar el profesor", e);
+            throw new OperationException("Error al actualizar el profesor", e);
         }
     }
 
@@ -91,7 +91,7 @@ public class ProfessorDao implements IProfessor {
 
         } catch (SQLException e) {
             LOGGER.error("Error deleting professor with staff number {}", staffNumber, e);
-            throw new DatabaseOperationException("Error al eliminar el profesor", e);
+            throw new OperationException("Error al eliminar el profesor", e);
         }
     }
 
@@ -112,7 +112,7 @@ public class ProfessorDao implements IProfessor {
 
         } catch (SQLException e) {
             LOGGER.error("Error getting professor with staff number {}", staffNumber, e);
-            throw new DatabaseOperationException("Error al obtener el profesor", e);
+            throw new OperationException("Error al obtener el profesor", e);
         }
     }
 
@@ -132,7 +132,7 @@ public class ProfessorDao implements IProfessor {
 
         } catch (SQLException e) {
             LOGGER.error("Error getting professor list", e);
-            throw new DatabaseOperationException("Error al obtener la lista de profesores", e);
+            throw new OperationException("Error al obtener la lista de profesores", e);
         }
     }
 

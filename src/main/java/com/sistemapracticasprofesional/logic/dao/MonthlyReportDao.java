@@ -2,7 +2,7 @@ package com.sistemapracticasprofesional.logic.dao;
 
 import com.sistemapracticasprofesional.dataaccess.DatabaseConnection;
 import com.sistemapracticasprofesional.logic.dto.MonthlyReportDto;
-import com.sistemapracticasprofesional.logic.exception.DatabaseOperationException;
+import com.sistemapracticasprofesional.logic.exception.OperationException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -42,7 +42,7 @@ public class MonthlyReportDao implements IMonthlyReport {
             return preparedStatement.executeUpdate() > 0;
         } catch (SQLException e) {
             LOGGER.error("Error registering monthly report for intern {}", monthlyReport.getInternId(), e);
-            throw new DatabaseOperationException("Error al registrar el reporte mensual", e);
+            throw new OperationException("Error al registrar el reporte mensual", e);
         }
     }
 
@@ -72,7 +72,7 @@ public class MonthlyReportDao implements IMonthlyReport {
             return preparedStatement.executeUpdate() > 0;
         } catch (SQLException e) {
             LOGGER.error("Error updating monthly report id {}", idMonthlyReport, e);
-            throw new DatabaseOperationException("Error al actualizar el reporte mensual", e);
+            throw new OperationException("Error al actualizar el reporte mensual", e);
         }
     }
 
@@ -111,7 +111,7 @@ public class MonthlyReportDao implements IMonthlyReport {
             return null;
         } catch (SQLException e) {
             LOGGER.error("Error getting monthly report id {}", idMonthlyReport, e);
-            throw new DatabaseOperationException("Error al obtener el reporte mensual", e);
+            throw new OperationException("Error al obtener el reporte mensual", e);
         }
     }
 
@@ -151,7 +151,7 @@ public class MonthlyReportDao implements IMonthlyReport {
             return monthlyReportList;
         } catch (SQLException e) {
             LOGGER.error("Error getting monthly reports for intern {}", idIntern, e);
-            throw new DatabaseOperationException("Error al obtener la lista de reportes mensuales", e);
+            throw new OperationException("Error al obtener la lista de reportes mensuales", e);
         }
     }
 }

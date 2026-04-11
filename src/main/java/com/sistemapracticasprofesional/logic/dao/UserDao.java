@@ -2,7 +2,7 @@ package com.sistemapracticasprofesional.logic.dao;
 
 import com.sistemapracticasprofesional.dataaccess.DatabaseConnection;
 import com.sistemapracticasprofesional.logic.dto.UserDto;
-import com.sistemapracticasprofesional.logic.exception.DatabaseOperationException;
+import com.sistemapracticasprofesional.logic.exception.OperationException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -36,7 +36,7 @@ public class UserDao implements IUser {
             return false;
         } catch (SQLException e) {
             LOGGER.error("Error checking if user is registered: {}", user.getUserName(), e);
-            throw new DatabaseOperationException("Error al verificar el usuario", e);
+            throw new OperationException("Error al verificar el usuario", e);
         }
     }
 
@@ -54,7 +54,7 @@ public class UserDao implements IUser {
             return preparedStatement.executeUpdate() > 0;
         } catch (SQLException e) {
             LOGGER.error("Error registering user with id {}", idUser, e);
-            throw new DatabaseOperationException("Error al registrar el usuario", e);
+            throw new OperationException("Error al registrar el usuario", e);
         }
     }
 
@@ -71,7 +71,7 @@ public class UserDao implements IUser {
             return preparedStatement.executeUpdate() > 0;
         } catch (SQLException e) {
             LOGGER.error("Error updating name for user id {}", idUser, e);
-            throw new DatabaseOperationException("Error al actualizar el nombre del usuario", e);
+            throw new OperationException("Error al actualizar el nombre del usuario", e);
         }
     }
 
@@ -88,7 +88,7 @@ public class UserDao implements IUser {
             return preparedStatement.executeUpdate() > 0;
         } catch (SQLException e) {
             LOGGER.error("Error updating password for user id {}", idUser, e);
-            throw new DatabaseOperationException("Error al actualizar la contraseña del usuario", e);
+            throw new OperationException("Error al actualizar la contraseña del usuario", e);
         }
     }
 
@@ -113,7 +113,7 @@ public class UserDao implements IUser {
             return null;
         } catch (SQLException e) {
             LOGGER.error("Error getting user with id {}", idUser, e);
-            throw new DatabaseOperationException("Error al obtener el usuario", e);
+            throw new OperationException("Error al obtener el usuario", e);
         }
     }
 }
