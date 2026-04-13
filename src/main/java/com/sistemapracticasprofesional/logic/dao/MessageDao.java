@@ -2,7 +2,7 @@ package com.sistemapracticasprofesional.logic.dao;
 
 import com.sistemapracticasprofesional.dataaccess.DatabaseConnection;
 import com.sistemapracticasprofesional.logic.dto.MessageDto;
-import com.sistemapracticasprofesional.logic.exception.OperationException;
+import com.sistemapracticasprofesional.logic.exception.DaoException;
 import com.sistemapracticasprofesional.logic.interfaces.IMessage;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -54,7 +54,7 @@ public class MessageDao implements IMessage {
         } catch (SQLException e) {
             LOGGER.error("Error sending message from user {} to user {}",
                     message.getSenderUserId(), message.getReceiverUserId(), e);
-            throw new OperationException("Error al enviar el mensaje", e);
+            throw new DaoException("Error al enviar el mensaje", e);
         }
     }
 
@@ -75,7 +75,7 @@ public class MessageDao implements IMessage {
 
         } catch (SQLException e) {
             LOGGER.error("Error getting message with id {}", messageId, e);
-            throw new OperationException("Error al obtener el mensaje", e);
+            throw new DaoException("Error al obtener el mensaje", e);
         }
     }
 
@@ -98,7 +98,7 @@ public class MessageDao implements IMessage {
 
         } catch (SQLException e) {
             LOGGER.error("Error getting inbox for user {}", receiverUserId, e);
-            throw new OperationException("Error al obtener el buzón", e);
+            throw new DaoException("Error al obtener el buzón", e);
         }
     }
 
@@ -121,7 +121,7 @@ public class MessageDao implements IMessage {
 
         } catch (SQLException e) {
             LOGGER.error("Error getting sent messages for user {}", senderUserId, e);
-            throw new OperationException("Error al obtener los mensajes enviados", e);
+            throw new DaoException("Error al obtener los mensajes enviados", e);
         }
     }
 
@@ -137,7 +137,7 @@ public class MessageDao implements IMessage {
 
         } catch (SQLException e) {
             LOGGER.error("Error marking message {} as read", messageId, e);
-            throw new OperationException("Error al marcar el mensaje como leído", e);
+            throw new DaoException("Error al marcar el mensaje como leído", e);
         }
     }
 
@@ -151,7 +151,7 @@ public class MessageDao implements IMessage {
 
         } catch (SQLException e) {
             LOGGER.error("Error deleting message {}", messageId, e);
-            throw new OperationException("Error al eliminar el mensaje", e);
+            throw new DaoException("Error al eliminar el mensaje", e);
         }
     }
 

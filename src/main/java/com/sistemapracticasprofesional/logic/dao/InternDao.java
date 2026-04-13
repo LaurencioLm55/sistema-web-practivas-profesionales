@@ -2,7 +2,7 @@ package com.sistemapracticasprofesional.logic.dao;
 
 import com.sistemapracticasprofesional.dataaccess.DatabaseConnection;
 import com.sistemapracticasprofesional.logic.dto.InternDto;
-import com.sistemapracticasprofesional.logic.exception.OperationException;
+import com.sistemapracticasprofesional.logic.exception.DaoException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -50,7 +50,7 @@ public class InternDao implements IIntern {
 
         } catch (SQLException e) {
             LOGGER.error("Error inserting intern with matricula {}", intern.getMatricula(), e);
-            throw new OperationException("Error al registrar el practicante", e);
+            throw new DaoException("Error al registrar el practicante", e);
         }
     }
 
@@ -70,7 +70,7 @@ public class InternDao implements IIntern {
 
         } catch (SQLException e) {
             LOGGER.error("Error updating intern with matricula {}", intern.getMatricula(), e);
-            throw new OperationException("Error al actualizar el practicante", e);
+            throw new DaoException("Error al actualizar el practicante", e);
         }
     }
 
@@ -84,7 +84,7 @@ public class InternDao implements IIntern {
 
         } catch (SQLException e) {
             LOGGER.error("Error deleting intern with matricula {}", matricula, e);
-            throw new OperationException("Error al eliminar el practicante", e);
+            throw new DaoException("Error al eliminar el practicante", e);
         }
     }
 
@@ -105,7 +105,7 @@ public class InternDao implements IIntern {
 
         } catch (SQLException e) {
             LOGGER.error("Error getting intern with matricula {}", matricula, e);
-            throw new OperationException("Error al obtener el practicante", e);
+            throw new DaoException("Error al obtener el practicante", e);
         }
     }
 
@@ -125,7 +125,7 @@ public class InternDao implements IIntern {
 
         } catch (SQLException e) {
             LOGGER.error("Error getting intern list", e);
-            throw new OperationException("Error al obtener la lista de practicantes", e);
+            throw new DaoException("Error al obtener la lista de practicantes", e);
         }
     }
 

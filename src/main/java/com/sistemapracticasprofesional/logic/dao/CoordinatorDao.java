@@ -2,7 +2,7 @@ package com.sistemapracticasprofesional.logic.dao;
 
 import com.sistemapracticasprofesional.dataaccess.DatabaseConnection;
 import com.sistemapracticasprofesional.logic.dto.CoordinatorDto;
-import com.sistemapracticasprofesional.logic.exception.OperationException;
+import com.sistemapracticasprofesional.logic.exception.DaoException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -34,7 +34,7 @@ public class CoordinatorDao {
             return null;
         } catch (SQLException e) {
             LOGGER.error("Error getting coordinator by id {}", id, e);
-            throw new OperationException("Error al obtener el coordinador", e);
+            throw new DaoException("Error al obtener el coordinador", e);
         }
     }
 
@@ -53,7 +53,7 @@ public class CoordinatorDao {
             return coordinatorList;
         } catch (SQLException e) {
             LOGGER.error("Error getting coordinator list", e);
-            throw new OperationException("Error al obtener la lista de coordinadores", e);
+            throw new DaoException("Error al obtener la lista de coordinadores", e);
         }
     }
 
@@ -76,7 +76,7 @@ public class CoordinatorDao {
             return preparedStatement.executeUpdate() > 0;
         } catch (SQLException e) {
             LOGGER.error("Error inserting coordinator with user id {}", coordinator.getUserId(), e);
-            throw new OperationException("Error al registrar el coordinador", e);
+            throw new DaoException("Error al registrar el coordinador", e);
         }
     }
 
@@ -98,7 +98,7 @@ public class CoordinatorDao {
             return preparedStatement.executeUpdate() > 0;
         } catch (SQLException e) {
             LOGGER.error("Error updating coordinator with user id {}", coordinator.getUserId(), e);
-            throw new OperationException("Error al actualizar el coordinador", e);
+            throw new DaoException("Error al actualizar el coordinador", e);
         }
     }
 
@@ -112,7 +112,7 @@ public class CoordinatorDao {
             return preparedStatement.executeUpdate() > 0;
         } catch (SQLException e) {
             LOGGER.error("Error deleting coordinator with user id {}", userId, e);
-            throw new OperationException("Error al eliminar el coordinador", e);
+            throw new DaoException("Error al eliminar el coordinador", e);
         }
     }
 

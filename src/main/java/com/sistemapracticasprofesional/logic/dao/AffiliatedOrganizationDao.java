@@ -3,7 +3,7 @@ package com.sistemapracticasprofesional.logic.dao;
 import com.sistemapracticasprofesional.logic.interfaces.IAffiliatedOrganization;
 import com.sistemapracticasprofesional.logic.dto.AffiliatedOrganizationDto;
 import com.sistemapracticasprofesional.dataaccess.DatabaseConnection;
-import com.sistemapracticasprofesional.logic.exception.OperationException;
+import com.sistemapracticasprofesional.logic.exception.DaoException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -48,7 +48,7 @@ public class AffiliatedOrganizationDao implements IAffiliatedOrganization{
             
         }catch (SQLException e) {           
             LOGGER.error("Error registred affiliatedOrganization: {}", affiliatedOrganization, e);
-            throw new OperationException("Error al verificar el usuario", e);
+            throw new DaoException("Error al verificar el usuario", e);
         }
         
         return success;
@@ -87,7 +87,7 @@ public class AffiliatedOrganizationDao implements IAffiliatedOrganization{
             
         }catch (SQLException e) {           
             LOGGER.error("Error update affiliatedOrganization: {}", affiliatedOrganization, e);
-            throw new OperationException("Error al verificar el usuario", e);
+            throw new DaoException("Error al verificar el usuario", e);
         }
         
         return success;
@@ -120,7 +120,7 @@ public class AffiliatedOrganizationDao implements IAffiliatedOrganization{
             
         }catch (SQLException e) {           
             LOGGER.error("Error idAffiliated: {}", affiliatedOrganization, e);
-            throw new OperationException("Error al recuperar la organizacion", e);
+            throw new DaoException("Error al recuperar la organizacion", e);
         }
         
         return affiliatedOrganization;
@@ -159,7 +159,7 @@ public class AffiliatedOrganizationDao implements IAffiliatedOrganization{
             
         }catch (SQLException e) {           
             LOGGER.error("Error : {}", activeState, e);
-            throw new OperationException("Error al verificar el usuario", e);
+            throw new DaoException("Error al verificar el usuario", e);
         }
        
         return affiliatedOrganizationList;
