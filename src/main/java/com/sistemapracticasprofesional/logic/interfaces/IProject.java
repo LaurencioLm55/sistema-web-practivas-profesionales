@@ -1,4 +1,4 @@
-package com.sistemapracticasprofesional.logic.interfaces;
+/*package com.sistemapracticasprofesional.logic.interfaces;
 import com.sistemapracticasprofesional.logic.dto.ProjectDto;
 import com.sistemapracticasprofesional.logic.exception.DatabaseOperationException;
 import java.util.List;
@@ -10,4 +10,4 @@ public interface IProject {
     ProjectDto getProject(int idProject) throws DatabaseOperationException;
     List<ProjectDto> listProyects() throws DatabaseOperationException;
     
-}
+}*/

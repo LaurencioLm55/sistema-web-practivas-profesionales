@@ -1,9 +1,7 @@
 package com.sistemapracticasprofesional.dataaccess;
 
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
-import org.junit.jupiter.api.BeforeAll;
-import com.sistemapracticasprofesional.dataaccess.DatabaseConnection;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import java.sql.Connection;
 
 public class DatabaseConnectionTest {
