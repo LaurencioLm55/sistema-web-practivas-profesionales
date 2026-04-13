@@ -4,7 +4,8 @@ import java.time.LocalDate;
 
 public class CoordinatorDto {
 
-    private Integer userId;
+    private int personnelNumber;
+    private int userId;
     private String name;
     private String state;
     private LocalDate entryDate;
@@ -13,16 +14,18 @@ public class CoordinatorDto {
     public CoordinatorDto() {
     }
 
-    public CoordinatorDto(String name, String state, LocalDate entryDate,
+    public CoordinatorDto(int personnelNumber, String name, String state, LocalDate entryDate,
             LocalDate exitDate) {
+        this.personnelNumber = personnelNumber;
         this.name = name;
         this.state = state;
         this.entryDate = entryDate;
         this.exitDate = exitDate;
     }
 
-    public CoordinatorDto(Integer userId, String name, String state, LocalDate entryDate,
+    public CoordinatorDto(int personnelNumber, int userId, String name, String state, LocalDate entryDate,
             LocalDate exitDate) {
+        this.personnelNumber = personnelNumber;
         this.userId = userId;
         this.name = name;
         this.state = state;
@@ -50,6 +53,10 @@ public class CoordinatorDto {
         return state;
     }
 
+    public int getPersonnelNumber() {
+        return personnelNumber;
+    }
+
     public void setState(String state) {
         this.state = state;
     }
@@ -70,4 +77,7 @@ public class CoordinatorDto {
         this.exitDate = exitDate;
     }
 
+    public void setPersonnelNumber(int personnelNumber) {
+        this.personnelNumber = personnelNumber;
+    }
 }
