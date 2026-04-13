@@ -47,8 +47,10 @@ public class AffiliatedOrganizationDao implements IAffiliatedOrganization{
             
             
         }catch (SQLException e) {           
-            LOGGER.error("Error registred affiliatedOrganization: {}", affiliatedOrganization, e);
-            throw new DaoException("Error al verificar el usuario", e);
+            
+            LOGGER.error("Error registering a affiliated organization : {}", affiliatedOrganization.getName(), e);
+            throw new DaoException("Error al registrar la organizacion", e);
+            
         }
         
         return success;
@@ -86,8 +88,10 @@ public class AffiliatedOrganizationDao implements IAffiliatedOrganization{
             
             
         }catch (SQLException e) {           
-            LOGGER.error("Error update affiliatedOrganization: {}", affiliatedOrganization, e);
-            throw new DaoException("Error al verificar el usuario", e);
+            
+            LOGGER.error("Error updating the Affiliated organization's data : {}", idAffiliatedOrganization, e);
+            throw new DaoException("Error al actualizar los datos", e);
+            
         }
         
         return success;
@@ -119,8 +123,10 @@ public class AffiliatedOrganizationDao implements IAffiliatedOrganization{
             
             
         }catch (SQLException e) {           
-            LOGGER.error("Error idAffiliated: {}", affiliatedOrganization, e);
+            
+            LOGGER.error("Error data from the affiliated organization could not be retrieved : {}", idAffilitedOrganization, e);
             throw new DaoException("Error al recuperar la organizacion", e);
+            
         }
         
         return affiliatedOrganization;
@@ -158,8 +164,10 @@ public class AffiliatedOrganizationDao implements IAffiliatedOrganization{
             }
             
         }catch (SQLException e) {           
-            LOGGER.error("Error : {}", activeState, e);
+            
+            LOGGER.error("Error retrieving the record of active affiliated organizations : {}", activeState, e);
             throw new DaoException("Error al verificar el usuario", e);
+            
         }
        
         return affiliatedOrganizationList;
