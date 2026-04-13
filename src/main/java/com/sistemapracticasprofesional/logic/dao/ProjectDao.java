@@ -1,4 +1,4 @@
-/*package com.sistemapracticasprofesional.logic.dao;
+package com.sistemapracticasprofesional.logic.dao;
 
 import com.sistemapracticasprofesional.dataaccess.DatabaseConnection;
 import com.sistemapracticasprofesional.logic.dto.ProjectDto;
@@ -188,4 +188,3 @@ public class ProjectDao implements IProject {
     }
 
 }
-*/
