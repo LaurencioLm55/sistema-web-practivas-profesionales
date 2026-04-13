@@ -22,8 +22,9 @@ public class AffiliatedOrganizationDao implements IAffiliatedOrganization{
         
         boolean success = false;
         
-        String query = "INSERT INTO organizacion_vinculada (Id_organizacion,Nombre,Direccion,Sector,Ciudad"
-                + "Estado,Telefono,Correo_electronico) VALUES (?,?,?,?,?,?,?,?);";
+        String query = "INSERT INTO organizacion_vinculada "
+                + "(Id_organizacion, Nombre, Direccion, Sector, Ciudad, Estado, Telefono, Correo_electronico) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         
         try(Connection connection = DatabaseConnection.getConnection();
                 PreparedStatement preparedStatement = connection.prepareStatement(query)){
@@ -49,7 +50,7 @@ public class AffiliatedOrganizationDao implements IAffiliatedOrganization{
         }catch (SQLException e) {           
             
             LOGGER.error("Error registering a affiliated organization : {}", affiliatedOrganization.getName(), e);
-            throw new DaoException("Error al registrar la organizacion", e);
+            throw new DaoException("Error registering affiliated organization", e);
             
         }
         
@@ -61,8 +62,8 @@ public class AffiliatedOrganizationDao implements IAffiliatedOrganization{
     public boolean updateAffiliatedOrganization(AffiliatedOrganizationDto affiliatedOrganization,int idAffiliatedOrganization){
         
         boolean success = false;
-        String query = "UPDATE SET Nombre = ? Direccion = ? sector = ? Ciudad = ? Estado = ? Telefono = ? "
-                + "Correo_electronico = ? WHERE Id_organizacion = ?;";
+        String query = "UPDATE organizacion_vinculada SET Nombre = ?, Direccion = ?, Sector = ?, "
+                + "Ciudad = ?, Estado = ?, Telefono = ?, Correo_electronico = ? WHERE Id_organizacion = ?";
         
         try(Connection connection = DatabaseConnection.getConnection();
                 PreparedStatement preparedStatement = connection.prepareStatement(query)){
@@ -90,7 +91,7 @@ public class AffiliatedOrganizationDao implements IAffiliatedOrganization{
         }catch (SQLException e) {           
             
             LOGGER.error("Error updating the Affiliated organization's data : {}", idAffiliatedOrganization, e);
-            throw new DaoException("Error al actualizar los datos", e);
+            throw new DaoException("Error updating affiliated organization data", e);
             
         }
         
@@ -102,11 +103,12 @@ public class AffiliatedOrganizationDao implements IAffiliatedOrganization{
     public AffiliatedOrganizationDto getAffiliatedOrganization(int idAffilitedOrganization){
         
         AffiliatedOrganizationDto affiliatedOrganization = new  AffiliatedOrganizationDto();
-        String query = "SELECT * FROM organizacion_vinculada WHRE Id_organizacion =  ?;";
+        String query = "SELECT * FROM organizacion_vinculada WHERE Id_organizacion = ?";
         
         try(Connection connection = DatabaseConnection.getConnection();
                 PreparedStatement preparedStatement = connection.prepareStatement(query)){
             
+            preparedStatement.setInt(1, idAffilitedOrganization);
             ResultSet resultSet = preparedStatement.executeQuery();
             
             if(resultSet.next()){
@@ -125,7 +127,7 @@ public class AffiliatedOrganizationDao implements IAffiliatedOrganization{
         }catch (SQLException e) {           
             
             LOGGER.error("Error data from the affiliated organization could not be retrieved : {}", idAffilitedOrganization, e);
-            throw new DaoException("Error al recuperar la organizacion", e);
+            throw new DaoException("Error retrieving affiliated organization", e);
             
         }
         
@@ -138,7 +140,7 @@ public class AffiliatedOrganizationDao implements IAffiliatedOrganization{
     public List<AffiliatedOrganizationDto> getListAffiliatedOrganiztionActiveState(String activeState){
         
         List<AffiliatedOrganizationDto> affiliatedOrganizationList = new ArrayList<>();
-        String query = "SELECT * FROM organizacion_vinculada WHERE estdo_de_actividad = ?;";
+        String query = "SELECT * FROM organizacion_vinculada WHERE Estado = ?";
         
         try(Connection connection = DatabaseConnection.getConnection();
                 PreparedStatement preparedStatement = connection.prepareStatement(query)){      
@@ -166,7 +168,7 @@ public class AffiliatedOrganizationDao implements IAffiliatedOrganization{
         }catch (SQLException e) {           
             
             LOGGER.error("Error retrieving the record of active affiliated organizations : {}", activeState, e);
-            throw new DaoException("Error al verificar el usuario", e);
+            throw new DaoException("Error retrieving active affiliated organizations", e);
             
         }
        

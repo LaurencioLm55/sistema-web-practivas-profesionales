@@ -10,6 +10,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ProjectDao implements IProject {
 
@@ -23,7 +25,7 @@ public class ProjectDao implements IProject {
         String registerQuery = "INSERT INTO proyecto (IdProyecto, Id_organizacion, "
             + "Nombre, Descripcion_general, Metodologia, Recursos, Objetivos_medios, "
             + "Objetivo_general, Objetivos_inmediatos, Responsabilidades, "
-            + "Nombre_Encargado, e_mail_Encargado, cargo_Encargado) "
+            + "Nombre_Encargado, e_mail_Encargado, Dias_y_horario) "
             + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection connection = DatabaseConnection.getConnection();
@@ -49,7 +51,7 @@ public class ProjectDao implements IProject {
         } catch (SQLException e) {
 
             LOGGER.error("Error registering project", e);
-            throw new DaoException("Error al registrar el proyecto", e);
+            throw new DaoException("Error registering project", e);
         }
         return operationSuccess;
     }
@@ -63,7 +65,7 @@ public class ProjectDao implements IProject {
             + "Nombre = ?, Descripcion_general = ?, Metodologia = ?, Recursos = ?, "
             + "Objetivos_medios = ?, Objetivo_general = ?, Objetivos_inmediatos = ?, "
             + "Responsabilidades = ?, Nombre_Encargado = ?, e_mail_Encargado = ?, "
-            + "cargo_Encargado = ? WHERE IdProyecto = ?";
+            + "Dias_y_horario = ? WHERE IdProyecto = ?";
 
         try (Connection connection = DatabaseConnection.getConnection(); 
             PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
@@ -80,6 +82,7 @@ public class ProjectDao implements IProject {
             preparedStatement.setString(10, project.getProjectAttendantName());
             preparedStatement.setString(11, project.getProjectAttendantEmail());
             preparedStatement.setString(12, project.getProjectAttendantPosition());
+            preparedStatement.setInt(13, project.getProjectId());
             
             int rowsAffected = preparedStatement.executeUpdate();
             if (rowsAffected > 0) {
@@ -89,7 +92,7 @@ public class ProjectDao implements IProject {
         } catch (SQLException e) {
 
             LOGGER.error("Error updating project", e);
-            throw new DaoException("Error al actualizar el proyecto", e);
+            throw new DaoException("Error updating project", e);
         }
         return operationSuccess;
     }
@@ -111,7 +114,7 @@ public class ProjectDao implements IProject {
         } catch (SQLException e) {
 
             LOGGER.error("Error deleting project by id: {}", projectId, e);
-            throw new DaoException("Error al eliminar el proyecto con ID: "
+            throw new DaoException("Error deleting project with id: "
                     + projectId, e);
         }
         return operationSuccess;
@@ -137,7 +140,7 @@ public class ProjectDao implements IProject {
         } catch (SQLException e) {
 
             LOGGER.error("Error fetching project by id: {}", projectId, e);
-            throw new DaoException("Error al buscar el proyecto con ID: "
+            throw new DaoException("Error getting project with id: "
                     + projectId, e);
         }
         return project;
@@ -162,7 +165,7 @@ public class ProjectDao implements IProject {
         } catch (SQLException e) {
 
             LOGGER.error("Error fetching all the projects", e);
-            throw new DaoException("Error al obtener la lista de proyectos", e);
+            throw new DaoException("Error getting project list", e);
         }
         return projects;
     }
@@ -182,7 +185,7 @@ public class ProjectDao implements IProject {
                 rs.getString("Responsabilidades"),
                 rs.getString("Nombre_Encargado"),
                 rs.getString("e_mail_Encargado"),
-                rs.getString("cargo_Encargado")
+                rs.getString("Dias_y_horario")
         );
 
     }

@@ -6,26 +6,16 @@ public class ProfessorDto {
     private Integer userId;
     private String name;
     private String shift;
-    private boolean active;
 
     public ProfessorDto() {
     }
 
     public ProfessorDto(int staffNumber, Integer userId, String name, 
-            String shift, boolean active) {
+            String shift) {
         this.staffNumber = staffNumber;
         this.userId = userId;
         this.name = name;
         this.shift = shift;
-        this.active = active;
-    }
-
-    public boolean isActive() {
-        return active;
-    }
-
-    public void setActive(boolean active) {
-        this.active = active;
     }
 
     public int getStaffNumber() {

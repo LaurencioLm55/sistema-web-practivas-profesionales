@@ -21,7 +21,7 @@ public class ProfessorDao implements IProfessor {
     public boolean insertProfessor(ProfessorDto professor) {
         
         String registerQuery = "INSERT INTO profesor (Numero_de_personal, Id_usuario,"
-                + " Nombre, turno, EstadoProfesor) VALUES (?, ?, ?, ?, ?)";
+                + " Nombre, turno) VALUES (?, ?, ?, ?)";
         
         try (Connection connection = DatabaseConnection.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(registerQuery)) {
@@ -36,7 +36,6 @@ public class ProfessorDao implements IProfessor {
 
             preparedStatement.setString(3, professor.getName());
             preparedStatement.setString(4, professor.getShift());
-            preparedStatement.setBoolean(5, professor.isActive());
 
             return preparedStatement.executeUpdate() > 0;
 
@@ -50,8 +49,8 @@ public class ProfessorDao implements IProfessor {
     @Override
     public boolean updateProfessor(ProfessorDto professor) {
         
-        String updateQuery = "UPDATE profesor SET Id_usuario = ?, Nombre = ?, turno = ?,"
-            + " EstadoProfesor = ? WHERE Numero_de_personal = ?";
+        String updateQuery = "UPDATE profesor SET Id_usuario = ?, Nombre = ?, turno = ?"
+            + " WHERE Numero_de_personal = ?";
         
         try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
@@ -64,7 +63,6 @@ public class ProfessorDao implements IProfessor {
 
             preparedStatement.setString(2, professor.getName());
             preparedStatement.setString(3, professor.getShift());
-            preparedStatement.setBoolean(4, professor.isActive());
             preparedStatement.setInt(4, professor.getStaffNumber());
 
             return preparedStatement.executeUpdate() > 0;
@@ -152,8 +150,7 @@ public class ProfessorDao implements IProfessor {
                 resultSet.getInt("Numero_de_personal"),
                 userId,
                 resultSet.getString("Nombre"),
-                resultSet.getString("turno"),
-                resultSet.getBoolean("EstadoProfesor")
+                resultSet.getString("turno")
         );
     }
 }

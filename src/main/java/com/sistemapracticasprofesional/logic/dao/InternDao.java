@@ -17,27 +17,13 @@ public class InternDao implements IIntern {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(InternDao.class);
 
-    private static final String INSERT_QUERY =
-            "INSERT INTO practicante (Matricula, Nombre, Edad, Genero, Carrera, LenguaIndigena) "
-            + "VALUES (?, ?, ?, ?, ?, ?)";
-
-    private static final String UPDATE_QUERY =
-            "UPDATE practicante SET Nombre = ?, Edad = ?, Genero = ?, Carrera = ?, LenguaIndigena = ? "
-            + "WHERE Matricula = ?";
-
-    private static final String DELETE_QUERY =
-            "DELETE FROM practicante WHERE Matricula = ?";
-
-    private static final String SELECT_BY_ID_QUERY =
-            "SELECT * FROM practicante WHERE Matricula = ?";
-
-    private static final String SELECT_ALL_QUERY =
-            "SELECT * FROM practicante";
-
     @Override
     public boolean insertIntern(InternDto intern) {
+        String query = "INSERT INTO practicante (Matricula, Nombre, Edad, Genero, Carrera, LenguaIndigena) "
+                + "VALUES (?, ?, ?, ?, ?, ?)";
+
         try (Connection connection = new DatabaseConnection().getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(INSERT_QUERY)) {
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             preparedStatement.setString(1, intern.getMatricula());
             preparedStatement.setString(2, intern.getNombre());
@@ -56,8 +42,11 @@ public class InternDao implements IIntern {
 
     @Override
     public boolean updateIntern(InternDto intern) {
+        String query = "UPDATE practicante SET Nombre = ?, Edad = ?, Genero = ?, Carrera = ?, LenguaIndigena = ? "
+                + "WHERE Matricula = ?";
+
         try (Connection connection = new DatabaseConnection().getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_QUERY)) {
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             preparedStatement.setString(1, intern.getNombre());
             preparedStatement.setInt(2, intern.getEdad());
@@ -76,8 +65,10 @@ public class InternDao implements IIntern {
 
     @Override
     public boolean deleteIntern(String matricula) {
+        String query = "DELETE FROM practicante WHERE Matricula = ?";
+
         try (Connection connection = new DatabaseConnection().getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(DELETE_QUERY)) {
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             preparedStatement.setString(1, matricula);
             return preparedStatement.executeUpdate() > 0;
@@ -90,8 +81,10 @@ public class InternDao implements IIntern {
 
     @Override
     public InternDto getInternByMatricula(String matricula) {
+        String query = "SELECT * FROM practicante WHERE Matricula = ?";
+
         try (Connection connection = new DatabaseConnection().getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_BY_ID_QUERY)) {
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             preparedStatement.setString(1, matricula);
 
@@ -112,9 +105,10 @@ public class InternDao implements IIntern {
     @Override
     public List<InternDto> getAllInterns() {
         List<InternDto> internList = new ArrayList<>();
+        String query = "SELECT * FROM practicante";
 
         try (Connection connection = new DatabaseConnection().getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_QUERY);
+             PreparedStatement preparedStatement = connection.prepareStatement(query);
              ResultSet resultSet = preparedStatement.executeQuery()) {
 
             while (resultSet.next()) {

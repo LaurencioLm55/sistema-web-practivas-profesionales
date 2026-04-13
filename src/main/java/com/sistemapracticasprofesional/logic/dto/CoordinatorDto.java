@@ -5,7 +5,7 @@ import java.time.LocalDate;
 public class CoordinatorDto {
 
     private int personnelNumber;
-    private int userId;
+    private Integer userId;
     private String name;
     private String state;
     private LocalDate entryDate;
@@ -23,7 +23,7 @@ public class CoordinatorDto {
         this.exitDate = exitDate;
     }
 
-    public CoordinatorDto(int personnelNumber, int userId, String name, String state, LocalDate entryDate,
+    public CoordinatorDto(int personnelNumber, Integer userId, String name, String state, LocalDate entryDate,
             LocalDate exitDate) {
         this.personnelNumber = personnelNumber;
         this.userId = userId;

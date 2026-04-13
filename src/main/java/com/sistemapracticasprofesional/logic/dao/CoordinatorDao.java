@@ -65,7 +65,7 @@ public class CoordinatorDao {
     public boolean registerCoordinator(CoordinatorDto coordinator) {
         
         String registerQuery = "INSERT INTO coordinador "
-            + "(Numero_de_personal, Id_usuario, Nombre, EstadoCoordinador,"
+            + "(Numero_de_personal, Id_usuario, Nombre, Estado,"
             + "Fecha_de_registro, Fecha_de_termino) "
             + "VALUES (?, ?, ?, ?, ?, ?)";
 
@@ -73,7 +73,11 @@ public class CoordinatorDao {
             PreparedStatement preparedStatement = connection.prepareStatement(registerQuery)) {
 
             preparedStatement.setInt(1, coordinator.getPersonnelNumber());
-            preparedStatement.setInt(2, coordinator.getUserId());
+            if (coordinator.getUserId() != null) {
+                preparedStatement.setInt(2, coordinator.getUserId());
+            } else {
+                preparedStatement.setNull(2, java.sql.Types.INTEGER);
+            }
             preparedStatement.setString(3, coordinator.getName());
             preparedStatement.setString(4, coordinator.getState());
             preparedStatement.setDate(5, coordinator.getEntryDate() != null
@@ -103,7 +107,11 @@ public class CoordinatorDao {
                     ? Date.valueOf(coordinator.getEntryDate()) : null);
             preparedStatement.setDate(4, coordinator.getExitDate() != null
                     ? Date.valueOf(coordinator.getExitDate()) : null);
-            preparedStatement.setInt(5, coordinator.getUserId());
+            if (coordinator.getUserId() != null) {
+                preparedStatement.setInt(5, coordinator.getUserId());
+            } else {
+                preparedStatement.setNull(5, java.sql.Types.INTEGER);
+            }
 
             return preparedStatement.executeUpdate() > 0;
         } catch (SQLException e) {
@@ -131,7 +139,10 @@ public class CoordinatorDao {
 
     private CoordinatorDto convertResultSetToDTO(ResultSet resultSet) throws SQLException {
         CoordinatorDto coordinatorObject = new CoordinatorDto();
-        coordinatorObject.setUserId(resultSet.getInt("Id_usuario"));
+        Integer userId = resultSet.getObject("Id_usuario") != null
+                ? resultSet.getInt("Id_usuario")
+                : null;
+        coordinatorObject.setUserId(userId);
         coordinatorObject.setName(resultSet.getString("Nombre"));
         coordinatorObject.setState(resultSet.getString("Estado"));
 
