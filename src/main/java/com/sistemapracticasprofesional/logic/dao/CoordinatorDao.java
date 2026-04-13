@@ -21,7 +21,7 @@ public class CoordinatorDao {
         String query = "SELECT * FROM coordinador WHERE Id_usuario = ?";
 
         try (Connection connection = DatabaseConnection.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             preparedStatement.setInt(1, id);
 
@@ -30,8 +30,8 @@ public class CoordinatorDao {
                     return convertResultSetToDTO(resultSet);
                 }
             }
-
             return null;
+
         } catch (SQLException e) {
             LOGGER.error("Error getting coordinator by id {}", id, e);
             throw new DaoException("Error getting coordinator", e);
@@ -43,8 +43,8 @@ public class CoordinatorDao {
         String query = "SELECT * FROM coordinador";
 
         try (Connection connection = DatabaseConnection.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(query);
-             ResultSet resultSet = preparedStatement.executeQuery()) {
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            ResultSet resultSet = preparedStatement.executeQuery()) {
 
             while (resultSet.next()) {
                 coordinatorList.add(convertResultSetToDTO(resultSet));
@@ -63,11 +63,11 @@ public class CoordinatorDao {
                 + "VALUES (?, ?, ?, ?, ?)";
 
         try (Connection connection = DatabaseConnection.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             preparedStatement.setInt(1, coordinator.getUserId());
             preparedStatement.setString(2, coordinator.getName());
-            preparedStatement.setBoolean(3, coordinator.isActive());
+            preparedStatement.setString(3, coordinator.getState());
             preparedStatement.setDate(4, coordinator.getEntryDate() != null
                     ? Date.valueOf(coordinator.getEntryDate()) : null);
             preparedStatement.setDate(5, coordinator.getExitDate() != null
@@ -85,10 +85,10 @@ public class CoordinatorDao {
                 + "Fecha_de_registro = ?, Fecha_de_termino = ? WHERE Id_usuario = ?";
 
         try (Connection connection = DatabaseConnection.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             preparedStatement.setString(1, coordinator.getName());
-            preparedStatement.setBoolean(2, coordinator.isActive());
+            preparedStatement.setString(2, coordinator.getState());
             preparedStatement.setDate(3, coordinator.getEntryDate() != null
                     ? Date.valueOf(coordinator.getEntryDate()) : null);
             preparedStatement.setDate(4, coordinator.getExitDate() != null
@@ -106,7 +106,7 @@ public class CoordinatorDao {
         String query = "DELETE FROM coordinador WHERE Id_usuario = ?";
 
         try (Connection connection = DatabaseConnection.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             preparedStatement.setInt(1, userId);
             return preparedStatement.executeUpdate() > 0;
@@ -120,7 +120,7 @@ public class CoordinatorDao {
         CoordinatorDto coordinatorObject = new CoordinatorDto();
         coordinatorObject.setUserId(resultSet.getInt("Id_usuario"));
         coordinatorObject.setName(resultSet.getString("Nombre"));
-        coordinatorObject.setState(resultSet.getBoolean("Estado"));
+        coordinatorObject.setState(resultSet.getString("Estado"));
 
         Date entryDate = resultSet.getDate("Fecha_de_registro");
         if (entryDate != null) {
