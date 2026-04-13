@@ -13,7 +13,5 @@ public interface IMessage {
 
     List<MessageDto> getSentMessagesByUserId(int senderUserId);
 
-    boolean markMessageAsRead(int messageId);
-
     boolean deleteMessage(int messageId);
 }

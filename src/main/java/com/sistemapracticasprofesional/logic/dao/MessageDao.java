@@ -8,7 +8,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import org.slf4j.Logger;
@@ -19,20 +18,17 @@ public class MessageDao implements IMessage {
     private static final Logger LOGGER = LoggerFactory.getLogger(MessageDao.class);
 
     private static final String INSERT_QUERY =
-            "INSERT INTO mensaje (Id_usuario_remitente, Id_usuario_destinatario, Asunto, Contenido, Fecha_envio, Leido) "
-            + "VALUES (?, ?, ?, ?, ?, ?)";
+            "INSERT INTO mensaje (Remitente, Destinatario, Asunto, Contenido_de_mensaje) "
+            + "VALUES (?, ?, ?, ?)";
 
     private static final String SELECT_BY_ID_QUERY =
             "SELECT * FROM mensaje WHERE Id_mensaje = ?";
 
     private static final String SELECT_INBOX_QUERY =
-            "SELECT * FROM mensaje WHERE Id_usuario_destinatario = ? ORDER BY Fecha_envio DESC";
+            "SELECT * FROM mensaje WHERE Destinatario = ? ORDER BY Id_mensaje DESC";
 
     private static final String SELECT_SENT_QUERY =
-            "SELECT * FROM mensaje WHERE Id_usuario_remitente = ? ORDER BY Fecha_envio DESC";
-
-    private static final String MARK_AS_READ_QUERY =
-            "UPDATE mensaje SET Leido = ? WHERE Id_mensaje = ?";
+            "SELECT * FROM mensaje WHERE Remitente = ? ORDER BY Id_mensaje DESC";
 
     private static final String DELETE_QUERY =
             "DELETE FROM mensaje WHERE Id_mensaje = ?";
@@ -46,8 +42,6 @@ public class MessageDao implements IMessage {
             preparedStatement.setInt(2, message.getReceiverUserId());
             preparedStatement.setString(3, message.getSubject());
             preparedStatement.setString(4, message.getContent());
-            preparedStatement.setTimestamp(5, Timestamp.valueOf(message.getSentDate()));
-            preparedStatement.setBoolean(6, message.isRead());
 
             return preparedStatement.executeUpdate() > 0;
 
@@ -126,22 +120,6 @@ public class MessageDao implements IMessage {
     }
 
     @Override
-    public boolean markMessageAsRead(int messageId) {
-        try (Connection connection = new DatabaseConnection().getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(MARK_AS_READ_QUERY)) {
-
-            preparedStatement.setBoolean(1, true);
-            preparedStatement.setInt(2, messageId);
-
-            return preparedStatement.executeUpdate() > 0;
-
-        } catch (SQLException e) {
-            LOGGER.error("Error marking message {} as read", messageId, e);
-            throw new DaoException("Error al marcar el mensaje como leído", e);
-        }
-    }
-
-    @Override
     public boolean deleteMessage(int messageId) {
         try (Connection connection = new DatabaseConnection().getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(DELETE_QUERY)) {
@@ -156,16 +134,12 @@ public class MessageDao implements IMessage {
     }
 
     private MessageDto mapResultSetToDto(ResultSet resultSet) throws SQLException {
-        Timestamp sentTimestamp = resultSet.getTimestamp("Fecha_envio");
-
         return new MessageDto(
                 resultSet.getInt("Id_mensaje"),
-                resultSet.getInt("Id_usuario_remitente"),
-                resultSet.getInt("Id_usuario_destinatario"),
+                resultSet.getInt("Remitente"),
+                resultSet.getInt("Destinatario"),
                 resultSet.getString("Asunto"),
-                resultSet.getString("Contenido"),
-                sentTimestamp != null ? sentTimestamp.toLocalDateTime() : null,
-                resultSet.getBoolean("Leido")
+                resultSet.getString("Contenido_de_mensaje")
         );
     }
 }
