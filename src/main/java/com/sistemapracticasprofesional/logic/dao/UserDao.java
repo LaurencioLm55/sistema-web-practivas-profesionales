@@ -36,7 +36,7 @@ public class UserDao implements IUser {
             return false;
         } catch (SQLException e) {
             LOGGER.error("Error checking if user is registered: {}", user.getUserName(), e);
-            throw new DaoException("Error al verificar el usuario", e);
+            throw new DaoException("Error verifying user", e);
         }
     }
 
@@ -54,7 +54,7 @@ public class UserDao implements IUser {
             return preparedStatement.executeUpdate() > 0;
         } catch (SQLException e) {
             LOGGER.error("Error registering user with id {}", idUser, e);
-            throw new DaoException("Error al registrar el usuario", e);
+            throw new DaoException("Error registering user", e);
         }
     }
 
@@ -71,7 +71,7 @@ public class UserDao implements IUser {
             return preparedStatement.executeUpdate() > 0;
         } catch (SQLException e) {
             LOGGER.error("Error updating name for user id {}", idUser, e);
-            throw new DaoException("Error al actualizar el nombre del usuario", e);
+            throw new DaoException("Error updating user name", e);
         }
     }
 
@@ -88,7 +88,7 @@ public class UserDao implements IUser {
             return preparedStatement.executeUpdate() > 0;
         } catch (SQLException e) {
             LOGGER.error("Error updating password for user id {}", idUser, e);
-            throw new DaoException("Error al actualizar la contraseña del usuario", e);
+            throw new DaoException("Error updating user password", e);
         }
     }
 
@@ -113,7 +113,7 @@ public class UserDao implements IUser {
             return null;
         } catch (SQLException e) {
             LOGGER.error("Error getting user with id {}", idUser, e);
-            throw new DaoException("Error al obtener el usuario", e);
+            throw new DaoException("Error getting user", e);
         }
     }
 }

@@ -17,26 +17,13 @@ public class MessageDao implements IMessage {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MessageDao.class);
 
-    private static final String INSERT_QUERY =
-            "INSERT INTO mensaje (Remitente, Destinatario, Asunto, Contenido_de_mensaje) "
-            + "VALUES (?, ?, ?, ?)";
-
-    private static final String SELECT_BY_ID_QUERY =
-            "SELECT * FROM mensaje WHERE Id_mensaje = ?";
-
-    private static final String SELECT_INBOX_QUERY =
-            "SELECT * FROM mensaje WHERE Destinatario = ? ORDER BY Id_mensaje DESC";
-
-    private static final String SELECT_SENT_QUERY =
-            "SELECT * FROM mensaje WHERE Remitente = ? ORDER BY Id_mensaje DESC";
-
-    private static final String DELETE_QUERY =
-            "DELETE FROM mensaje WHERE Id_mensaje = ?";
-
     @Override
     public boolean sendMessage(MessageDto message) {
+        String query = "INSERT INTO mensaje (Remitente, Destinatario, Asunto, "
+                + "Contenido_de_mensaje) VALUES (?, ?, ?, ?)";
+
         try (Connection connection = new DatabaseConnection().getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(INSERT_QUERY)) {
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             preparedStatement.setInt(1, message.getSenderUserId());
             preparedStatement.setInt(2, message.getReceiverUserId());
@@ -48,14 +35,16 @@ public class MessageDao implements IMessage {
         } catch (SQLException e) {
             LOGGER.error("Error sending message from user {} to user {}",
                     message.getSenderUserId(), message.getReceiverUserId(), e);
-            throw new DaoException("Error al enviar el mensaje", e);
+            throw new DaoException("Error sending message", e);
         }
     }
 
     @Override
     public MessageDto getMessageById(int messageId) {
+        String query = "SELECT * FROM mensaje WHERE Id_mensaje = ?";
+
         try (Connection connection = new DatabaseConnection().getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_BY_ID_QUERY)) {
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             preparedStatement.setInt(1, messageId);
 
@@ -69,16 +58,18 @@ public class MessageDao implements IMessage {
 
         } catch (SQLException e) {
             LOGGER.error("Error getting message with id {}", messageId, e);
-            throw new DaoException("Error al obtener el mensaje", e);
+            throw new DaoException("Error getting message", e);
         }
     }
 
     @Override
     public List<MessageDto> getInboxByUserId(int receiverUserId) {
         List<MessageDto> messageList = new ArrayList<>();
+        String query = "SELECT * FROM mensaje WHERE Destinatario = ? ORDER BY "
+                + "Id_mensaje DESC";
 
         try (Connection connection = new DatabaseConnection().getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_INBOX_QUERY)) {
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             preparedStatement.setInt(1, receiverUserId);
 
@@ -92,16 +83,18 @@ public class MessageDao implements IMessage {
 
         } catch (SQLException e) {
             LOGGER.error("Error getting inbox for user {}", receiverUserId, e);
-            throw new DaoException("Error al obtener el buzón", e);
+            throw new DaoException("Error getting inbox", e);
         }
     }
 
     @Override
     public List<MessageDto> getSentMessagesByUserId(int senderUserId) {
         List<MessageDto> messageList = new ArrayList<>();
+        String query = "SELECT * FROM mensaje WHERE Remitente = ? ORDER BY "
+                + "Id_mensaje DESC";
 
         try (Connection connection = new DatabaseConnection().getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_SENT_QUERY)) {
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             preparedStatement.setInt(1, senderUserId);
 
@@ -115,21 +108,23 @@ public class MessageDao implements IMessage {
 
         } catch (SQLException e) {
             LOGGER.error("Error getting sent messages for user {}", senderUserId, e);
-            throw new DaoException("Error al obtener los mensajes enviados", e);
+            throw new DaoException("Error getting sent messages", e);
         }
     }
 
     @Override
     public boolean deleteMessage(int messageId) {
+        String query = "DELETE FROM mensaje WHERE Id_mensaje = ?";
+
         try (Connection connection = new DatabaseConnection().getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(DELETE_QUERY)) {
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             preparedStatement.setInt(1, messageId);
             return preparedStatement.executeUpdate() > 0;
 
         } catch (SQLException e) {
             LOGGER.error("Error deleting message {}", messageId, e);
-            throw new DaoException("Error al eliminar el mensaje", e);
+            throw new DaoException("Error deleting message", e);
         }
     }
 

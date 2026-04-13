@@ -50,7 +50,7 @@ public class InternDao implements IIntern {
 
         } catch (SQLException e) {
             LOGGER.error("Error inserting intern with matricula {}", intern.getMatricula(), e);
-            throw new DaoException("Error al registrar el practicante", e);
+            throw new DaoException("Error registering intern", e);
         }
     }
 
@@ -70,7 +70,7 @@ public class InternDao implements IIntern {
 
         } catch (SQLException e) {
             LOGGER.error("Error updating intern with matricula {}", intern.getMatricula(), e);
-            throw new DaoException("Error al actualizar el practicante", e);
+            throw new DaoException("Error updating intern", e);
         }
     }
 
@@ -84,7 +84,7 @@ public class InternDao implements IIntern {
 
         } catch (SQLException e) {
             LOGGER.error("Error deleting intern with matricula {}", matricula, e);
-            throw new DaoException("Error al eliminar el practicante", e);
+            throw new DaoException("Error deleting intern", e);
         }
     }
 
@@ -105,7 +105,7 @@ public class InternDao implements IIntern {
 
         } catch (SQLException e) {
             LOGGER.error("Error getting intern with matricula {}", matricula, e);
-            throw new DaoException("Error al obtener el practicante", e);
+            throw new DaoException("Error getting intern", e);
         }
     }
 
@@ -125,7 +125,7 @@ public class InternDao implements IIntern {
 
         } catch (SQLException e) {
             LOGGER.error("Error getting intern list", e);
-            throw new DaoException("Error al obtener la lista de practicantes", e);
+            throw new DaoException("Error getting intern list", e);
         }
     }
 

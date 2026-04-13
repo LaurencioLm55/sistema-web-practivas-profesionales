@@ -34,7 +34,7 @@ public class CoordinatorDao {
             return null;
         } catch (SQLException e) {
             LOGGER.error("Error getting coordinator by id {}", id, e);
-            throw new DaoException("Error al obtener el coordinador", e);
+            throw new DaoException("Error getting coordinator", e);
         }
     }
 
@@ -53,7 +53,7 @@ public class CoordinatorDao {
             return coordinatorList;
         } catch (SQLException e) {
             LOGGER.error("Error getting coordinator list", e);
-            throw new DaoException("Error al obtener la lista de coordinadores", e);
+            throw new DaoException("Error getting coordinator list", e);
         }
     }
 
@@ -76,7 +76,7 @@ public class CoordinatorDao {
             return preparedStatement.executeUpdate() > 0;
         } catch (SQLException e) {
             LOGGER.error("Error inserting coordinator with user id {}", coordinator.getUserId(), e);
-            throw new DaoException("Error al registrar el coordinador", e);
+            throw new DaoException("Error registering coordinator", e);
         }
     }
 
@@ -98,7 +98,7 @@ public class CoordinatorDao {
             return preparedStatement.executeUpdate() > 0;
         } catch (SQLException e) {
             LOGGER.error("Error updating coordinator with user id {}", coordinator.getUserId(), e);
-            throw new DaoException("Error al actualizar el coordinador", e);
+            throw new DaoException("Error updating coordinator", e);
         }
     }
 
@@ -112,7 +112,7 @@ public class CoordinatorDao {
             return preparedStatement.executeUpdate() > 0;
         } catch (SQLException e) {
             LOGGER.error("Error deleting coordinator with user id {}", userId, e);
-            throw new DaoException("Error al eliminar el coordinador", e);
+            throw new DaoException("Error deleting coordinator", e);
         }
     }
 

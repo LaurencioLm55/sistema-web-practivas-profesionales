@@ -54,7 +54,7 @@ public class ProfessorDao implements IProfessor {
 
         } catch (SQLException e) {
             LOGGER.error("Error inserting professor with staff number {}", professor.getStaffNumber(), e);
-            throw new DaoException("Error al registrar el profesor", e);
+            throw new DaoException("Error registering professor", e);
         }
     }
 
@@ -77,7 +77,7 @@ public class ProfessorDao implements IProfessor {
 
         } catch (SQLException e) {
             LOGGER.error("Error updating professor with staff number {}", professor.getStaffNumber(), e);
-            throw new DaoException("Error al actualizar el profesor", e);
+            throw new DaoException("Error updating professor", e);
         }
     }
 
@@ -91,7 +91,7 @@ public class ProfessorDao implements IProfessor {
 
         } catch (SQLException e) {
             LOGGER.error("Error deleting professor with staff number {}", staffNumber, e);
-            throw new DaoException("Error al eliminar el profesor", e);
+            throw new DaoException("Error deleting professor", e);
         }
     }
 
@@ -112,7 +112,7 @@ public class ProfessorDao implements IProfessor {
 
         } catch (SQLException e) {
             LOGGER.error("Error getting professor with staff number {}", staffNumber, e);
-            throw new DaoException("Error al obtener el profesor", e);
+            throw new DaoException("Error getting professor", e);
         }
     }
 
@@ -132,7 +132,7 @@ public class ProfessorDao implements IProfessor {
 
         } catch (SQLException e) {
             LOGGER.error("Error getting professor list", e);
-            throw new DaoException("Error al obtener la lista de profesores", e);
+            throw new DaoException("Error getting professor list", e);
         }
     }
 

@@ -42,7 +42,7 @@ public class MonthlyReportDao implements IMonthlyReport {
             return preparedStatement.executeUpdate() > 0;
         } catch (SQLException e) {
             LOGGER.error("Error registering monthly report for intern {}", monthlyReport.getInternId(), e);
-            throw new DaoException("Error al registrar el reporte mensual", e);
+            throw new DaoException("Error registering monthly report", e);
         }
     }
 
@@ -58,7 +58,7 @@ public class MonthlyReportDao implements IMonthlyReport {
         );
 
         if (data == null || !allowedFields.contains(data)) {
-            throw new IllegalArgumentException("Campo no permitido: " + data);
+            throw new IllegalArgumentException("Field not allowed: " + data);
         }
 
         String query = "UPDATE reporteavances SET " + data + " = ? WHERE IdActividadProyecto = ?";
@@ -72,7 +72,7 @@ public class MonthlyReportDao implements IMonthlyReport {
             return preparedStatement.executeUpdate() > 0;
         } catch (SQLException e) {
             LOGGER.error("Error updating monthly report id {}", idMonthlyReport, e);
-            throw new DaoException("Error al actualizar el reporte mensual", e);
+            throw new DaoException("Error updating monthly report", e);
         }
     }
 
@@ -111,7 +111,7 @@ public class MonthlyReportDao implements IMonthlyReport {
             return null;
         } catch (SQLException e) {
             LOGGER.error("Error getting monthly report id {}", idMonthlyReport, e);
-            throw new DaoException("Error al obtener el reporte mensual", e);
+            throw new DaoException("Error getting monthly report", e);
         }
     }
 
@@ -151,7 +151,7 @@ public class MonthlyReportDao implements IMonthlyReport {
             return monthlyReportList;
         } catch (SQLException e) {
             LOGGER.error("Error getting monthly reports for intern {}", idIntern, e);
-            throw new DaoException("Error al obtener la lista de reportes mensuales", e);
+            throw new DaoException("Error getting monthly report list", e);
         }
     }
 }

@@ -2,6 +2,7 @@ package com.sistemapracticasprofesional.logic.dao;
 
 import com.sistemapracticasprofesional.dataaccess.DatabaseConnection;
 import com.sistemapracticasprofesional.logic.dto.CourseDto;
+import com.sistemapracticasprofesional.logic.exception.DaoException;
 import com.sistemapracticasprofesional.logic.interfaces.ICourse;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -36,7 +37,7 @@ public class CourseDao implements ICourse {
 
         } catch (SQLException e) {
             LOGGER.error("Error registering course", e);
-            return false;
+            throw new DaoException("Error registering course", e);
         }
     }
 
@@ -50,7 +51,7 @@ public class CourseDao implements ICourse {
         );
 
         if (!allowedFields.contains(field)) {
-            throw new IllegalArgumentException("Campo no permitido: " + field);
+            throw new IllegalArgumentException("Field not allowed: " + field);
         }
 
         String query = "UPDATE experiencia_educativa SET " + field + " = ? WHERE NRC = ?";
@@ -65,7 +66,8 @@ public class CourseDao implements ICourse {
 
         } catch (SQLException e) {
             LOGGER.error("Error updating course", e);
-            return false;
+            throw new DaoException("Error updating course with NRC: "
+                    + nrc, e);
         }
     }
 
@@ -93,8 +95,9 @@ public class CourseDao implements ICourse {
 
         } catch (SQLException e) {
             LOGGER.error("Error getting course with NRC {}", nrc, e);
+            throw new DaoException("Error getting course with NRC: "
+                    + nrc, e);
         }
-
         return null;
     }
 
@@ -125,6 +128,7 @@ public class CourseDao implements ICourse {
 
         } catch (SQLException e) {
             LOGGER.error("Error getting course list with filter {}", filter, e);
+            throw new DaoException("Error getting course list", e);
         }
 
         return courseList;
