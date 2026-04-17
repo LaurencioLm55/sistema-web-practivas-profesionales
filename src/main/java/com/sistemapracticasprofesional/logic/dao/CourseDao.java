@@ -42,32 +42,26 @@ public class CourseDao implements ICourse {
     }
 
     @Override
-    public boolean updateCourse(String field, String newData, int nrc) {
-        List<String> allowedFields = List.of(
-                "Estado",
-                "Periodo",
-                "Seccion",
-                "ArchivoFormato"
-        );
-
-        if (!allowedFields.contains(field)) {
-            throw new IllegalArgumentException("Field not allowed: " + field);
-        }
-
-        String query = "UPDATE experiencia_educativa SET " + field + " = ? WHERE NRC = ?";
+    public boolean updateCourse(CourseDto course) {
+        String query = "UPDATE experiencia_educativa SET Estado = ?,"
+                + " Periodo = ?, Seccion = ?, ArchivoFormato = ? "
+                + "WHERE NRC = ?";
 
         try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
-            preparedStatement.setString(1, newData);
-            preparedStatement.setInt(2, nrc);
+            preparedStatement.setString(1, course.getStatus());
+            preparedStatement.setString(2, course.getPeriod());
+            preparedStatement.setString(3, course.getSection());
+            preparedStatement.setString(4, course.getFormatFile());
+            preparedStatement.setInt(5, course.getNrc());
 
             return preparedStatement.executeUpdate() > 0;
 
         } catch (SQLException e) {
-            LOGGER.error("Error updating course", e);
-            throw new DaoException("Error updating course with NRC: "
-                    + nrc, e);
+            LOGGER.error("Error updating course with NRC {}",
+                    course.getNrc(), e);
+            throw new DaoException("Error updating course", e);
         }
     }
 
