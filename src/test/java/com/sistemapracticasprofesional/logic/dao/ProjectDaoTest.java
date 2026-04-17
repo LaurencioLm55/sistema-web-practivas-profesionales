@@ -8,7 +8,11 @@ import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ProjectDaoTest {
 
@@ -65,7 +69,7 @@ public class ProjectDaoTest {
         );
 
         boolean result = projectDao.insertProject(project);
-        ProjectDto savedProject = projectDao.getProject(testProjectId);
+        ProjectDto savedProject = projectDao.getProjectById(testProjectId);
 
         assertTrue(result);
         assertNotNull(savedProject);
@@ -116,7 +120,7 @@ public class ProjectDaoTest {
         project.setProjectAttendantSchedule("Viernes");
 
         boolean result = projectDao.updateProject(project);
-        ProjectDto updatedProject = projectDao.getProject(testProjectId);
+        ProjectDto updatedProject = projectDao.getProjectById(testProjectId);
 
         assertTrue(result);
         assertNotNull(updatedProject);
@@ -153,7 +157,7 @@ public class ProjectDaoTest {
         projectDao.insertProject(project);
 
         boolean result = projectDao.deleteProject(testProjectId);
-        ProjectDto deletedProject = projectDao.getProject(testProjectId);
+        ProjectDto deletedProject = projectDao.getProjectById(testProjectId);
 
         assertTrue(result);
         assertNull(deletedProject);
@@ -178,7 +182,7 @@ public class ProjectDaoTest {
         );
         projectDao.insertProject(project);
 
-        ProjectDto foundProject = projectDao.getProject(testProjectId);
+        ProjectDto foundProject = projectDao.getProjectById(testProjectId);
 
         assertNotNull(foundProject);
         assertEquals(testProjectId, foundProject.getProjectId());
@@ -205,7 +209,7 @@ public class ProjectDaoTest {
         );
         projectDao.insertProject(project);
 
-        List<ProjectDto> projects = projectDao.listProyects();
+        List<ProjectDto> projects = projectDao.getAllProjects();
         boolean containsTestProject = projects.stream()
                 .anyMatch(savedProject -> savedProject.getProjectId() == testProjectId);
 
