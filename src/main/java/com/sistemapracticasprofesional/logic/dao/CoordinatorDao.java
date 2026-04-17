@@ -3,6 +3,7 @@ package com.sistemapracticasprofesional.logic.dao;
 import com.sistemapracticasprofesional.dataaccess.DatabaseConnection;
 import com.sistemapracticasprofesional.logic.dto.CoordinatorDto;
 import com.sistemapracticasprofesional.logic.exception.DaoException;
+import com.sistemapracticasprofesional.logic.interfaces.ICoordinator;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,10 +14,11 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class CoordinatorDao {
+public class CoordinatorDao implements ICoordinator{
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CoordinatorDao.class);
 
+    @Override
     public boolean insertCoordinator(CoordinatorDto coordinator) {
         
         String registerQuery = "INSERT INTO coordinador "
@@ -48,6 +50,7 @@ public class CoordinatorDao {
         }
     }
 
+    @Override
     public boolean updateCoordinator(CoordinatorDto coordinator) {
         
         String updateQuery = "UPDATE coordinador SET Nombre = ?, Estado = ?, "
@@ -76,6 +79,7 @@ public class CoordinatorDao {
         }
     }
 
+    @Override
     public boolean deleteCoord(int userId) {
         String query = "DELETE FROM coordinador WHERE Id_usuario = ?";
 
@@ -92,6 +96,7 @@ public class CoordinatorDao {
         }
     }
     
+    @Override
     public CoordinatorDto getCoordinatorById(int id) {
         
         String getByIdQuery = "SELECT * FROM coordinador WHERE Id_usuario = ?";
@@ -115,6 +120,7 @@ public class CoordinatorDao {
         }
     }
     
+    @Override
     public List<CoordinatorDto> getAllCoordinators() {
         
         List<CoordinatorDto> coordinatorList = new ArrayList<>();
