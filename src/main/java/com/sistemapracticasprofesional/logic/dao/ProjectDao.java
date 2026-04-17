@@ -25,7 +25,7 @@ public class ProjectDao implements IProject {
         String registerQuery = "INSERT INTO proyecto (IdProyecto, Id_organizacion, "
             + "Nombre, Descripcion_general, Metodologia, Recursos, Objetivos_medios, "
             + "Objetivo_general, Objetivos_inmediatos, Responsabilidades, "
-            + "Nombre_Encargado, e_mail_Encargado, Dias_y_horario) "
+            + "Nombre_Encargado, e_mail_Encargado, cargo_Encargado) "
             + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection connection = DatabaseConnection.getConnection();
@@ -65,7 +65,7 @@ public class ProjectDao implements IProject {
             + "Nombre = ?, Descripcion_general = ?, Metodologia = ?, Recursos = ?, "
             + "Objetivos_medios = ?, Objetivo_general = ?, Objetivos_inmediatos = ?, "
             + "Responsabilidades = ?, Nombre_Encargado = ?, e_mail_Encargado = ?, "
-            + "Dias_y_horario = ? WHERE IdProyecto = ?";
+            + "cargo_Encargado = ? WHERE IdProyecto = ?";
 
         try (Connection connection = DatabaseConnection.getConnection(); 
             PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
@@ -185,7 +185,7 @@ public class ProjectDao implements IProject {
                 rs.getString("Responsabilidades"),
                 rs.getString("Nombre_Encargado"),
                 rs.getString("e_mail_Encargado"),
-                rs.getString("Dias_y_horario")
+                rs.getString("cargo_Encargado")
         );
 
     }

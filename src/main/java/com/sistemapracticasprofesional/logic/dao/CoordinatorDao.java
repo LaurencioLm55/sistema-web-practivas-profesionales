@@ -65,7 +65,7 @@ public class CoordinatorDao {
     public boolean registerCoordinator(CoordinatorDto coordinator) {
         
         String registerQuery = "INSERT INTO coordinador "
-            + "(Numero_de_personal, Id_usuario, Nombre, Estado,"
+            + "(Numero_de_personal, Id_usuario, Nombre, EstadoCoordinador,"
             + "Fecha_de_registro, Fecha_de_termino) "
             + "VALUES (?, ?, ?, ?, ?, ?)";
 
@@ -79,7 +79,7 @@ public class CoordinatorDao {
                 preparedStatement.setNull(2, java.sql.Types.INTEGER);
             }
             preparedStatement.setString(3, coordinator.getName());
-            preparedStatement.setString(4, coordinator.getState());
+            preparedStatement.setBoolean(4, mapStateToDatabaseValue(coordinator.getState()));
             preparedStatement.setDate(5, coordinator.getEntryDate() != null
                     ? Date.valueOf(coordinator.getEntryDate()) : null);
             preparedStatement.setDate(6, coordinator.getExitDate() != null
@@ -95,14 +95,14 @@ public class CoordinatorDao {
 
     public boolean updateCoordinator(CoordinatorDto coordinator) {
         
-        String updateQuery = "UPDATE coordinador SET Nombre = ?, Estado = ?, "
+        String updateQuery = "UPDATE coordinador SET Nombre = ?, EstadoCoordinador = ?, "
                 + "Fecha_de_registro = ?, Fecha_de_termino = ? WHERE Id_usuario = ?";
 
         try (Connection connection = DatabaseConnection.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
 
             preparedStatement.setString(1, coordinator.getName());
-            preparedStatement.setString(2, coordinator.getState());
+            preparedStatement.setBoolean(2, mapStateToDatabaseValue(coordinator.getState()));
             preparedStatement.setDate(3, coordinator.getEntryDate() != null
                     ? Date.valueOf(coordinator.getEntryDate()) : null);
             preparedStatement.setDate(4, coordinator.getExitDate() != null
@@ -139,12 +139,13 @@ public class CoordinatorDao {
 
     private CoordinatorDto convertResultSetToDTO(ResultSet resultSet) throws SQLException {
         CoordinatorDto coordinatorObject = new CoordinatorDto();
+        coordinatorObject.setPersonnelNumber(resultSet.getInt("Numero_de_personal"));
         Integer userId = resultSet.getObject("Id_usuario") != null
                 ? resultSet.getInt("Id_usuario")
                 : null;
         coordinatorObject.setUserId(userId);
         coordinatorObject.setName(resultSet.getString("Nombre"));
-        coordinatorObject.setState(resultSet.getString("Estado"));
+        coordinatorObject.setState(mapStateFromDatabaseValue(resultSet.getBoolean("EstadoCoordinador")));
 
         Date entryDate = resultSet.getDate("Fecha_de_registro");
         if (entryDate != null) {
@@ -156,5 +157,15 @@ public class CoordinatorDao {
             coordinatorObject.setExitDate(exitDate.toLocalDate());
         }
         return coordinatorObject;
+    }
+
+    private boolean mapStateToDatabaseValue(String state) {
+        return state != null && (state.equalsIgnoreCase("activo")
+                || state.equalsIgnoreCase("true")
+                || state.equals("1"));
+    }
+
+    private String mapStateFromDatabaseValue(boolean state) {
+        return state ? "Activo" : "Inactivo";
     }
 }
