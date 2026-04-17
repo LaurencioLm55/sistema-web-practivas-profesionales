@@ -22,7 +22,7 @@ public class InternDao implements IIntern {
         String query = "INSERT INTO practicante (Matricula, Nombre, Edad, Genero, Carrera, LenguaIndigena) "
                 + "VALUES (?, ?, ?, ?, ?, ?)";
 
-        try (Connection connection = new DatabaseConnection().getConnection();
+        try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             preparedStatement.setString(1, intern.getMatricula());
@@ -45,7 +45,7 @@ public class InternDao implements IIntern {
         String query = "UPDATE practicante SET Nombre = ?, Edad = ?, Genero = ?, Carrera = ?, LenguaIndigena = ? "
                 + "WHERE Matricula = ?";
 
-        try (Connection connection = new DatabaseConnection().getConnection();
+        try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             preparedStatement.setString(1, intern.getNombre());
@@ -67,7 +67,7 @@ public class InternDao implements IIntern {
     public boolean deleteIntern(String matricula) {
         String query = "DELETE FROM practicante WHERE Matricula = ?";
 
-        try (Connection connection = new DatabaseConnection().getConnection();
+        try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             preparedStatement.setString(1, matricula);
@@ -83,7 +83,7 @@ public class InternDao implements IIntern {
     public InternDto getInternByMatricula(String matricula) {
         String query = "SELECT * FROM practicante WHERE Matricula = ?";
 
-        try (Connection connection = new DatabaseConnection().getConnection();
+        try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             preparedStatement.setString(1, matricula);
@@ -107,7 +107,7 @@ public class InternDao implements IIntern {
         List<InternDto> internList = new ArrayList<>();
         String query = "SELECT * FROM practicante";
 
-        try (Connection connection = new DatabaseConnection().getConnection();
+        try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query);
              ResultSet resultSet = preparedStatement.executeQuery()) {
 

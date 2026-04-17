@@ -3,6 +3,7 @@ package com.sistemapracticasprofesional.logic.dao;
 import com.sistemapracticasprofesional.dataaccess.DatabaseConnection;
 import com.sistemapracticasprofesional.logic.dto.PartialReportDto;
 import com.sistemapracticasprofesional.logic.exception.DaoException;
+import com.sistemapracticasprofesional.logic.interfaces.IPartialReport;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -12,11 +13,12 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class PartialReportDao {
+public class PartialReportDao implements IPartialReport{
     
     private static final Logger LOGGER = LoggerFactory.getLogger(PartialReportDao.class);
     
-    public boolean registerPartialReport(PartialReportDto partialReport){
+    @Override
+    public boolean insertPartialReport(PartialReportDto partialReport){
         
         String registerQuery = "INSERT into reporteparciales(IdActividadProyecto,"
                 + "Tiempo_planeado, Tiempo_real, Resultados, Observaciones)"
@@ -40,6 +42,7 @@ public class PartialReportDao {
         }
     }
     
+    @Override
     public boolean updatePartialReport(PartialReportDto partialReport) {
         
         String updateQuery = "UPDATE reporteparciales SET Tiempo_planeado = ?,"
@@ -64,7 +67,7 @@ public class PartialReportDao {
         }
     }
     
-    
+    @Override
     public boolean deletePartialReport(int idPartialReport) {
         
         String deleteQuery = "DELETE FROM reporteparciales WHERE IdReporteParcial = ?";
@@ -81,7 +84,8 @@ public class PartialReportDao {
             throw new DaoException("Error deleting partial report", e);
         }
     }
-
+    
+    @Override
     public PartialReportDto getPartialReportById(int idPartialReport) {
         String selectQuery = "SELECT IdReporteParcial, IdActividadProyecto, Tiempo_planeado, "
                 + "Tiempo_real, Resultados, Observaciones "
@@ -104,6 +108,7 @@ public class PartialReportDao {
         return null;
     }
 
+    @Override
     public List<PartialReportDto> getAllPartialReports() {
         String selectAllQuery = "SELECT IdReporteParcial, IdActividadProyecto, Tiempo_planeado, "
                 + "Tiempo_real, Resultados, Observaciones "

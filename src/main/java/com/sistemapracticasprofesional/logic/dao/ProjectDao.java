@@ -18,7 +18,7 @@ public class ProjectDao implements IProject {
     private static final Logger LOGGER = LoggerFactory.getLogger(ProjectDao.class);
 
     @Override
-    public boolean registerProject(ProjectDto project) throws DaoException {
+    public boolean insertProject(ProjectDto project) throws DaoException {
 
         boolean operationSuccess = false;
         

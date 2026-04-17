@@ -21,7 +21,7 @@ public class UserDao implements IUser {
                 + "SELECT 1 FROM usuario WHERE nombre = ? AND Contraseña = ?"
                 + ") AS existe";
 
-        try (Connection connection = new DatabaseConnection().getConnection();
+        try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             preparedStatement.setString(1, user.getUserName());
@@ -41,10 +41,10 @@ public class UserDao implements IUser {
     }
 
     @Override
-    public boolean registredUser(int idUser, String userName, String userPassword) {
+    public boolean insertUser(int idUser, String userName, String userPassword) {
         String query = "INSERT INTO usuario (Id_usuario, nombre, Contraseña) VALUES (?, ?, ?)";
 
-        try (Connection connection = new DatabaseConnection().getConnection();
+        try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             preparedStatement.setInt(1, idUser);
@@ -62,7 +62,7 @@ public class UserDao implements IUser {
     public boolean updateName(String newName, int idUser) {
         String query = "UPDATE usuario SET nombre = ? WHERE Id_usuario = ?";
 
-        try (Connection connection = new DatabaseConnection().getConnection();
+        try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             preparedStatement.setString(1, newName);
@@ -79,7 +79,7 @@ public class UserDao implements IUser {
     public boolean updatePassword(String newPassword, int idUser) {
         String query = "UPDATE usuario SET Contraseña = ? WHERE Id_usuario = ?";
 
-        try (Connection connection = new DatabaseConnection().getConnection();
+        try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             preparedStatement.setString(1, newPassword);
@@ -96,7 +96,7 @@ public class UserDao implements IUser {
     public UserDto getUser(int idUser) {
         String query = "SELECT * FROM usuario WHERE Id_usuario = ?";
 
-        try (Connection connection = new DatabaseConnection().getConnection();
+        try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             preparedStatement.setInt(1, idUser);

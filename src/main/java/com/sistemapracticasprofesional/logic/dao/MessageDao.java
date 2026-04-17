@@ -22,7 +22,7 @@ public class MessageDao implements IMessage {
         String query = "INSERT INTO mensaje (Remitente, Destinatario, Asunto, "
                 + "Contenido_de_mensaje) VALUES (?, ?, ?, ?)";
 
-        try (Connection connection = new DatabaseConnection().getConnection();
+        try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             preparedStatement.setInt(1, message.getSenderUserId());
@@ -43,7 +43,7 @@ public class MessageDao implements IMessage {
     public MessageDto getMessageById(int messageId) {
         String query = "SELECT * FROM mensaje WHERE Id_mensaje = ?";
 
-        try (Connection connection = new DatabaseConnection().getConnection();
+        try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             preparedStatement.setInt(1, messageId);
@@ -68,7 +68,7 @@ public class MessageDao implements IMessage {
         String query = "SELECT * FROM mensaje WHERE Destinatario = ? ORDER BY "
                 + "Id_mensaje DESC";
 
-        try (Connection connection = new DatabaseConnection().getConnection();
+        try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             preparedStatement.setInt(1, receiverUserId);
@@ -93,7 +93,7 @@ public class MessageDao implements IMessage {
         String query = "SELECT * FROM mensaje WHERE Remitente = ? ORDER BY "
                 + "Id_mensaje DESC";
 
-        try (Connection connection = new DatabaseConnection().getConnection();
+        try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             preparedStatement.setInt(1, senderUserId);
@@ -116,7 +116,7 @@ public class MessageDao implements IMessage {
     public boolean deleteMessage(int messageId) {
         String query = "DELETE FROM mensaje WHERE Id_mensaje = ?";
 
-        try (Connection connection = new DatabaseConnection().getConnection();
+        try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             preparedStatement.setInt(1, messageId);

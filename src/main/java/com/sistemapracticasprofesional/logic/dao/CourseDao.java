@@ -23,7 +23,7 @@ public class CourseDao implements ICourse {
                 + "(NRC, Numero_de_personal, Estado, Periodo, Seccion, ArchivoFormato) "
                 + "VALUES (?, ?, ?, ?, ?, ?)";
 
-        try (Connection connection = new DatabaseConnection().getConnection();
+        try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             preparedStatement.setInt(1, course.getNrc());
@@ -56,7 +56,7 @@ public class CourseDao implements ICourse {
 
         String query = "UPDATE experiencia_educativa SET " + field + " = ? WHERE NRC = ?";
 
-        try (Connection connection = new DatabaseConnection().getConnection();
+        try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             preparedStatement.setString(1, newData);
@@ -75,7 +75,7 @@ public class CourseDao implements ICourse {
     public CourseDto getCourse(int nrc) {
         String query = "SELECT * FROM experiencia_educativa WHERE NRC = ?";
 
-        try (Connection connection = new DatabaseConnection().getConnection();
+        try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             preparedStatement.setInt(1, nrc);
@@ -106,7 +106,7 @@ public class CourseDao implements ICourse {
         List<CourseDto> courseList = new ArrayList<>();
         String query = "SELECT * FROM experiencia_educativa WHERE Estado LIKE ?";
 
-        try (Connection connection = new DatabaseConnection().getConnection();
+        try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             preparedStatement.setString(1, "%" + filter + "%");

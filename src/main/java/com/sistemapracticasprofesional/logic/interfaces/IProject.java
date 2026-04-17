@@ -5,7 +5,7 @@ import java.util.List;
 
 public interface IProject {
     
-    boolean registerProject(ProjectDto project) throws DaoException;
+    boolean insertProject(ProjectDto project) throws DaoException;
     boolean updateProject(ProjectDto project) throws DaoException;
     ProjectDto getProject(int idProject) throws DaoException;
     List<ProjectDto> listProyects() throws DaoException;

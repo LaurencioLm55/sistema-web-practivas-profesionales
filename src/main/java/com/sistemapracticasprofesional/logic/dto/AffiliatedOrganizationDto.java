@@ -39,7 +39,7 @@ public class AffiliatedOrganizationDto {
         return this.idOrganization;
     }
     
-    public void setOrganization(int idOrganization){
+    public void setIdOrganization(int idOrganization){
         this.idOrganization = idOrganization;
     }
     
