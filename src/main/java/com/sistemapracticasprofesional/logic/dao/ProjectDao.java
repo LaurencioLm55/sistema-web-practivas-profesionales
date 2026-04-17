@@ -121,7 +121,7 @@ public class ProjectDao implements IProject {
     }
 
     @Override
-    public ProjectDto getProject(int projectId) throws DaoException {
+    public ProjectDto getProjectById(int projectId) throws DaoException {
 
         ProjectDto project = null;
 
@@ -147,7 +147,7 @@ public class ProjectDao implements IProject {
     }
 
     @Override
-    public List<ProjectDto> listProyects() throws DaoException {
+    public List<ProjectDto> getAllProjects() throws DaoException {
 
         List<ProjectDto> projects = new ArrayList<>();
 
