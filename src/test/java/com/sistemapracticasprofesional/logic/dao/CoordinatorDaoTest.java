@@ -17,6 +17,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class CoordinatorDaoTest {
 
+    private static final int TEST_PERSONNEL_NUMBER = 920001;
+    private static final int TEST_USER_ID = 920101;
+
     private CoordinatorDao coordinatorDao;
     private UserDao userDao;
     private int testPersonnelNumber;
@@ -26,10 +29,13 @@ public class CoordinatorDaoTest {
     public void setUp() {
         coordinatorDao = new CoordinatorDao();
         userDao = new UserDao();
-        testPersonnelNumber = (int) (System.currentTimeMillis() % 1000000);
-        testUserId = testPersonnelNumber + 1000;
-        UserDto user = new UserDto(testUserId, "usuario" + testUserId, "password123");
-        userDao.insertUser(user);
+        testPersonnelNumber = TEST_PERSONNEL_NUMBER;
+        testUserId = TEST_USER_ID;
+
+        if (userDao.getUser(testUserId) == null) {
+            UserDto user = new UserDto(testUserId, "usuario_prueba_coordinator", "password123");
+            userDao.insertUser(user);
+        }
     }
 
     @AfterEach

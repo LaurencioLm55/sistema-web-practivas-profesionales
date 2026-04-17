@@ -16,6 +16,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ProjectDaoTest {
 
+    private static final int TEST_PROJECT_ID = 930001;
+    private static final int TEST_ORGANIZATION_ID = 930101;
+
     private ProjectDao projectDao;
     private AffiliatedOrganizationDao affiliatedOrganizationDao;
     private int testProjectId;
@@ -25,19 +28,25 @@ public class ProjectDaoTest {
     public void setUp() {
         projectDao = new ProjectDao();
         affiliatedOrganizationDao = new AffiliatedOrganizationDao();
-        testProjectId = (int) (System.currentTimeMillis() % 1000000);
-        testOrganizationId = testProjectId + 500;
-        AffiliatedOrganizationDto organization = new AffiliatedOrganizationDto(
-                testOrganizationId,
-                "Organizacion " + testOrganizationId,
-                "Direccion de prueba",
-                "Tecnologia",
-                "Xalapa",
-                "Veracruz",
-                "2281234567",
-                "organizacion" + testOrganizationId + "@example.com"
-        );
-        affiliatedOrganizationDao.insertOrganization(organization);
+        testProjectId = TEST_PROJECT_ID;
+        testOrganizationId = TEST_ORGANIZATION_ID;
+
+        AffiliatedOrganizationDto existingOrganization =
+                affiliatedOrganizationDao.getAffiliatedOrganization(testOrganizationId);
+
+        if (existingOrganization.getName() == null) {
+            AffiliatedOrganizationDto organization = new AffiliatedOrganizationDto(
+                    testOrganizationId,
+                    "Organizacion Prueba Proyecto",
+                    "Direccion de prueba",
+                    "Tecnologia",
+                    "Xalapa",
+                    "Veracruz",
+                    "2281234567",
+                    "organizacion.proyecto@example.com"
+            );
+            affiliatedOrganizationDao.insertOrganization(organization);
+        }
     }
 
     @AfterEach

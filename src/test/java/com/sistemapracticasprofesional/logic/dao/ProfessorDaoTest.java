@@ -15,13 +15,15 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ProfessorDaoTest {
 
+    private static final int TEST_STAFF_NUMBER = 910001;
+
     private ProfessorDao professorDao;
     private int testStaffNumber;
 
     @BeforeEach
     public void setUp() {
         professorDao = new ProfessorDao();
-        testStaffNumber = (int) (System.currentTimeMillis() % 1000000);
+        testStaffNumber = TEST_STAFF_NUMBER;
     }
 
     @AfterEach
