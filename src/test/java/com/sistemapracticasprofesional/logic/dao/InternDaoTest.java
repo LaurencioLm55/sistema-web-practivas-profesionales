@@ -36,14 +36,14 @@ public class InternDaoTest {
 
     @Test
     public void testGetInternByMatricula() {
-        InternDto internDto = internDao.getInternByMatricula("S24060080");
-        assertEquals( "Sebastián Vargas Ríos", internDto.getNombre());
+        InternDto expetedIntern = new InternDto("S24060080", 20, "Sebastián Vargas Ríos", "No", "Masculino", "Ingenieria de Software");
+        InternDto resultIntern = internDao.getInternByStudentId("S24060080");
+        assertEquals( expetedIntern, resultIntern);
     }
 
     @Test
     public void testGetAllInterns() {
         List<InternDto> listInterns = internDao.getAllInterns();
-
         assertEquals(3, listInterns.size());
     }
 
