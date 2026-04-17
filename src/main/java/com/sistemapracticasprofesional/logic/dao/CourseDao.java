@@ -96,14 +96,14 @@ public class CourseDao implements ICourse {
     }
 
     @Override
-    public List<CourseDto> getListCourse(String filter) {
+    public List<CourseDto> getCoursesByStatus(String status) {
         List<CourseDto> courseList = new ArrayList<>();
-        String query = "SELECT * FROM experiencia_educativa WHERE Estado LIKE ?";
+        String query = "SELECT * FROM experiencia_educativa WHERE Estado = ?";
 
         try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
-            preparedStatement.setString(1, "%" + filter + "%");
+            preparedStatement.setString(1, status);
 
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 while (resultSet.next()) {
@@ -121,7 +121,7 @@ public class CourseDao implements ICourse {
             }
 
         } catch (SQLException e) {
-            LOGGER.error("Error getting course list with filter {}", filter, e);
+            LOGGER.error("Error getting course list with status {}", status, e);
             throw new DaoException("Error getting course list", e);
         }
 

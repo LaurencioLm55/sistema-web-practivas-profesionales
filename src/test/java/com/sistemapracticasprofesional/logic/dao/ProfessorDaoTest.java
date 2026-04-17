@@ -2,7 +2,6 @@ package com.sistemapracticasprofesional.logic.dao;
 
 import com.sistemapracticasprofesional.dataaccess.DatabaseConnection;
 import com.sistemapracticasprofesional.logic.dto.ProfessorDto;
-import com.sistemapracticasprofesional.logic.exception.DaoException;
 import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -24,9 +23,11 @@ public class ProfessorDaoTest {
     public void tearDown() {
         try {
             professorDao.deleteProfessor(testStaffNumber);
+            
         } catch (DaoException daoException) {
+        } finally {
+            DatabaseConnection.closeConnection();
         }
-        DatabaseConnection.closeConnection();
     }
 
     @Test

@@ -8,7 +8,7 @@ public interface ICourse {
     boolean registerCourse(CourseDto course) throws DaoException;
     boolean updateCourse(CourseDto course) throws DaoException;
     CourseDto getCourse(int nrc) throws DaoException;
-    List<CourseDto> getListCourse(String filter) throws DaoException;
+    List<CourseDto> getCoursesByStatus(String status) throws DaoException;
     
     
     
