@@ -68,4 +68,46 @@ public class MessageDto {
     public void setContent(String content) {
         this.content = content;
     }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + messageId;
+        result = prime * result + senderUserId;
+        result = prime * result + receiverUserId;
+        result = prime * result + ((subject == null) ? 0 : subject.hashCode());
+        result = prime * result + ((content == null) ? 0 : content.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        MessageDto other = (MessageDto) obj;
+        if (messageId != other.messageId)
+            return false;
+        if (senderUserId != other.senderUserId)
+            return false;
+        if (receiverUserId != other.receiverUserId)
+            return false;
+        if (subject == null) {
+            if (other.subject != null)
+                return false;
+        } else if (!subject.equals(other.subject))
+            return false;
+        if (content == null) {
+            if (other.content != null)
+                return false;
+        } else if (!content.equals(other.content))
+            return false;
+        return true;
+    }
+
+    
 }

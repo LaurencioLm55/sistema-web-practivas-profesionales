@@ -117,6 +117,6 @@ public class InternDto {
             return false;
         return true;
     }
-     
+    
     
 }
