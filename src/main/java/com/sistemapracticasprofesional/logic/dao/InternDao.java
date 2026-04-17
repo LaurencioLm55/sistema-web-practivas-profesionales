@@ -25,17 +25,17 @@ public class InternDao implements IIntern {
         try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
-            preparedStatement.setString(1, intern.getMatricula());
-            preparedStatement.setString(2, intern.getNombre());
-            preparedStatement.setInt(3, intern.getEdad());
-            preparedStatement.setString(4, intern.getGenero());
-            preparedStatement.setString(5, intern.getCarrera());
-            preparedStatement.setString(6, intern.getLenguaIndigena());
+            preparedStatement.setString(1, intern.getStudentId());
+            preparedStatement.setString(2, intern.getName());
+            preparedStatement.setInt(3, intern.getAge());
+            preparedStatement.setString(4, intern.getGender());
+            preparedStatement.setString(5, intern.getMajor());
+            preparedStatement.setString(6, intern.getIndigenousLanguage());
 
             return preparedStatement.executeUpdate() > 0;
 
         } catch (SQLException e) {
-            LOGGER.error("Error inserting intern with matricula {}", intern.getMatricula(), e);
+            LOGGER.error("Error inserting intern with student id {}", intern.getStudentId(), e);
             throw new DaoException("Error registering intern", e);
         }
     }
@@ -48,45 +48,45 @@ public class InternDao implements IIntern {
         try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
-            preparedStatement.setString(1, intern.getNombre());
-            preparedStatement.setInt(2, intern.getEdad());
-            preparedStatement.setString(3, intern.getGenero());
-            preparedStatement.setString(4, intern.getCarrera());
-            preparedStatement.setString(5, intern.getLenguaIndigena());
-            preparedStatement.setString(6, intern.getMatricula());
+            preparedStatement.setString(1, intern.getName());
+            preparedStatement.setInt(2, intern.getAge());
+            preparedStatement.setString(3, intern.getGender());
+            preparedStatement.setString(4, intern.getMajor());
+            preparedStatement.setString(5, intern.getIndigenousLanguage());
+            preparedStatement.setString(6, intern.getStudentId());
 
             return preparedStatement.executeUpdate() > 0;
 
         } catch (SQLException e) {
-            LOGGER.error("Error updating intern with matricula {}", intern.getMatricula(), e);
+            LOGGER.error("Error updating intern with student id {}", intern.getStudentId(), e);
             throw new DaoException("Error updating intern", e);
         }
     }
 
     @Override
-    public boolean deleteIntern(String matricula) {
+    public boolean deleteIntern(String studentId) {
         String query = "DELETE FROM practicante WHERE Matricula = ?";
 
         try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
-            preparedStatement.setString(1, matricula);
+            preparedStatement.setString(1, studentId);
             return preparedStatement.executeUpdate() > 0;
 
         } catch (SQLException e) {
-            LOGGER.error("Error deleting intern with matricula {}", matricula, e);
+            LOGGER.error("Error deleting intern with student id {}", studentId, e);
             throw new DaoException("Error deleting intern", e);
         }
     }
 
     @Override
-    public InternDto getInternByMatricula(String matricula) {
+    public InternDto getInternByStudentId(String studentId) {
         String query = "SELECT * FROM practicante WHERE Matricula = ?";
 
         try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
-            preparedStatement.setString(1, matricula);
+            preparedStatement.setString(1, studentId);
 
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
@@ -97,7 +97,7 @@ public class InternDao implements IIntern {
             return null;
 
         } catch (SQLException e) {
-            LOGGER.error("Error getting intern with matricula {}", matricula, e);
+            LOGGER.error("Error getting intern with student id {}", studentId, e);
             throw new DaoException("Error getting intern", e);
         }
     }
