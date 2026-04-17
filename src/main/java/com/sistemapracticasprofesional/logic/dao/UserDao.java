@@ -41,54 +41,42 @@ public class UserDao implements IUser {
     }
 
     @Override
-    public boolean insertUser(int idUser, String userName, String userPassword) {
+    public boolean insertUser(UserDto userDto) {
         String query = "INSERT INTO usuario (Id_usuario, nombre, Contraseña) VALUES (?, ?, ?)";
 
         try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
-            preparedStatement.setInt(1, idUser);
-            preparedStatement.setString(2, userName);
-            preparedStatement.setString(3, userPassword);
+            preparedStatement.setInt(1, userDto.gatIdUser());
+            preparedStatement.setString(2, userDto.getUserName());
+            preparedStatement.setString(3, userDto.getPassword());
 
             return preparedStatement.executeUpdate() > 0;
+
         } catch (SQLException e) {
-            LOGGER.error("Error registering user with id {}", idUser, e);
+
+            LOGGER.error("Error registering user with id {}", userDto.gatIdUser(), e);
             throw new DaoException("Error registering user", e);
         }
+
     }
 
     @Override
-    public boolean updateName(String newName, int idUser) {
-        String query = "UPDATE usuario SET nombre = ? WHERE Id_usuario = ?";
+    public boolean updateUser( UserDto userDto ) {
+        String query = "UPDATE usuario SET nombre = ? contraseña = ? WHERE Id_usuario = ?";
 
         try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
-            preparedStatement.setString(1, newName);
-            preparedStatement.setInt(2, idUser);
+            preparedStatement.setString(1, userDto.getUserName());
+            preparedStatement.setString(2, userDto.getPassword());
+
+            preparedStatement.setInt(3, userDto.gatIdUser());
 
             return preparedStatement.executeUpdate() > 0;
         } catch (SQLException e) {
-            LOGGER.error("Error updating name for user id {}", idUser, e);
+            LOGGER.error("Error updating name for user id {}", userDto.gatIdUser(), e);
             throw new DaoException("Error updating user name", e);
-        }
-    }
-
-    @Override
-    public boolean updatePassword(String newPassword, int idUser) {
-        String query = "UPDATE usuario SET Contraseña = ? WHERE Id_usuario = ?";
-
-        try (Connection connection = DatabaseConnection.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-
-            preparedStatement.setString(1, newPassword);
-            preparedStatement.setInt(2, idUser);
-
-            return preparedStatement.executeUpdate() > 0;
-        } catch (SQLException e) {
-            LOGGER.error("Error updating password for user id {}", idUser, e);
-            throw new DaoException("Error updating user password", e);
         }
     }
 
