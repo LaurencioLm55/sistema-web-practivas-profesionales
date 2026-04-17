@@ -132,5 +132,4 @@ public class PartialReportDao {
             resultSet.getString("Observaciones")
         );
     }
-    
 }
