@@ -70,7 +70,7 @@ public class PartialReportDao implements IPartialReport{
     @Override
     public boolean deletePartialReport(int idPartialReport) {
         
-        String deleteQuery = "DELETE FROM reporteparciales WHERE IdReporteParcial = ?";
+        String deleteQuery = "DELETE FROM reporteparciales WHERE IdActividadProyecto = ?";
 
         try (Connection connection = DatabaseConnection.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(deleteQuery)) {
@@ -110,7 +110,7 @@ public class PartialReportDao implements IPartialReport{
 
     @Override
     public List<PartialReportDto> getAllPartialReports() {
-        String selectAllQuery = "SELECT IdReporteParcial, IdActividadProyecto, Tiempo_planeado, "
+        String selectAllQuery = "SELECT IdActividadProyecto, Tiempo_planeado, "
                 + "Tiempo_real, Resultados, Observaciones "
                 + "FROM reporteparciales";
         List<PartialReportDto> partialReports = new ArrayList<>();

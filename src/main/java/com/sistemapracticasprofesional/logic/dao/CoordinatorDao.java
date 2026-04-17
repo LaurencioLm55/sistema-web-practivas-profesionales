@@ -3,6 +3,7 @@ package com.sistemapracticasprofesional.logic.dao;
 import com.sistemapracticasprofesional.dataaccess.DatabaseConnection;
 import com.sistemapracticasprofesional.logic.dto.CoordinatorDto;
 import com.sistemapracticasprofesional.logic.exception.DaoException;
+import com.sistemapracticasprofesional.logic.interfaces.ICoordinator;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,56 +14,12 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class CoordinatorDao {
+public class CoordinatorDao implements ICoordinator{
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CoordinatorDao.class);
 
-    public CoordinatorDto getCoordinatorById(int id) {
-        
-        String getByIdQuery = "SELECT * FROM coordinador WHERE Id_usuario = ?";
-
-        try (Connection connection = DatabaseConnection.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(getByIdQuery)) {
-
-            preparedStatement.setInt(1, id);
-
-            try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                if (resultSet.next()) {
-                    return convertResultSetToDTO(resultSet);
-                }
-            }
-            return null;
-
-        } catch (SQLException e) {
-            
-            LOGGER.error("Error getting coordinator by id {}", id, e);
-            throw new DaoException("Error getting coordinator", e);
-        }
-    }
-
-    public List<CoordinatorDto> getAllCoordinators() {
-        
-        List<CoordinatorDto> coordinatorList = new ArrayList<>();
-        
-        String getAllQuery = "SELECT * FROM coordinador";
-
-        try (Connection connection = DatabaseConnection.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(getAllQuery);
-            ResultSet resultSet = preparedStatement.executeQuery()) {
-
-            while (resultSet.next()) {
-                coordinatorList.add(convertResultSetToDTO(resultSet));
-            }
-
-            return coordinatorList;
-        } catch (SQLException e) {
-            
-            LOGGER.error("Error getting coordinator list", e);
-            throw new DaoException("Error getting coordinator list", e);
-        }
-    }
-
-    public boolean registerCoordinator(CoordinatorDto coordinator) {
+    @Override
+    public boolean insertCoordinator(CoordinatorDto coordinator) {
         
         String registerQuery = "INSERT INTO coordinador "
             + "(Numero_de_personal, Id_usuario, Nombre, EstadoCoordinador,"
@@ -93,6 +50,7 @@ public class CoordinatorDao {
         }
     }
 
+    @Override
     public boolean updateCoordinator(CoordinatorDto coordinator) {
         
         String updateQuery = "UPDATE coordinador SET Nombre = ?, EstadoCoordinador = ?, "
@@ -121,6 +79,7 @@ public class CoordinatorDao {
         }
     }
 
+    @Override
     public boolean deleteCoord(int userId) {
         String query = "DELETE FROM coordinador WHERE Id_usuario = ?";
 
@@ -136,8 +95,55 @@ public class CoordinatorDao {
             throw new DaoException("Error deleting coordinator", e);
         }
     }
+    
+    @Override
+    public CoordinatorDto getCoordinatorById(int id) {
+        
+        String getByIdQuery = "SELECT * FROM coordinador WHERE Id_usuario = ?";
 
-    private CoordinatorDto convertResultSetToDTO(ResultSet resultSet) throws SQLException {
+        try (Connection connection = DatabaseConnection.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(getByIdQuery)) {
+
+            preparedStatement.setInt(1, id);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    return mapResultSetToDTO(resultSet);
+                }
+            }
+            return null;
+
+        } catch (SQLException e) {
+            
+            LOGGER.error("Error getting coordinator by id {}", id, e);
+            throw new DaoException("Error getting coordinator", e);
+        }
+    }
+    
+    @Override
+    public List<CoordinatorDto> getAllCoordinators() {
+        
+        List<CoordinatorDto> coordinatorList = new ArrayList<>();
+        
+        String getAllQuery = "SELECT * FROM coordinador";
+
+        try (Connection connection = DatabaseConnection.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(getAllQuery);
+            ResultSet resultSet = preparedStatement.executeQuery()) {
+
+            while (resultSet.next()) {
+                coordinatorList.add(mapResultSetToDTO(resultSet));
+            }
+
+            return coordinatorList;
+        } catch (SQLException e) {
+            
+            LOGGER.error("Error getting coordinator list", e);
+            throw new DaoException("Error getting coordinator list", e);
+        }
+    }
+
+    private CoordinatorDto mapResultSetToDTO(ResultSet resultSet) throws SQLException {
         CoordinatorDto coordinatorObject = new CoordinatorDto();
         coordinatorObject.setPersonnelNumber(resultSet.getInt("Numero_de_personal"));
         Integer userId = resultSet.getObject("Id_usuario") != null
