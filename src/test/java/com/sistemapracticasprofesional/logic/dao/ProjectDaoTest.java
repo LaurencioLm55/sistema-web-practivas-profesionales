@@ -8,9 +8,16 @@ import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ProjectDaoTest {
+
+    private static final int TEST_PROJECT_ID = 930001;
+    private static final int TEST_ORGANIZATION_ID = 930101;
 
     private ProjectDao projectDao;
     private AffiliatedOrganizationDao affiliatedOrganizationDao;
@@ -21,19 +28,25 @@ public class ProjectDaoTest {
     public void setUp() {
         projectDao = new ProjectDao();
         affiliatedOrganizationDao = new AffiliatedOrganizationDao();
-        testProjectId = (int) (System.currentTimeMillis() % 1000000);
-        testOrganizationId = testProjectId + 500;
-        AffiliatedOrganizationDto organization = new AffiliatedOrganizationDto(
-                testOrganizationId,
-                "Organizacion " + testOrganizationId,
-                "Direccion de prueba",
-                "Tecnologia",
-                "Xalapa",
-                "Veracruz",
-                "2281234567",
-                "organizacion" + testOrganizationId + "@example.com"
-        );
-        affiliatedOrganizationDao.insertOrganization(organization);
+        testProjectId = TEST_PROJECT_ID;
+        testOrganizationId = TEST_ORGANIZATION_ID;
+
+        AffiliatedOrganizationDto existingOrganization =
+                affiliatedOrganizationDao.getAffiliatedOrganization(testOrganizationId);
+
+        if (existingOrganization.getName() == null) {
+            AffiliatedOrganizationDto organization = new AffiliatedOrganizationDto(
+                    testOrganizationId,
+                    "Organizacion Prueba Proyecto",
+                    "Direccion de prueba",
+                    "Tecnologia",
+                    "Xalapa",
+                    "Veracruz",
+                    "2281234567",
+                    "organizacion.proyecto@example.com"
+            );
+            affiliatedOrganizationDao.insertOrganization(organization);
+        }
     }
 
     @AfterEach
@@ -65,7 +78,7 @@ public class ProjectDaoTest {
         );
 
         boolean result = projectDao.insertProject(project);
-        ProjectDto savedProject = projectDao.getProject(testProjectId);
+        ProjectDto savedProject = projectDao.getProjectById(testProjectId);
 
         assertTrue(result);
         assertNotNull(savedProject);
@@ -116,7 +129,7 @@ public class ProjectDaoTest {
         project.setProjectAttendantSchedule("Viernes");
 
         boolean result = projectDao.updateProject(project);
-        ProjectDto updatedProject = projectDao.getProject(testProjectId);
+        ProjectDto updatedProject = projectDao.getProjectById(testProjectId);
 
         assertTrue(result);
         assertNotNull(updatedProject);
@@ -153,7 +166,7 @@ public class ProjectDaoTest {
         projectDao.insertProject(project);
 
         boolean result = projectDao.deleteProject(testProjectId);
-        ProjectDto deletedProject = projectDao.getProject(testProjectId);
+        ProjectDto deletedProject = projectDao.getProjectById(testProjectId);
 
         assertTrue(result);
         assertNull(deletedProject);
@@ -178,7 +191,7 @@ public class ProjectDaoTest {
         );
         projectDao.insertProject(project);
 
-        ProjectDto foundProject = projectDao.getProject(testProjectId);
+        ProjectDto foundProject = projectDao.getProjectById(testProjectId);
 
         assertNotNull(foundProject);
         assertEquals(testProjectId, foundProject.getProjectId());
@@ -205,7 +218,7 @@ public class ProjectDaoTest {
         );
         projectDao.insertProject(project);
 
-        List<ProjectDto> projects = projectDao.listProyects();
+        List<ProjectDto> projects = projectDao.getAllProjects();
         boolean containsTestProject = projects.stream()
                 .anyMatch(savedProject -> savedProject.getProjectId() == testProjectId);
 

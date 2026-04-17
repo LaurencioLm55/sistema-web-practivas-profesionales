@@ -2,13 +2,20 @@ package com.sistemapracticasprofesional.logic.dao;
 
 import com.sistemapracticasprofesional.dataaccess.DatabaseConnection;
 import com.sistemapracticasprofesional.logic.dto.ProfessorDto;
+import com.sistemapracticasprofesional.logic.exception.DaoException;
 import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ProfessorDaoTest {
+
+    private static final int TEST_STAFF_NUMBER = 910001;
 
     private ProfessorDao professorDao;
     private int testStaffNumber;
@@ -16,7 +23,7 @@ public class ProfessorDaoTest {
     @BeforeEach
     public void setUp() {
         professorDao = new ProfessorDao();
-        testStaffNumber = (int) (System.currentTimeMillis() % 1000000);
+        testStaffNumber = TEST_STAFF_NUMBER;
     }
 
     @AfterEach

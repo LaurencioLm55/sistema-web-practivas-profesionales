@@ -9,9 +9,16 @@ import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class CoordinatorDaoTest {
+
+    private static final int TEST_PERSONNEL_NUMBER = 920001;
+    private static final int TEST_USER_ID = 920101;
 
     private CoordinatorDao coordinatorDao;
     private UserDao userDao;
@@ -22,10 +29,13 @@ public class CoordinatorDaoTest {
     public void setUp() {
         coordinatorDao = new CoordinatorDao();
         userDao = new UserDao();
-        testPersonnelNumber = (int) (System.currentTimeMillis() % 1000000);
-        testUserId = testPersonnelNumber + 1000;
-        UserDto user = new UserDto(testUserId, "usuario" + testUserId, "password123");
-        userDao.insertUser(user);
+        testPersonnelNumber = TEST_PERSONNEL_NUMBER;
+        testUserId = TEST_USER_ID;
+
+        if (userDao.getUser(testUserId) == null) {
+            UserDto user = new UserDto(testUserId, "usuario_prueba_coordinator", "password123");
+            userDao.insertUser(user);
+        }
     }
 
     @AfterEach
@@ -49,7 +59,7 @@ public class CoordinatorDaoTest {
                 LocalDate.of(2026, 12, 31)
         );
 
-        boolean result = coordinatorDao.registerCoordinator(coordinator);
+        boolean result = coordinatorDao.insertCoordinator(coordinator);
         CoordinatorDto savedCoordinator = coordinatorDao.getCoordinatorById(testUserId);
 
         assertTrue(result);
@@ -71,7 +81,7 @@ public class CoordinatorDaoTest {
                 LocalDate.of(2026, 4, 1),
                 LocalDate.of(2026, 12, 31)
         );
-        coordinatorDao.registerCoordinator(coordinator);
+        coordinatorDao.insertCoordinator(coordinator);
 
         coordinator.setName("Coordinador Actualizado");
         coordinator.setState("Inactivo");
@@ -99,7 +109,7 @@ public class CoordinatorDaoTest {
                 LocalDate.of(2026, 4, 1),
                 LocalDate.of(2026, 12, 31)
         );
-        coordinatorDao.registerCoordinator(coordinator);
+        coordinatorDao.insertCoordinator(coordinator);
 
         boolean result = coordinatorDao.deleteCoord(testUserId);
         CoordinatorDto deletedCoordinator = coordinatorDao.getCoordinatorById(testUserId);
@@ -118,7 +128,7 @@ public class CoordinatorDaoTest {
                 LocalDate.of(2026, 2, 15),
                 LocalDate.of(2026, 8, 15)
         );
-        coordinatorDao.registerCoordinator(coordinator);
+        coordinatorDao.insertCoordinator(coordinator);
 
         CoordinatorDto foundCoordinator = coordinatorDao.getCoordinatorById(testUserId);
 
@@ -140,7 +150,7 @@ public class CoordinatorDaoTest {
                 LocalDate.of(2026, 1, 10),
                 LocalDate.of(2026, 10, 10)
         );
-        coordinatorDao.registerCoordinator(coordinator);
+        coordinatorDao.insertCoordinator(coordinator);
 
         List<CoordinatorDto> coordinators = coordinatorDao.getAllCoordinators();
         boolean containsTestCoordinator = coordinators.stream()

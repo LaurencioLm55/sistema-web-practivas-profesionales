@@ -10,9 +10,9 @@ public interface IIntern {
 
     boolean updateIntern(InternDto intern) throws DaoException;
 
-    boolean deleteIntern(String matricula) throws DaoException;
+    boolean deleteIntern(String studentId) throws DaoException;
 
-    InternDto getInternByMatricula(String matricula) throws DaoException;
+    InternDto getInternByStudentId(String studentId) throws DaoException;
 
     List<InternDto> getAllInterns() throws DaoException;
 }
