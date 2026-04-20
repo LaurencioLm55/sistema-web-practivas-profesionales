@@ -30,7 +30,7 @@ public class CoordinatorDaoTest {
         testUserId = TEST_USER_ID;
 
         if (userDao.getUser(testUserId) == null) {
-            UserDto user = new UserDto(testUserId, "usuario_prueba_coordinator", "password123");
+            UserDto user = new UserDto(testUserId, "coordinator_test_user", "password123");
             userDao.insertUser(user);
         }
     }
@@ -50,8 +50,8 @@ public class CoordinatorDaoTest {
         CoordinatorDto coordinator = new CoordinatorDto(
                 testPersonnelNumber,
                 testUserId,
-                "Coordinador Prueba",
-                "Activo",
+                "Test Coordinator",
+                "Active",
                 LocalDate.of(2026, 4, 1),
                 LocalDate.of(2026, 12, 31)
         );
@@ -64,15 +64,15 @@ public class CoordinatorDaoTest {
         CoordinatorDto coordinator = new CoordinatorDto(
                 testPersonnelNumber,
                 testUserId,
-                "Coordinador Inicial",
-                "Activo",
+                "Initial Coordinator",
+                "Active",
                 LocalDate.of(2026, 4, 1),
                 LocalDate.of(2026, 12, 31)
         );
         coordinatorDao.insertCoordinator(coordinator);
 
-        coordinator.setName("Coordinador Actualizado");
-        coordinator.setState("Inactivo");
+        coordinator.setName("Updated Coordinator");
+        coordinator.setState("Inactive");
         coordinator.setEntryDate(LocalDate.of(2026, 5, 1));
         coordinator.setExitDate(LocalDate.of(2027, 1, 31));
 
@@ -84,8 +84,8 @@ public class CoordinatorDaoTest {
         CoordinatorDto coordinator = new CoordinatorDto(
                 testPersonnelNumber,
                 testUserId,
-                "Coordinador Eliminar",
-                "Activo",
+                "Delete Coordinator",
+                "Active",
                 LocalDate.of(2026, 4, 1),
                 LocalDate.of(2026, 12, 31)
         );
@@ -99,8 +99,8 @@ public class CoordinatorDaoTest {
         CoordinatorDto coordinator = new CoordinatorDto(
                 testPersonnelNumber,
                 testUserId,
-                "Coordinador Buscar",
-                "Activo",
+                "Search Coordinator",
+                "Active",
                 LocalDate.of(2026, 2, 15),
                 LocalDate.of(2026, 8, 15)
         );
@@ -114,8 +114,8 @@ public class CoordinatorDaoTest {
         CoordinatorDto coordinator = new CoordinatorDto(
                 testPersonnelNumber,
                 testUserId,
-                "Coordinador Lista",
-                "Activo",
+                "List Coordinator",
+                "Active",
                 LocalDate.of(2026, 1, 10),
                 LocalDate.of(2026, 10, 10)
         );
