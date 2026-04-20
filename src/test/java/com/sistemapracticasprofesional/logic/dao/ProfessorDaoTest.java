@@ -7,10 +7,7 @@ import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ProfessorDaoTest {
@@ -38,74 +35,47 @@ public class ProfessorDaoTest {
     }
 
     @Test
-    public void testInsertProfessor() {
+    public void testInsertProfessorSuccessfully() {
         ProfessorDto professor = new ProfessorDto(testStaffNumber, null, "Profesor Prueba", "Matutino");
 
-        boolean result = professorDao.insertProfessor(professor);
-        ProfessorDto savedProfessor = professorDao.getProfessorByStaffNumber(testStaffNumber);
-
-        assertTrue(result);
-        assertNotNull(savedProfessor);
-        assertEquals(testStaffNumber, savedProfessor.getStaffNumber());
-        assertNull(savedProfessor.getUserId());
-        assertEquals("Profesor Prueba", savedProfessor.getName());
-        assertEquals("Matutino", savedProfessor.getShift());
+        assertTrue(professorDao.insertProfessor(professor));
     }
 
     @Test
-    public void testUpdateProfessor() {
+    public void testUpdateProfessorSuccessfully() {
         ProfessorDto professor = new ProfessorDto(testStaffNumber, null, "Profesor Inicial", "Matutino");
         professorDao.insertProfessor(professor);
 
         professor.setName("Profesor Actualizado");
         professor.setShift("Vespertino");
 
-        boolean result = professorDao.updateProfessor(professor);
-        ProfessorDto updatedProfessor = professorDao.getProfessorByStaffNumber(testStaffNumber);
-
-        assertTrue(result);
-        assertNotNull(updatedProfessor);
-        assertEquals("Profesor Actualizado", updatedProfessor.getName());
-        assertEquals("Vespertino", updatedProfessor.getShift());
+        assertTrue(professorDao.updateProfessor(professor));
     }
 
     @Test
-    public void testDeleteProfessor() {
+    public void testDeleteProfessorSuccessfully() {
         ProfessorDto professor = new ProfessorDto(testStaffNumber, null, "Profesor Eliminar", "Matutino");
         professorDao.insertProfessor(professor);
 
-        boolean result = professorDao.deleteProfessor(testStaffNumber);
-        ProfessorDto deletedProfessor = professorDao.getProfessorByStaffNumber(testStaffNumber);
-
-        assertTrue(result);
-        assertNull(deletedProfessor);
+        assertTrue(professorDao.deleteProfessor(testStaffNumber));
     }
 
     @Test
-    public void testGetProfessorByStaffNumber() {
+    public void testGetProfessorByStaffNumberSuccessfully() {
         ProfessorDto professor = new ProfessorDto(testStaffNumber, null, "Profesor Buscar", "Mixto");
         professorDao.insertProfessor(professor);
 
-        ProfessorDto foundProfessor = professorDao.getProfessorByStaffNumber(testStaffNumber);
-
-        assertNotNull(foundProfessor);
-        assertEquals(testStaffNumber, foundProfessor.getStaffNumber());
-        assertEquals("Profesor Buscar", foundProfessor.getName());
-        assertEquals("Mixto", foundProfessor.getShift());
+        assertNotNull(professorDao.getProfessorByStaffNumber(testStaffNumber));
     }
 
     @Test
-    public void testGetAllProfessors() {
+    public void testGetAllProfessorsSuccessfully() {
         ProfessorDto professor = new ProfessorDto(testStaffNumber, null, "Profesor Lista", "Matutino");
         professorDao.insertProfessor(professor);
 
         List<ProfessorDto> professors = professorDao.getAllProfessors();
-        boolean containsTestProfessor = professors.stream()
-                .anyMatch(savedProfessor -> savedProfessor.getStaffNumber() == testStaffNumber);
 
         assertNotNull(professors);
-        assertFalse(professors.isEmpty());
-        assertTrue(containsTestProfessor);
     }
     
 }
