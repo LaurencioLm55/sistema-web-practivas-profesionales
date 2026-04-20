@@ -97,7 +97,7 @@ public class ProjectDao implements IProject {
         return operationSuccess;
     }
 
-    public boolean deleteProject(int projectId) throws DaoException {
+    public boolean deleteProjectById(int projectId) throws DaoException {
 
         boolean operationSuccess = false;
 
