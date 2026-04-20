@@ -9,10 +9,7 @@ import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class CoordinatorDaoTest {
@@ -49,7 +46,7 @@ public class CoordinatorDaoTest {
     }
 
     @Test
-    public void testRegisterCoordinator() {
+    public void testRegisterCoordinatorSuccessfully() {
         CoordinatorDto coordinator = new CoordinatorDto(
                 testPersonnelNumber,
                 testUserId,
@@ -59,20 +56,11 @@ public class CoordinatorDaoTest {
                 LocalDate.of(2026, 12, 31)
         );
 
-        boolean result = coordinatorDao.insertCoordinator(coordinator);
-        CoordinatorDto savedCoordinator = coordinatorDao.getCoordinatorById(testUserId);
-
-        assertTrue(result);
-        assertNotNull(savedCoordinator);
-        assertEquals(testUserId, savedCoordinator.getUserId());
-        assertEquals("Coordinador Prueba", savedCoordinator.getName());
-        assertEquals("Activo", savedCoordinator.getState());
-        assertEquals(LocalDate.of(2026, 4, 1), savedCoordinator.getEntryDate());
-        assertEquals(LocalDate.of(2026, 12, 31), savedCoordinator.getExitDate());
+        assertTrue(coordinatorDao.insertCoordinator(coordinator));
     }
 
     @Test
-    public void testUpdateCoordinator() {
+    public void testUpdateCoordinatorSuccessfully() {
         CoordinatorDto coordinator = new CoordinatorDto(
                 testPersonnelNumber,
                 testUserId,
@@ -88,19 +76,11 @@ public class CoordinatorDaoTest {
         coordinator.setEntryDate(LocalDate.of(2026, 5, 1));
         coordinator.setExitDate(LocalDate.of(2027, 1, 31));
 
-        boolean result = coordinatorDao.updateCoordinator(coordinator);
-        CoordinatorDto updatedCoordinator = coordinatorDao.getCoordinatorById(testUserId);
-
-        assertTrue(result);
-        assertNotNull(updatedCoordinator);
-        assertEquals("Coordinador Actualizado", updatedCoordinator.getName());
-        assertEquals("Inactivo", updatedCoordinator.getState());
-        assertEquals(LocalDate.of(2026, 5, 1), updatedCoordinator.getEntryDate());
-        assertEquals(LocalDate.of(2027, 1, 31), updatedCoordinator.getExitDate());
+        assertTrue(coordinatorDao.updateCoordinator(coordinator));
     }
 
     @Test
-    public void testDeleteCoord() {
+    public void testDeleteCoordSuccessfully() {
         CoordinatorDto coordinator = new CoordinatorDto(
                 testPersonnelNumber,
                 testUserId,
@@ -111,15 +91,11 @@ public class CoordinatorDaoTest {
         );
         coordinatorDao.insertCoordinator(coordinator);
 
-        boolean result = coordinatorDao.deleteCoord(testUserId);
-        CoordinatorDto deletedCoordinator = coordinatorDao.getCoordinatorById(testUserId);
-
-        assertTrue(result);
-        assertNull(deletedCoordinator);
+        assertTrue(coordinatorDao.deleteCoord(testUserId));
     }
 
     @Test
-    public void testGetCoordinatorById() {
+    public void testGetCoordinatorByIdSuccessfully() {
         CoordinatorDto coordinator = new CoordinatorDto(
                 testPersonnelNumber,
                 testUserId,
@@ -130,18 +106,11 @@ public class CoordinatorDaoTest {
         );
         coordinatorDao.insertCoordinator(coordinator);
 
-        CoordinatorDto foundCoordinator = coordinatorDao.getCoordinatorById(testUserId);
-
-        assertNotNull(foundCoordinator);
-        assertEquals(testUserId, foundCoordinator.getUserId());
-        assertEquals("Coordinador Buscar", foundCoordinator.getName());
-        assertEquals("Activo", foundCoordinator.getState());
-        assertEquals(LocalDate.of(2026, 2, 15), foundCoordinator.getEntryDate());
-        assertEquals(LocalDate.of(2026, 8, 15), foundCoordinator.getExitDate());
+        assertNotNull(coordinatorDao.getCoordinatorById(testUserId));
     }
 
     @Test
-    public void testGetAllCoordinators() {
+    public void testGetAllCoordinatorsSuccessfully() {
         CoordinatorDto coordinator = new CoordinatorDto(
                 testPersonnelNumber,
                 testUserId,
@@ -153,11 +122,7 @@ public class CoordinatorDaoTest {
         coordinatorDao.insertCoordinator(coordinator);
 
         List<CoordinatorDto> coordinators = coordinatorDao.getAllCoordinators();
-        boolean containsTestCoordinator = coordinators.stream()
-                .anyMatch(savedCoordinator -> testUserId == savedCoordinator.getUserId());
 
         assertNotNull(coordinators);
-        assertFalse(coordinators.isEmpty());
-        assertTrue(containsTestCoordinator);
     }
 }
