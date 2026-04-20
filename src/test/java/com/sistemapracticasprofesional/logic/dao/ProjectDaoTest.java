@@ -54,10 +54,9 @@ public class ProjectDaoTest {
 
     @Test
     public void testInsertProjectSuccessfull() {
-        ProjectDto projectTest = new ProjectDto(
-                testProjectId, testOrganizationId, "Proyecto Prueba", "Descripcion de prueba",
-                "SCRUM", "Equipo y software", "Objetivos medios", "Objetivo general",
-                "Objetivos inmediatos", "Responsabilidades de prueba", "Ana Garcia",
+        ProjectDto projectTest = new ProjectDto(testProjectId, testOrganizationId, "Proyecto Prueba", 
+                "Descripcion de prueba", "SCRUM", "Equipo y software", "Objetivos medios", 
+                "Objetivo general", "Objetivos inmediatos", "Responsabilidades de prueba", "Ana Garcia",
                 "ana@example.com", "Lunes a Viernes" );
 
         boolean result = projectDao.insertProject(projectTest);
@@ -67,10 +66,9 @@ public class ProjectDaoTest {
 
     @Test
     public void testUpdateProjectSuccessfull() {
-    ProjectDto projectTest = new ProjectDto(
-            testProjectId, testOrganizationId, "Proyecto Inicial", "Descripcion inicial",
-            "Cascada", "Recursos iniciales", "Objetivos iniciales", "Objetivo inicial",
-            "Inmediatos iniciales", "Responsabilidades iniciales", "Luis Perez",
+    ProjectDto projectTest = new ProjectDto(testProjectId, testOrganizationId, "Proyecto Inicial", 
+            "Descripcion inicial", "Cascada", "Recursos iniciales", "Objetivos iniciales", 
+            "Objetivo inicial", "Inmediatos iniciales", "Responsabilidades iniciales", "Luis Perez",
             "luis@example.com", "Martes y Jueves"
     );
     projectDao.insertProject(projectTest);
@@ -83,10 +81,9 @@ public class ProjectDaoTest {
 
     @Test
     public void testDeleteProjectSuccessfully() {
-        ProjectDto projectTest = new ProjectDto(
-                testProjectId, testOrganizationId, "Proyecto Eliminar", "Descripcion",
-                "SCRUM", "Recursos", "Objetivos medios", "Objetivo general",
-                "Objetivos inmediatos", "Responsabilidades", "Mario Diaz",
+        ProjectDto projectTest = new ProjectDto( testProjectId, testOrganizationId, 
+                "Proyecto Eliminar", "Descripcion", "SCRUM", "Recursos", "Objetivos medios", 
+                "Objetivo general", "Objetivos inmediatos", "Responsabilidades", "Mario Diaz",
                 "mario@example.com", "Lunes" );
 
         projectDao.insertProject(projectTest);
@@ -98,11 +95,10 @@ public class ProjectDaoTest {
 
     @Test
     public void testGetProjectSuccessfully() {
-        ProjectDto projectTest = new ProjectDto(
-                testProjectId, testOrganizationId, "Proyecto Buscar", "Descripcion buscar",
-                "XP", "Recursos buscar", "Objetivos medios buscar", "Objetivo general buscar",
-                "Objetivos inmediatos buscar", "Responsabilidades buscar", "Rosa Vega",
-                "rosa@example.com", "Miercoles" );
+        ProjectDto projectTest = new ProjectDto( testProjectId, testOrganizationId, "Proyecto Buscar", 
+                "Descripcion buscar", "XP", "Recursos buscar", "Objetivos medios buscar", 
+                "Objetivo general buscar", "Objetivos inmediatos buscar", "Responsabilidades buscar",
+                "Rosa Vega", "rosa@example.com", "Miercoles" );
         projectDao.insertProject(projectTest);
 
         assertEquals(projectTest, projectDao.getProjectById(testProjectId));
@@ -110,11 +106,10 @@ public class ProjectDaoTest {
 
     @Test
     public void testListProyectsSuccessfully() {
-        ProjectDto projectTest = new ProjectDto(
-                testProjectId, testOrganizationId, "Proyecto Lista", "Descripcion lista",
-                "SCRUM", "Recursos lista", "Objetivos medios lista", "Objetivo general lista",
-                "Objetivos inmediatos lista", "Responsabilidades lista", "Elena Cruz",
-                "elena@example.com", "Jueves"
+        ProjectDto projectTest = new ProjectDto(testProjectId, testOrganizationId, "Proyecto Lista", 
+                "Descripcion lista", "SCRUM", "Recursos lista", "Objetivos medios lista",
+                "Objetivo general lista", "Objetivos inmediatos lista", "Responsabilidades lista", 
+                "Elena Cruz", "elena@example.com", "Jueves"
         );
         projectDao.insertProject(projectTest);
 
@@ -126,11 +121,10 @@ public class ProjectDaoTest {
     @Test
     public void testInsertProjectNoSuccessfully(){
         
-        ProjectDto projectTest = new ProjectDto(testProjectId,
-                999999, "Proyecto Lista", "Descripcion lista",
-                "SCRUM", "Recursos lista", "Objetivos medios lista", "Objetivo general lista",
-                "Objetivos inmediatos lista", "Responsabilidades lista", "Elena Cruz",
-                "elena@example.com", "Jueves"
+        ProjectDto projectTest = new ProjectDto(testProjectId, 999999, "Proyecto Lista",
+                "Descripcion lista", "SCRUM", "Recursos lista", "Objetivos medios lista",
+                "Objetivo general lista", "Objetivos inmediatos lista", "Responsabilidades lista", 
+                "Elena Cruz", "elena@example.com", "Jueves"
         );
         
         assertThrows(DaoException.class, () -> projectDao.insertProject(projectTest));
