@@ -30,7 +30,7 @@ public class CoordinatorDaoTest {
         testUserId = TEST_USER_ID;
 
         if (userDao.getUser(testUserId) == null) {
-            UserDto user = new UserDto(testUserId, "coordinator_test_user", "password123");
+            UserDto user = new UserDto(testUserId, "Mtra. Estela Dominguez Romero", "S00983476");
             userDao.insertUser(user);
         }
     }
@@ -48,8 +48,8 @@ public class CoordinatorDaoTest {
     @Test
     public void testRegisterCoordinatorSuccessfully() {
         CoordinatorDto coordinator = new CoordinatorDto(testPersonnelNumber,
-                testUserId, "Test Coordinator", "Active", LocalDate.of(2026, 4, 1),
-                LocalDate.of(2026, 12, 31));
+                testUserId, "Mtra. Laura Fernanda Castillo Perez", "Active",
+                LocalDate.of(2026, 1, 15), LocalDate.of(2026, 12, 15));
         
         boolean success = coordinatorDao.insertCoordinator(coordinator);
 
@@ -59,11 +59,11 @@ public class CoordinatorDaoTest {
     @Test
     public void testUpdateCoordinatorSuccessfully() {
         CoordinatorDto coordinator = new CoordinatorDto(testPersonnelNumber,
-                testUserId, "Initial Coordinator", "Active", LocalDate.of(2026, 4, 1),
-                LocalDate.of(2026, 12, 31));
+                testUserId, "Mtro. Alejandro Ramirez Soto", "Active",
+                LocalDate.of(2026, 2, 1), LocalDate.of(2026, 11, 30));
         coordinatorDao.insertCoordinator(coordinator);
 
-        coordinator.setName("Updated Coordinator");
+        coordinator.setName("Mtro. Alejandro Ramirez Hernandez");
         
         boolean success = coordinatorDao.updateCoordinator(coordinator);
         
@@ -73,8 +73,8 @@ public class CoordinatorDaoTest {
     @Test
     public void testDeleteCoordSuccessfully() {
         CoordinatorDto coordinator = new CoordinatorDto(testPersonnelNumber,
-                testUserId, "Delete Coordinator", "Active", LocalDate.of(2026, 4, 1),
-                LocalDate.of(2026, 12, 31));
+                testUserId, "Dra. Mariana Torres Salazar", "Active",
+                LocalDate.of(2026, 3, 1), LocalDate.of(2026, 12, 20));
         coordinatorDao.insertCoordinator(coordinator);
         
         boolean success = coordinatorDao.deleteCoord(testUserId);
@@ -85,8 +85,8 @@ public class CoordinatorDaoTest {
     @Test
     public void testGetCoordinatorByIdSuccessfully() {
         CoordinatorDto coordinator = new CoordinatorDto(testPersonnelNumber,
-                testUserId, "Search Coordinator", "Active", LocalDate.of(2026, 2, 15),
-                LocalDate.of(2026, 8, 15));
+                testUserId, "Mtro. Ricardo Mendoza Cruz", "Active",
+                LocalDate.of(2026, 2, 15), LocalDate.of(2026, 8, 15));
         coordinatorDao.insertCoordinator(coordinator);
         
         CoordinatorDto success = coordinatorDao.getCoordinatorById(testUserId);
@@ -97,8 +97,7 @@ public class CoordinatorDaoTest {
     @Test
     public void testGetAllCoordinatorsSuccessfully() {
         CoordinatorDto coordinator = new CoordinatorDto(testPersonnelNumber, testUserId,
-                "List Coordinator","Active",
-                LocalDate.of(2026, 1, 10),
+                "Lic. Karla Jimenez Ortega", "Active", LocalDate.of(2026, 1, 10),
                 LocalDate.of(2026, 10, 10));
         
         coordinatorDao.insertCoordinator(coordinator);
