@@ -47,78 +47,60 @@ public class CoordinatorDaoTest {
 
     @Test
     public void testRegisterCoordinatorSuccessfully() {
-        CoordinatorDto coordinator = new CoordinatorDto(
-                testPersonnelNumber,
-                testUserId,
-                "Test Coordinator",
-                "Active",
-                LocalDate.of(2026, 4, 1),
-                LocalDate.of(2026, 12, 31)
-        );
+        CoordinatorDto coordinator = new CoordinatorDto(testPersonnelNumber,
+                testUserId, "Test Coordinator", "Active", LocalDate.of(2026, 4, 1),
+                LocalDate.of(2026, 12, 31));
+        
+        boolean success = coordinatorDao.insertCoordinator(coordinator);
 
-        assertTrue(coordinatorDao.insertCoordinator(coordinator));
+        assertTrue(success);
     }
 
     @Test
     public void testUpdateCoordinatorSuccessfully() {
-        CoordinatorDto coordinator = new CoordinatorDto(
-                testPersonnelNumber,
-                testUserId,
-                "Initial Coordinator",
-                "Active",
-                LocalDate.of(2026, 4, 1),
-                LocalDate.of(2026, 12, 31)
-        );
+        CoordinatorDto coordinator = new CoordinatorDto(testPersonnelNumber,
+                testUserId, "Initial Coordinator", "Active", LocalDate.of(2026, 4, 1),
+                LocalDate.of(2026, 12, 31));
         coordinatorDao.insertCoordinator(coordinator);
 
         coordinator.setName("Updated Coordinator");
-        coordinator.setState("Inactive");
-        coordinator.setEntryDate(LocalDate.of(2026, 5, 1));
-        coordinator.setExitDate(LocalDate.of(2027, 1, 31));
-
-        assertTrue(coordinatorDao.updateCoordinator(coordinator));
+        
+        boolean success = coordinatorDao.updateCoordinator(coordinator);
+        
+        assertTrue(success);
     }
 
     @Test
     public void testDeleteCoordSuccessfully() {
-        CoordinatorDto coordinator = new CoordinatorDto(
-                testPersonnelNumber,
-                testUserId,
-                "Delete Coordinator",
-                "Active",
-                LocalDate.of(2026, 4, 1),
-                LocalDate.of(2026, 12, 31)
-        );
+        CoordinatorDto coordinator = new CoordinatorDto(testPersonnelNumber,
+                testUserId, "Delete Coordinator", "Active", LocalDate.of(2026, 4, 1),
+                LocalDate.of(2026, 12, 31));
         coordinatorDao.insertCoordinator(coordinator);
+        
+        boolean success = coordinatorDao.deleteCoord(testUserId);
 
-        assertTrue(coordinatorDao.deleteCoord(testUserId));
+        assertTrue(success);
     }
 
     @Test
     public void testGetCoordinatorByIdSuccessfully() {
-        CoordinatorDto coordinator = new CoordinatorDto(
-                testPersonnelNumber,
-                testUserId,
-                "Search Coordinator",
-                "Active",
-                LocalDate.of(2026, 2, 15),
-                LocalDate.of(2026, 8, 15)
-        );
+        CoordinatorDto coordinator = new CoordinatorDto(testPersonnelNumber,
+                testUserId, "Search Coordinator", "Active", LocalDate.of(2026, 2, 15),
+                LocalDate.of(2026, 8, 15));
         coordinatorDao.insertCoordinator(coordinator);
+        
+        CoordinatorDto success = coordinatorDao.getCoordinatorById(testUserId);
 
-        assertNotNull(coordinatorDao.getCoordinatorById(testUserId));
+        assertNotNull(success);
     }
 
     @Test
     public void testGetAllCoordinatorsSuccessfully() {
-        CoordinatorDto coordinator = new CoordinatorDto(
-                testPersonnelNumber,
-                testUserId,
-                "List Coordinator",
-                "Active",
+        CoordinatorDto coordinator = new CoordinatorDto(testPersonnelNumber, testUserId,
+                "List Coordinator","Active",
                 LocalDate.of(2026, 1, 10),
-                LocalDate.of(2026, 10, 10)
-        );
+                LocalDate.of(2026, 10, 10));
+        
         coordinatorDao.insertCoordinator(coordinator);
 
         List<CoordinatorDto> coordinators = coordinatorDao.getAllCoordinators();

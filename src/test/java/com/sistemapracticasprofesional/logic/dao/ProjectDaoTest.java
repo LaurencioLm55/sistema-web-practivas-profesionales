@@ -73,7 +73,9 @@ public class ProjectDaoTest {
 
         projectTest.setProjectName("Updated Project");
         
-        assertTrue(projectDao.updateProject(projectTest));
+        boolean success = projectDao.updateProject(projectTest);
+        
+        assertTrue(success);
     }
 
 
@@ -86,8 +88,10 @@ public class ProjectDaoTest {
 
         projectDao.insertProject(projectTest);
         projectDao.deleteProject(testProjectId);
-
-        assertNull(projectDao.getProjectById(testProjectId));
+        
+        ProjectDto success = projectDao.getProjectById(testProjectId);
+        
+        assertNull(success);
     }
 
     @Test
@@ -98,7 +102,9 @@ public class ProjectDaoTest {
                 "Rosa Vega", "rosa@example.com", "Wednesday" );
         projectDao.insertProject(projectTest);
 
-        assertNotNull(projectDao.getProjectById(testProjectId));
+        ProjectDto success = projectDao.getProjectById(testProjectId);
+
+        assertNotNull(success);
     }
 
     @Test
@@ -111,6 +117,7 @@ public class ProjectDaoTest {
         projectDao.insertProject(projectTest);
 
         List<ProjectDto> listProjects = projectDao.getAllProjects();
+        
         assertNotNull(listProjects);
     }
 

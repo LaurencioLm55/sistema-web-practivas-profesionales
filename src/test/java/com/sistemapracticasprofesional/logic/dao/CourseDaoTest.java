@@ -19,7 +19,7 @@ public class CourseDaoTest {
     }
 
     @Test
-    public void testRegisterCourse_WhitValidData() {
+    public void testRegisterCourse_WithValidData() {
 
         boolean expectedResult = true;
 
