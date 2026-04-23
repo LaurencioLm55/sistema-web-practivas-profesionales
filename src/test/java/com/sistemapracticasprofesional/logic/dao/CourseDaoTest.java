@@ -19,7 +19,11 @@ public class CourseDaoTest {
     }
 
     @Test
+<<<<<<< HEAD
     public void testRegisterCourseSuccessfully() {
+=======
+    public void testRegisterCourse_WithValidData() {
+>>>>>>> 5eb8e8e047c3cc4591951a3c684860e40928dbf2
 
         boolean expectedResult = true;
 
@@ -101,7 +105,6 @@ public class CourseDaoTest {
         assertEquals(realResult, expetedResult);
         
     }
-
 
 
     @Test
