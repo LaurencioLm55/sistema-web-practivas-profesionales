@@ -19,7 +19,7 @@ public class CourseDaoTest {
     }
 
     @Test
-    public void testRegisterCourse_WhitValidData() {
+    public void testRegisterCourseSuccessfully() {
 
         boolean expectedResult = true;
 
@@ -31,7 +31,7 @@ public class CourseDaoTest {
     }
 
     @Test
-    public void testRegisterCourse_UsingRepeatedMeasures() {
+    public void testRegisterCourseUsingRepeatedMeasures() {
 
         boolean expectedResult = false;
 
@@ -44,7 +44,7 @@ public class CourseDaoTest {
 
     
     @Test
-    public void testRegisterCourse_WhitEmptyfields() {
+    public void testRegisterCourseWhitEmptyfields() {
 
         boolean expectedResult = false;
 
@@ -56,7 +56,7 @@ public class CourseDaoTest {
     }
 
     @Test
-    public void testRegisterCourse_WhitInvalidData() {
+    public void testRegisterCourseWhitInvalidData() {
 
         boolean expectedResult = false;
 
@@ -68,7 +68,7 @@ public class CourseDaoTest {
     }
 
     @Test
-    public void testUpdateCourse_WhitValidData() {
+    public void testUpdateCourseWhitValidData() {
 
         boolean expectedResult = true;
 
@@ -79,17 +79,18 @@ public class CourseDaoTest {
 
     }
 
-    public void testUpdateCourse_WhitInvalidData() {
+    @Test
+    public void testUpdateCourseWhitInvalidData() {
 
-        boolean expectedResult = true;
+        boolean expectedResult = false;
 
-        CourseDto courseDto = new CourseDto(40776, 13135, "inactivo", "01-26", "2", "Archivo.txt");
+        CourseDto courseDto = new CourseDto(40776, 13135, null, "01-26", "2", "Archivo.txt");
         boolean realResult = courseDao.updateCourse(courseDto);
         
         assertEquals(expectedResult, realResult);
 
     }
-    
+
 
     @Test
     public void testGetCourse() {

@@ -24,63 +24,64 @@ public class InternDaoTest {
     }
 
     @Test
-    public void testInsertIntern() {
+    public void testInsertInternSuccess() {
 
         boolean expetedResult = true;
 
-        InternDto internDto = new InternDto("S24060080", 20, "Rodrigo Montoya Herrera", "No", "Masculino", "Ingenieria de Software");
-        boolean result = internDao.insertIntern(internDto);
+        InternDto internDto = new InternDto("S24060080", 23, "Rodrigo Montoya Herrera", "No", "Masculino", "Ingenieria de Software");
+        boolean realResult = internDao.insertIntern(internDto);
 
-        assertEquals(expetedResult, result);
+        assertEquals(expetedResult, realResult);
 
     }
 
     @Test
-    public void testUpdateIntern() {
+    public void testUpdateInternSuccess() {
 
         boolean expetedResult = true;
 
-        InternDto internDto = new InternDto("S24060080", 20, "Sebastián Vargas Ríos", "No", "Masculino", "Ingenieria de Software");
-        boolean result = internDao.updateIntern(internDto);
+        InternDto internDto = new InternDto("S24060080", 23, "Sebastián Vargas Ríos", "No", "Masculino", "Ingenieria de Software");
+        boolean realResult = internDao.updateIntern(internDto);
 
-        assertEquals(expetedResult, result);
-
-    }
-
-    @Test
-    public void testGetInternByMatricula() {
-
-        InternDto expetedResult = new InternDto("S24060080", 20, "Sebastián Vargas Ríos", "No", "Masculino", "Ingenieria de Software");
-        InternDto result = internDao.getInternByStudentId("S24060080");
-
-        assertEquals(expetedResult, result);
+        assertEquals(expetedResult, realResult);
 
     }
 
     @Test
-    public void testGetAllInterns() {
+    public void testGetInternByMatriculaSuccess() {
 
-        InternDto internDto1 = new InternDto(null, 0, null, null, null, null);
-        InternDto internDto2 = new InternDto(null, 0, null, null, null, null);
-        InternDto internDto3 = new InternDto(null, 0, null, null, null, null);
-        InternDto internDto4 = new InternDto(null, 0, null, null, null, null);
+        InternDto expetedResult = new InternDto("S24060080", 23, "Sebastián Vargas Ríos", "No", "Masculino", "Ingenieria de Software");
+        InternDto realResult = internDao.getInternByStudentId("S24060080");
+
+        assertEquals(expetedResult, realResult);
+
+    }
+
+    @Test
+    public void testGetAllInternsSuccess() {
+
+        InternDto internDto0 = new InternDto("S24060080", 23, "Sebastián Vargas Ríos", "No", "Masculino", "Ingenieria de Software");
+        InternDto internDto1 = new InternDto("S47382910", 23, "Valeria Moreno Ríos", null, "Femenino", "Ingenieria de software");
+        InternDto internDto2 = new InternDto("S83041562", 24, "Diego Hernández Cruz", "Nahuatl", "Masculino", "Ingenieria de software");
+        InternDto internDto3 = new InternDto("S29174803", 22, "Sofía Ramírez Luna", "Totonaco", "Femenino", "Ingenieria de software");
+        InternDto internDto4 = new InternDto("S65920347", 25, "Andrés Vázquez Torres", null, "Masculino", "Ingenieria de software");
         
         List<InternDto> expetedResult = new ArrayList<>();
 
-        
+        expetedResult.add(internDto0);
         expetedResult.add(internDto1);
         expetedResult.add(internDto2);
         expetedResult.add(internDto3);
         expetedResult.add(internDto4);
 
-        List<InternDto> result = internDao.getAllInterns();
+        List<InternDto> realResult = internDao.getAllInterns();
 
-        assertEquals(expetedResult, result);
+        assertEquals(expetedResult, realResult);
 
     }
 
     @Test
-    public void testDeleteIntern() {
+    public void testDeleteInternSuccess() {
 
         boolean expetedResult = true;
         boolean result = internDao.deleteIntern("S24060080");

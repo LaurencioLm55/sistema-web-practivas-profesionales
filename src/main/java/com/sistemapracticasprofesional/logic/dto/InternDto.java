@@ -103,8 +103,7 @@ public class InternDto {
         if (indigenousLanguage == null) {
             if (other.indigenousLanguage != null)
                 return false;
-        } else if (!indigenousLanguage.equals(other.indigenousLanguage))
-            return false;
+        }
         if (gender == null) {
             if (other.gender != null)
                 return false;
