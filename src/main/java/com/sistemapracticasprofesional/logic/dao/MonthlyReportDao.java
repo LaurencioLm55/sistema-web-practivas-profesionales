@@ -2,7 +2,7 @@ package com.sistemapracticasprofesional.logic.dao;
 
 import com.sistemapracticasprofesional.dataaccess.DatabaseConnection;
 import com.sistemapracticasprofesional.logic.dto.MonthlyReportDto;
-import com.sistemapracticasprofesional.logic.exception.DatabaseOperationException;
+import com.sistemapracticasprofesional.logic.exception.DaoException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -20,13 +20,13 @@ public class MonthlyReportDao implements IMonthlyReport {
     private static final Logger LOGGER = LoggerFactory.getLogger(MonthlyReportDao.class);
 
     @Override
-    public boolean registredReport(MonthlyReportDto monthlyReport) {
+    public boolean insertMonthlyReport(MonthlyReportDto monthlyReport) {
         String query = "INSERT INTO reporteavances "
                 + "(IdActividadProyecto, Matricula, Calificacion, ArchivoReporte, "
                 + "Fecha_de_realizacion, Fecha_de_entrega, DescripcionReporte) "
                 + "VALUES (?, ?, ?, ?, ?, ?, ?)";
 
-        try (Connection connection = new DatabaseConnection().getConnection();
+        try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             preparedStatement.setInt(1, monthlyReport.getMonthlyReportId());
@@ -42,7 +42,7 @@ public class MonthlyReportDao implements IMonthlyReport {
             return preparedStatement.executeUpdate() > 0;
         } catch (SQLException e) {
             LOGGER.error("Error registering monthly report for intern {}", monthlyReport.getInternId(), e);
-            throw new DatabaseOperationException("Error al registrar el reporte mensual", e);
+            throw new DaoException("Error registering monthly report", e);
         }
     }
 
@@ -58,12 +58,12 @@ public class MonthlyReportDao implements IMonthlyReport {
         );
 
         if (data == null || !allowedFields.contains(data)) {
-            throw new IllegalArgumentException("Campo no permitido: " + data);
+            throw new IllegalArgumentException("Field not allowed: " + data);
         }
 
         String query = "UPDATE reporteavances SET " + data + " = ? WHERE IdActividadProyecto = ?";
 
-        try (Connection connection = new DatabaseConnection().getConnection();
+        try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             preparedStatement.setString(1, newData);
@@ -72,15 +72,16 @@ public class MonthlyReportDao implements IMonthlyReport {
             return preparedStatement.executeUpdate() > 0;
         } catch (SQLException e) {
             LOGGER.error("Error updating monthly report id {}", idMonthlyReport, e);
-            throw new DatabaseOperationException("Error al actualizar el reporte mensual", e);
+            throw new DaoException("Error updating monthly report", e);
         }
     }
 
     @Override
     public MonthlyReportDto getMonthlyReport(int idMonthlyReport) {
+        
         String query = "SELECT * FROM reporteavances WHERE IdActividadProyecto = ?";
 
-        try (Connection connection = new DatabaseConnection().getConnection();
+        try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             preparedStatement.setInt(1, idMonthlyReport);
@@ -111,22 +112,25 @@ public class MonthlyReportDao implements IMonthlyReport {
             return null;
         } catch (SQLException e) {
             LOGGER.error("Error getting monthly report id {}", idMonthlyReport, e);
-            throw new DatabaseOperationException("Error al obtener el reporte mensual", e);
+            throw new DaoException("Error getting monthly report", e);
         }
     }
 
     @Override
-    public List<MonthlyReportDto> getListMonthlyReport(String idIntern) {
+    public List<MonthlyReportDto> getStudentsMonthlyReports(String idIntern) {
+        
         List<MonthlyReportDto> monthlyReportList = new ArrayList<>();
         String query = "SELECT * FROM reporteavances WHERE Matricula = ?";
 
-        try (Connection connection = new DatabaseConnection().getConnection();
+        try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             preparedStatement.setString(1, idIntern);
 
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                
                 while (resultSet.next()) {
+                    
                     MonthlyReportDto monthlyReport = new MonthlyReportDto();
                     monthlyReport.setMonthlyReportId(resultSet.getInt("IdActividadProyecto"));
                     monthlyReport.setInternId(resultSet.getString("Matricula"));
@@ -134,24 +138,34 @@ public class MonthlyReportDao implements IMonthlyReport {
                     monthlyReport.setMonthlyReportFile(resultSet.getString("ArchivoReporte"));
 
                     Date completionDate = resultSet.getDate("Fecha_de_realizacion");
+                    
                     if (completionDate != null) {
+                        
                         monthlyReport.setDateOfCompletion(completionDate.toLocalDate());
+                        
                     }
 
                     Date deliveryDate = resultSet.getDate("Fecha_de_entrega");
+                    
                     if (deliveryDate != null) {
+                        
                         monthlyReport.setDeliveryDate(deliveryDate.toLocalDate());
+                        
                     }
 
                     monthlyReport.setDescription(resultSet.getString("DescripcionReporte"));
                     monthlyReportList.add(monthlyReport);
+                    
                 }
             }
 
             return monthlyReportList;
+            
         } catch (SQLException e) {
+            
             LOGGER.error("Error getting monthly reports for intern {}", idIntern, e);
-            throw new DatabaseOperationException("Error al obtener la lista de reportes mensuales", e);
+            throw new DaoException("Error getting monthly report list", e);
+            
         }
     }
 }

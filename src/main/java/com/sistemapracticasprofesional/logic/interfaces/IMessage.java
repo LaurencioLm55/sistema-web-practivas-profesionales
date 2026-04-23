@@ -1,19 +1,18 @@
 package com.sistemapracticasprofesional.logic.interfaces;
 
 import com.sistemapracticasprofesional.logic.dto.MessageDto;
+import com.sistemapracticasprofesional.logic.exception.DaoException;
 import java.util.List;
 
 public interface IMessage {
 
-    boolean sendMessage(MessageDto message);
+    boolean sendMessage(MessageDto message) throws DaoException;
 
-    MessageDto getMessageById(int messageId);
+    MessageDto getMessageById(int messageId) throws DaoException;
 
-    List<MessageDto> getInboxByUserId(int receiverUserId);
+    List<MessageDto> getInboxByUserId(int receiverUserId) throws DaoException;
 
-    List<MessageDto> getSentMessagesByUserId(int senderUserId);
+    List<MessageDto> getSentMessagesByUserId(int senderUserId) throws DaoException;
 
-    boolean markMessageAsRead(int messageId);
-
-    boolean deleteMessage(int messageId);
+    boolean deleteMessage(int messageId) throws DaoException;
 }

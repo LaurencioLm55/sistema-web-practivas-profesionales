@@ -2,159 +2,193 @@ package com.sistemapracticasprofesional.logic.dao;
 
 import com.sistemapracticasprofesional.dataaccess.DatabaseConnection;
 import com.sistemapracticasprofesional.logic.dto.ProjectDto;
-import com.sistemapracticasprofesional.logic.exception.DatabaseOperationException;
+import com.sistemapracticasprofesional.logic.exception.DaoException;
 import com.sistemapracticasprofesional.logic.interfaces.IProject;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-public class ProjectDao implements IProject{
-    
-    private static final String INSERT_QUERY = "INSERT INTO proyecto (Id_organizacion, "
-        + "Nombre, Descripcion_general, Metodologia, Recursos, Objetivos_medios, "
-        + "Objetivo_general, Objetivos_inmediatos, Responsabilidades, "
-        + "Nombre_Encargado, e_mail_Encargado, cargo_Encargado) "
-        + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+public class ProjectDao implements IProject {
 
-    private static final String UPDATE_QUERY = "UPDATE proyecto SET Id_organizacion = ?, "
-            + "Nombre = ?, Descripcion_general = ?, Metodologia = ?, Recursos = ?, "
-            + "Objetivos_medios = ?, Objetivo_general = ?, Objetivos_inmediatos = ?, "
-            + "Responsabilidades = ?, Nombre_Encargado = ?, e_mail_Encargado = ?, "
-            + "cargo_Encargado = ? WHERE IdProyecto = ?";
-
-    private static final String DELETE_QUERY = "DELETE FROM proyecto WHERE IdProyecto = ?";
-
-    private static final String SELECT_BY_ID_QUERY = "SELECT * FROM proyecto WHERE IdProyecto = ?";
-
-    private static final String SELECT_ALL_QUERY = "SELECT * FROM proyecto";
+    private static final Logger LOGGER = LoggerFactory.getLogger(ProjectDao.class);
 
     @Override
-    public boolean registerProject(ProjectDto project) throws DatabaseOperationException {
-        
+    public boolean insertProject(ProjectDto project) throws DaoException {
+
         boolean operationSuccess = false;
         
+        String registerQuery = "INSERT INTO proyecto (IdProyecto, Id_organizacion, "
+            + "Nombre, Descripcion_general, Metodologia, Recursos, Objetivos_medios, "
+            + "Objetivo_general, Objetivos_inmediatos, Responsabilidades, "
+            + "Nombre_Encargado, e_mail_Encargado, cargo_Encargado) "
+            + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
         try (Connection connection = DatabaseConnection.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement
-        (INSERT_QUERY, Statement.RETURN_GENERATED_KEYS)) {
-            
-            setProjectStatement(preparedStatement, project);
+            PreparedStatement preparedStatement = connection.prepareStatement(registerQuery)) {
+
+            preparedStatement.setInt(1, project.getProjectId());
+            preparedStatement.setInt(2, project.getLinkedOrganizationId());
+            preparedStatement.setString(3, project.getProjectName());
+            preparedStatement.setString(4, project.getProjectDescription());
+            preparedStatement.setString(5, project.getProjectMethodology());
+            preparedStatement.setString(6, project.getProjectResources());
+            preparedStatement.setString(7, project.getMidtermProjectObjectives());
+            preparedStatement.setString(8, project.getGeneralProjectObjectives());
+            preparedStatement.setString(9, project.getInmediateProjectObjectives());
+            preparedStatement.setString(10, project.getProjectResponsabilities());
+            preparedStatement.setString(11, project.getProjectAttendantName());
+            preparedStatement.setString(12, project.getProjectAttendantEmail());
+            preparedStatement.setString(13, project.getProjectAttendantPosition());
             preparedStatement.executeUpdate();
+
             operationSuccess = true;
 
         } catch (SQLException e) {
-            // logger aquí
-            throw new DatabaseOperationException("Error al registrar el proyecto: "
-                + project.getProjectName(), e);
+
+            LOGGER.error("Error registering project", e);
+            throw new DaoException("Error registering project", e);
         }
         return operationSuccess;
     }
 
     @Override
-    public boolean updateProject(ProjectDto project) throws DatabaseOperationException {
-        
-        boolean updated = false;
-        try (Connection connection = DatabaseConnection.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_QUERY)) {
-            
-            setProjectStatement(preparedStatement, project);
+    public boolean updateProject(ProjectDto project) throws DaoException {
+
+        boolean operationSuccess = false;
+
+        String updateQuery = "UPDATE proyecto SET Id_organizacion = ?, "
+            + "Nombre = ?, Descripcion_general = ?, Metodologia = ?, Recursos = ?, "
+            + "Objetivos_medios = ?, Objetivo_general = ?, Objetivos_inmediatos = ?, "
+            + "Responsabilidades = ?, Nombre_Encargado = ?, e_mail_Encargado = ?, "
+            + "cargo_Encargado = ? WHERE IdProyecto = ?";
+
+        try (Connection connection = DatabaseConnection.getConnection(); 
+            PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
+
+            preparedStatement.setInt(1, project.getLinkedOrganizationId());
+            preparedStatement.setString(2, project.getProjectName());
+            preparedStatement.setString(3, project.getProjectDescription());
+            preparedStatement.setString(4, project.getProjectMethodology());
+            preparedStatement.setString(5, project.getProjectResources());
+            preparedStatement.setString(6, project.getMidtermProjectObjectives());
+            preparedStatement.setString(7, project.getGeneralProjectObjectives());
+            preparedStatement.setString(8, project.getInmediateProjectObjectives());
+            preparedStatement.setString(9, project.getProjectResponsabilities());
+            preparedStatement.setString(10, project.getProjectAttendantName());
+            preparedStatement.setString(11, project.getProjectAttendantEmail());
+            preparedStatement.setString(12, project.getProjectAttendantPosition());
             preparedStatement.setInt(13, project.getProjectId());
             
-            updated = preparedStatement.executeUpdate() > 0;
-        } catch (SQLException e) {
-            // logger aquí
-            throw new DatabaseOperationException("Error al actualizar el proyecto con ID: "
-                + project.getProjectId(), e);
-        }
-        return updated;
-    }
+            int rowsAffected = preparedStatement.executeUpdate();
+            if (rowsAffected > 0) {
+                operationSuccess = true;
+            }
 
-    public boolean deleteProject(int projectId) throws DatabaseOperationException {
-        boolean deleted = false;
-        try (Connection connection = DatabaseConnection.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(DELETE_QUERY)) {
-            
-            preparedStatement.setInt(1, projectId);
-            deleted = preparedStatement.executeUpdate() > 0;
         } catch (SQLException e) {
-            // logger aquí
-            throw new DatabaseOperationException("Error al eliminar el proyecto con ID: "
-                + projectId, e);
+
+            LOGGER.error("Error updating project", e);
+            throw new DaoException("Error updating project", e);
         }
-        return deleted;
+        return operationSuccess;
     }
 
     @Override
-    public ProjectDto getProject(int projectId) throws DatabaseOperationException {
-        ProjectDto project = null;
-        try (Connection connection = DatabaseConnection.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_BY_ID_QUERY)) {
-            
+    public boolean deleteProject(int projectId) throws DaoException {
+
+        boolean operationSuccess = false;
+
+        String deleteQuery = "DELETE FROM proyecto WHERE IdProyecto = ?";
+
+        try (Connection connection = DatabaseConnection.getConnection(); 
+            PreparedStatement preparedStatement = connection.prepareStatement(deleteQuery)) {
+
             preparedStatement.setInt(1, projectId);
-            try (ResultSet rs = preparedStatement.executeQuery()) {
-                if (rs.next()) {
-                    project = mapResultSetToDto(rs);
+            preparedStatement.executeUpdate();
+
+            operationSuccess = true;
+
+        } catch (SQLException e) {
+
+            LOGGER.error("Error deleting project by id: {}", projectId, e);
+            throw new DaoException("Error deleting project with id: "
+                    + projectId, e);
+        }
+        return operationSuccess;
+    }
+
+    @Override
+    public ProjectDto getProjectById(int projectId) throws DaoException {
+
+        ProjectDto project = null;
+
+        String getByIdQuery = "SELECT * FROM proyecto WHERE IdProyecto = ?";
+
+        try (Connection connection = DatabaseConnection.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(getByIdQuery)) {
+
+            preparedStatement.setInt(1, projectId);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    project = mapResultSetToDto(resultSet);
                 }
             }
         } catch (SQLException e) {
-            // [IMPLEMENTAR LOG AQUÍ]
-            throw new DatabaseOperationException("Error al buscar el proyecto con ID: "
-                + projectId, e);
+
+            LOGGER.error("Error fetching project by id: {}", projectId, e);
+            throw new DaoException("Error getting project with id: "
+                    + projectId, e);
         }
         return project;
     }
 
     @Override
-    public List<ProjectDto> listProyects() throws DatabaseOperationException {
+    public List<ProjectDto> getAllProjects() throws DaoException {
+
         List<ProjectDto> projects = new ArrayList<>();
+
+        String getAllQuery = "SELECT * FROM proyecto";
+
         try (Connection connection = DatabaseConnection.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_QUERY);
-             ResultSet rs = preparedStatement.executeQuery()) {
-            
-            while (rs.next()) {
-                projects.add(mapResultSetToDto(rs));
+            PreparedStatement preparedStatement = connection.prepareStatement(getAllQuery);
+            ResultSet resultSet = preparedStatement.executeQuery()) {
+
+            while (resultSet.next()) {
+                projects.add(mapResultSetToDto(resultSet));
+
             }
+
         } catch (SQLException e) {
-            // logger aquí
-            throw new DatabaseOperationException("Error al obtener la lista de proyectos", e);
+
+            LOGGER.error("Error fetching all the projects", e);
+            throw new DaoException("Error getting project list", e);
         }
         return projects;
     }
-    
-    private void setProjectStatement(PreparedStatement preparedStatement, ProjectDto project) throws SQLException {
-        preparedStatement.setInt(1, project.getLinkedOrganizationId());
-        preparedStatement.setString(2, project.getProjectName());
-        preparedStatement.setString(3, project.getProjectDescription());
-        preparedStatement.setString(4, project.getProjectMethodology());
-        preparedStatement.setString(5, project.getProjectResources());
-        preparedStatement.setString(6, project.getMidtermProjectObjectives());
-        preparedStatement.setString(7, project.getGeneralProjectObjectives());
-        preparedStatement.setString(8, project.getInmediateProjectObjectives());
-        preparedStatement.setString(9, project.getProjectResponsabilities());
-        preparedStatement.setString(10, project.getProjectAttendantName());
-        preparedStatement.setString(11, project.getProjectAttendantEmail());
-        preparedStatement.setString(12, project.getProjectAttendantPosition());
-    }
 
     private ProjectDto mapResultSetToDto(ResultSet rs) throws SQLException {
+        
         return new ProjectDto(
-            rs.getInt("projectId"),
-            rs.getInt("linkedOrganizationId"),
-            rs.getString("projectName"),
-            rs.getString("projectDescription"),
-            rs.getString("projectMethodology"),
-            rs.getString("projectResources"),
-            rs.getString("midtermProjectObjectives"),
-            rs.getString("generalProjectObjectives"),
-            rs.getString("inmediateProjectObjectives"),
-            rs.getString("projectResponsabilities"),
-            rs.getString("projectAttendantName"),
-            rs.getString("projectAttendantEmail"),
-            rs.getString("projectAttendantPosition")
+                rs.getInt("IdProyecto"),
+                rs.getInt("Id_organizacion"),
+                rs.getString("Nombre"),
+                rs.getString("Descripcion_general"),
+                rs.getString("Metodologia"),
+                rs.getString("Recursos"),
+                rs.getString("Objetivos_medios"),
+                rs.getString("Objetivo_general"),
+                rs.getString("Objetivos_inmediatos"),
+                rs.getString("Responsabilidades"),
+                rs.getString("Nombre_Encargado"),
+                rs.getString("e_mail_Encargado"),
+                rs.getString("cargo_Encargado")
         );
+
     }
-    
+
 }

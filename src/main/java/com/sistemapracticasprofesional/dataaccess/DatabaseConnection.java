@@ -2,8 +2,6 @@ package com.sistemapracticasprofesional.dataaccess;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class DatabaseConnection {
@@ -25,7 +23,7 @@ public class DatabaseConnection {
 
                 if (url == null || user == null || password == null) {
                     throw new RuntimeException(
-                        "Faltan variables de entorno. Asegúrate de definir: " +
+                        "Missing environment variables. Make sure to define: " +
                         ENV_URL + ", " + ENV_USER + ", " + ENV_PASSWORD
                     );
                 }
@@ -34,7 +32,7 @@ public class DatabaseConnection {
             }
             return connection;
         } catch (SQLException e) {
-            throw new RuntimeException("Error al conectar con la base de datos: " + e.getMessage(), e);
+            throw new RuntimeException("Error connecting to database: " + e.getMessage(), e);
         }
     }
         
@@ -45,7 +43,7 @@ public class DatabaseConnection {
                     connection.close();
                 }
             } catch (SQLException e) {
-                System.err.println("Error cerrando la conexión: " + e.getMessage());
+                System.err.println("Error closing connection: " + e.getMessage());
             }
         }
     }

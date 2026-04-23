@@ -1,8 +1,6 @@
 
 package com.sistemapracticasprofesional.logic.dto;
 
-import java.time.LocalDateTime;
-
 public class MessageDto {
 
     private int messageId;
@@ -10,31 +8,25 @@ public class MessageDto {
     private int receiverUserId;
     private String subject;
     private String content;
-    private LocalDateTime sentDate;
-    private boolean read;
 
     public MessageDto() {
     }
 
     public MessageDto(int senderUserId, int receiverUserId, String subject,
-                      String content, LocalDateTime sentDate, boolean read) {
+                      String content) {
         this.senderUserId = senderUserId;
         this.receiverUserId = receiverUserId;
         this.subject = subject;
         this.content = content;
-        this.sentDate = sentDate;
-        this.read = read;
     }
 
     public MessageDto(int messageId, int senderUserId, int receiverUserId,
-                      String subject, String content, LocalDateTime sentDate, boolean read) {
+                      String subject, String content) {
         this.messageId = messageId;
         this.senderUserId = senderUserId;
         this.receiverUserId = receiverUserId;
         this.subject = subject;
         this.content = content;
-        this.sentDate = sentDate;
-        this.read = read;
     }
 
     public int getMessageId() {
@@ -77,19 +69,45 @@ public class MessageDto {
         this.content = content;
     }
 
-    public LocalDateTime getSentDate() {
-        return sentDate;
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + messageId;
+        result = prime * result + senderUserId;
+        result = prime * result + receiverUserId;
+        result = prime * result + ((subject == null) ? 0 : subject.hashCode());
+        result = prime * result + ((content == null) ? 0 : content.hashCode());
+        return result;
     }
 
-    public void setSentDate(LocalDateTime sentDate) {
-        this.sentDate = sentDate;
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        MessageDto other = (MessageDto) obj;
+        if (messageId != other.messageId)
+            return false;
+        if (senderUserId != other.senderUserId)
+            return false;
+        if (receiverUserId != other.receiverUserId)
+            return false;
+        if (subject == null) {
+            if (other.subject != null)
+                return false;
+        } else if (!subject.equals(other.subject))
+            return false;
+        if (content == null) {
+            if (other.content != null)
+                return false;
+        } else if (!content.equals(other.content))
+            return false;
+        return true;
     }
 
-    public boolean isRead() {
-        return read;
-    }
-
-    public void setRead(boolean read) {
-        this.read = read;
-    }
+    
 }

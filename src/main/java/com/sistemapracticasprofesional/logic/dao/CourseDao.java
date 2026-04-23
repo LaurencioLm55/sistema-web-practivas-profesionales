@@ -2,6 +2,7 @@ package com.sistemapracticasprofesional.logic.dao;
 
 import com.sistemapracticasprofesional.dataaccess.DatabaseConnection;
 import com.sistemapracticasprofesional.logic.dto.CourseDto;
+import com.sistemapracticasprofesional.logic.exception.DaoException;
 import com.sistemapracticasprofesional.logic.interfaces.ICourse;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -22,7 +23,7 @@ public class CourseDao implements ICourse {
                 + "(NRC, Numero_de_personal, Estado, Periodo, Seccion, ArchivoFormato) "
                 + "VALUES (?, ?, ?, ?, ?, ?)";
 
-        try (Connection connection = new DatabaseConnection().getConnection();
+        try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             preparedStatement.setInt(1, course.getNrc());
@@ -36,36 +37,31 @@ public class CourseDao implements ICourse {
 
         } catch (SQLException e) {
             LOGGER.error("Error registering course", e);
-            return false;
+            throw new DaoException("Error registering course", e);
         }
     }
 
     @Override
-    public boolean updateCourse(String field, String newData, int nrc) {
-        List<String> allowedFields = List.of(
-                "Estado",
-                "Periodo",
-                "Seccion",
-                "ArchivoFormato"
-        );
+    public boolean updateCourse(CourseDto course) {
+        String query = "UPDATE experiencia_educativa SET Estado = ?,"
+                + " Periodo = ?, Seccion = ?, ArchivoFormato = ? "
+                + "WHERE NRC = ?";
 
-        if (!allowedFields.contains(field)) {
-            throw new IllegalArgumentException("Campo no permitido: " + field);
-        }
-
-        String query = "UPDATE experiencia_educativa SET " + field + " = ? WHERE NRC = ?";
-
-        try (Connection connection = new DatabaseConnection().getConnection();
+        try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
-            preparedStatement.setString(1, newData);
-            preparedStatement.setInt(2, nrc);
+            preparedStatement.setString(1, course.getStatus());
+            preparedStatement.setString(2, course.getPeriod());
+            preparedStatement.setString(3, course.getSection());
+            preparedStatement.setString(4, course.getFormatFile());
+            preparedStatement.setInt(5, course.getNrc());
 
             return preparedStatement.executeUpdate() > 0;
 
         } catch (SQLException e) {
-            LOGGER.error("Error updating course", e);
-            return false;
+            LOGGER.error("Error updating course with NRC {}",
+                    course.getNrc(), e);
+            throw new DaoException("Error updating course", e);
         }
     }
 
@@ -73,7 +69,7 @@ public class CourseDao implements ICourse {
     public CourseDto getCourse(int nrc) {
         String query = "SELECT * FROM experiencia_educativa WHERE NRC = ?";
 
-        try (Connection connection = new DatabaseConnection().getConnection();
+        try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             preparedStatement.setInt(1, nrc);
@@ -93,20 +89,21 @@ public class CourseDao implements ICourse {
 
         } catch (SQLException e) {
             LOGGER.error("Error getting course with NRC {}", nrc, e);
+            throw new DaoException("Error getting course with NRC: "
+                    + nrc, e);
         }
-
         return null;
     }
 
     @Override
-    public List<CourseDto> getListCourse(String filter) {
+    public List<CourseDto> getCoursesByStatus(String status) {
         List<CourseDto> courseList = new ArrayList<>();
-        String query = "SELECT * FROM experiencia_educativa WHERE Estado LIKE ?";
+        String query = "SELECT * FROM experiencia_educativa WHERE Estado = ?";
 
-        try (Connection connection = new DatabaseConnection().getConnection();
+        try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
-            preparedStatement.setString(1, "%" + filter + "%");
+            preparedStatement.setString(1, status);
 
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 while (resultSet.next()) {
@@ -124,7 +121,8 @@ public class CourseDao implements ICourse {
             }
 
         } catch (SQLException e) {
-            LOGGER.error("Error getting course list with filter {}", filter, e);
+            LOGGER.error("Error getting course list with status {}", status, e);
+            throw new DaoException("Error getting course list", e);
         }
 
         return courseList;

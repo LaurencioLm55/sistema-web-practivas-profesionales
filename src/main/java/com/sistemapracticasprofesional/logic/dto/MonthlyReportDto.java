@@ -93,6 +93,61 @@ public class MonthlyReportDto {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + monthlyReportId;
+        result = prime * result + ((internId == null) ? 0 : internId.hashCode());
+        result = prime * result + Float.floatToIntBits(score);
+        result = prime * result + ((monthlyReportFile == null) ? 0 : monthlyReportFile.hashCode());
+        result = prime * result + ((dateOfCompletion == null) ? 0 : dateOfCompletion.hashCode());
+        result = prime * result + ((deliveryDate == null) ? 0 : deliveryDate.hashCode());
+        result = prime * result + ((description == null) ? 0 : description.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        MonthlyReportDto other = (MonthlyReportDto) obj;
+        if (monthlyReportId != other.monthlyReportId)
+            return false;
+        if (internId == null) {
+            if (other.internId != null)
+                return false;
+        } else if (!internId.equals(other.internId))
+            return false;
+        if (Float.floatToIntBits(score) != Float.floatToIntBits(other.score))
+            return false;
+        if (monthlyReportFile == null) {
+            if (other.monthlyReportFile != null)
+                return false;
+        } else if (!monthlyReportFile.equals(other.monthlyReportFile))
+            return false;
+        if (dateOfCompletion == null) {
+            if (other.dateOfCompletion != null)
+                return false;
+        } else if (!dateOfCompletion.equals(other.dateOfCompletion))
+            return false;
+        if (deliveryDate == null) {
+            if (other.deliveryDate != null)
+                return false;
+        } else if (!deliveryDate.equals(other.deliveryDate))
+            return false;
+        if (description == null) {
+            if (other.description != null)
+                return false;
+        } else if (!description.equals(other.description))
+            return false;
+        return true;
+    }
     
     
 }

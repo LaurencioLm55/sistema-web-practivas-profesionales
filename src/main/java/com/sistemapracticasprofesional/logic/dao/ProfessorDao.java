@@ -2,7 +2,7 @@ package com.sistemapracticasprofesional.logic.dao;
 
 import com.sistemapracticasprofesional.dataaccess.DatabaseConnection;
 import com.sistemapracticasprofesional.logic.dto.ProfessorDto;
-import com.sistemapracticasprofesional.logic.exception.DatabaseOperationException;
+import com.sistemapracticasprofesional.logic.exception.DaoException;
 import com.sistemapracticasprofesional.logic.interfaces.IProfessor;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -17,27 +17,14 @@ public class ProfessorDao implements IProfessor {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ProfessorDao.class);
 
-    private static final String INSERT_QUERY =
-            "INSERT INTO profesor (Numero_de_personal, Id_usuario, Nombre, turno) "
-            + "VALUES (?, ?, ?, ?)";
-
-    private static final String UPDATE_QUERY =
-            "UPDATE profesor SET Id_usuario = ?, Nombre = ?, turno = ? "
-            + "WHERE Numero_de_personal = ?";
-
-    private static final String DELETE_QUERY =
-            "DELETE FROM profesor WHERE Numero_de_personal = ?";
-
-    private static final String SELECT_BY_ID_QUERY =
-            "SELECT * FROM profesor WHERE Numero_de_personal = ?";
-
-    private static final String SELECT_ALL_QUERY =
-            "SELECT * FROM profesor";
-
     @Override
     public boolean insertProfessor(ProfessorDto professor) {
-        try (Connection connection = new DatabaseConnection().getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(INSERT_QUERY)) {
+        
+        String registerQuery = "INSERT INTO profesor (Numero_de_personal, Id_usuario,"
+                + " Nombre, turno) VALUES (?, ?, ?, ?)";
+        
+        try (Connection connection = DatabaseConnection.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(registerQuery)) {
 
             preparedStatement.setInt(1, professor.getStaffNumber());
 
@@ -53,15 +40,20 @@ public class ProfessorDao implements IProfessor {
             return preparedStatement.executeUpdate() > 0;
 
         } catch (SQLException e) {
+            
             LOGGER.error("Error inserting professor with staff number {}", professor.getStaffNumber(), e);
-            throw new DatabaseOperationException("Error al registrar el profesor", e);
+            throw new DaoException("Error registering professor", e);
         }
     }
 
     @Override
     public boolean updateProfessor(ProfessorDto professor) {
-        try (Connection connection = new DatabaseConnection().getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_QUERY)) {
+        
+        String updateQuery = "UPDATE profesor SET Id_usuario = ?, Nombre = ?, turno = ?"
+            + " WHERE Numero_de_personal = ?";
+        
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
 
             if (professor.getUserId() != null) {
                 preparedStatement.setInt(1, professor.getUserId());
@@ -76,29 +68,37 @@ public class ProfessorDao implements IProfessor {
             return preparedStatement.executeUpdate() > 0;
 
         } catch (SQLException e) {
+            
             LOGGER.error("Error updating professor with staff number {}", professor.getStaffNumber(), e);
-            throw new DatabaseOperationException("Error al actualizar el profesor", e);
+            throw new DaoException("Error updating professor", e);
         }
     }
 
     @Override
     public boolean deleteProfessor(int staffNumber) {
-        try (Connection connection = new DatabaseConnection().getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(DELETE_QUERY)) {
+        
+        String deleteQuery = "DELETE FROM profesor WHERE Numero_de_personal = ?";
+        
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(deleteQuery)) {
 
             preparedStatement.setInt(1, staffNumber);
             return preparedStatement.executeUpdate() > 0;
 
         } catch (SQLException e) {
+            
             LOGGER.error("Error deleting professor with staff number {}", staffNumber, e);
-            throw new DatabaseOperationException("Error al eliminar el profesor", e);
+            throw new DaoException("Error deleting professor", e);
         }
     }
 
     @Override
     public ProfessorDto getProfessorByStaffNumber(int staffNumber) {
-        try (Connection connection = new DatabaseConnection().getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_BY_ID_QUERY)) {
+        
+        String getByIdQuery = "SELECT * FROM profesor WHERE Numero_de_personal = ?";
+        
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(getByIdQuery)) {
 
             preparedStatement.setInt(1, staffNumber);
 
@@ -111,17 +111,21 @@ public class ProfessorDao implements IProfessor {
             return null;
 
         } catch (SQLException e) {
+            
             LOGGER.error("Error getting professor with staff number {}", staffNumber, e);
-            throw new DatabaseOperationException("Error al obtener el profesor", e);
+            throw new DaoException("Error getting professor", e);
         }
     }
 
     @Override
     public List<ProfessorDto> getAllProfessors() {
+        
         List<ProfessorDto> professorList = new ArrayList<>();
 
-        try (Connection connection = new DatabaseConnection().getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_QUERY);
+        String getAllQuery = "SELECT * FROM profesor";
+        
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(getAllQuery);
              ResultSet resultSet = preparedStatement.executeQuery()) {
 
             while (resultSet.next()) {
@@ -131,8 +135,9 @@ public class ProfessorDao implements IProfessor {
             return professorList;
 
         } catch (SQLException e) {
+            
             LOGGER.error("Error getting professor list", e);
-            throw new DatabaseOperationException("Error al obtener la lista de profesores", e);
+            throw new DaoException("Error getting professor list", e);
         }
     }
 
