@@ -45,7 +45,7 @@ public class ProjectDaoTest {
     @AfterEach
     public void tearDown() {
         try {
-            projectDao.deleteProjectById(testProjectId);
+            projectDao.deleteProject(testProjectId);
         } catch (DaoException daoException) {
         } finally {
             DatabaseConnection.closeConnection();
@@ -87,18 +87,10 @@ public class ProjectDaoTest {
                 "mario@example.com", "Monday" );
 
         projectDao.insertProject(projectTest);
-<<<<<<< HEAD
 
-        boolean result = projectDao.deleteProjectById(testProjectId);
+        boolean result = projectDao.deleteProject(testProjectId);
 
         assertNull(projectDao.getProjectById(testProjectId));
-=======
-        projectDao.deleteProject(testProjectId);
-        
-        ProjectDto success = projectDao.getProjectById(testProjectId);
-        
-        assertNull(success);
->>>>>>> 5eb8e8e047c3cc4591951a3c684860e40928dbf2
     }
 
     @Test

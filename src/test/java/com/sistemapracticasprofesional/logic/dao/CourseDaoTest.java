@@ -19,11 +19,7 @@ public class CourseDaoTest {
     }
 
     @Test
-<<<<<<< HEAD
-    public void testRegisterCourseSuccessfully() {
-=======
-    public void testRegisterCourse_WithValidData() {
->>>>>>> 5eb8e8e047c3cc4591951a3c684860e40928dbf2
+    public void testRegisterCourseSuccess() {
 
         boolean expectedResult = true;
 
@@ -72,7 +68,7 @@ public class CourseDaoTest {
     }
 
     @Test
-    public void testUpdateCourseWhitValidData() {
+    public void testUpdateCourseSuccess() {
 
         boolean expectedResult = true;
 
@@ -97,7 +93,7 @@ public class CourseDaoTest {
 
 
     @Test
-    public void testGetCourse() {
+    public void testGetCourseSuccess() {
 
         CourseDto realResult = courseDao.getCourse(40776);
         CourseDto expetedResult = new CourseDto(40776, 13135, "inactivo", "01-26", "2", "Archivo.txt");
@@ -108,7 +104,7 @@ public class CourseDaoTest {
 
 
     @Test
-    public void testGetListCourse() {
+    public void testGetListCourseSuccess() {
         
         CourseDto courseDto1 = new CourseDto(40777, 13136,  "activo",  "01-26", "1" ,"Documento.docx" );
         CourseDto courseDto2 = new CourseDto(40778, 13200, "activo", "02-26", "3", "Documento.docx");

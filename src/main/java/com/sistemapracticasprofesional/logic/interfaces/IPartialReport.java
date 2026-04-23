@@ -1,6 +1,5 @@
 package com.sistemapracticasprofesional.logic.interfaces;
 
-import com.sistemapracticasprofesional.logic.dto.MonthlyReportDto;
 import com.sistemapracticasprofesional.logic.dto.PartialReportDto;
 import com.sistemapracticasprofesional.logic.exception.DaoException;
 import java.util.List;
