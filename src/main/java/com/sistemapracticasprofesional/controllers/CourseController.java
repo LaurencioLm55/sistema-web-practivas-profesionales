@@ -46,6 +46,11 @@ public class CourseController {
       }
    }
 
+   @FXML
+   private void handleCancel() {
+      clearFields();
+   }
+
    private CourseDto getCourseFromFields() {
       String nrcText = textFieldNrc.getText().trim();
       String staffNumberText = textFieldStaffNumber.getText().trim();
