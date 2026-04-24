@@ -1,99 +1,65 @@
 package com.sistemapracticasprofesional.controllers;
 
-import com.sistemapracticasprofesional.logic.dao.CourseDao;
-import com.sistemapracticasprofesional.logic.dto.CourseDto;
-import com.sistemapracticasprofesional.logic.exception.DaoException;
+import com.sistemapracticasprofesional.logic.exception.ServiceException;
+import com.sistemapracticasprofesional.logic.exception.ValidationException;
+import com.sistemapracticasprofesional.logic.service.CourseService;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 
-
 public class CourseController {
-   @FXML
-   private TextField textFieldNrc;
 
-   @FXML
-   private TextField textFieldStaffNumber;
+    @FXML
+    private TextField textFieldNrc;
 
-   @FXML
-   private TextField textFieldStatus;
+    @FXML
+    private TextField textFieldStaffNumber;
 
-   @FXML
-   private TextField textFieldPeriod;
+    @FXML
+    private TextField textFieldStatus;
 
-   @FXML
-   private TextField textFieldSection;
+    @FXML
+    private TextField textFieldPeriod;
 
-   private final CourseDao courseDao = new CourseDao();
+    @FXML
+    private TextField textFieldSection;
 
-   @FXML
-   private void handleRegisterCourse() {
-      try {
-         CourseDto course = getCourseFromFields();
-         boolean registered = courseDao.registerCourse(course);
+    private final CourseService courseService = new CourseService();
 
-         if (registered) {
-               showAlert(Alert.AlertType.INFORMATION, "Curso registrado correctamente");
-               clearFields();
-         } else {
-               showAlert(Alert.AlertType.ERROR, "No se pudo registrar el curso");
-         }
+    @FXML
+    private void handleRegisterCourse() {
+        try {
+            courseService.registerCourse(
+                    textFieldNrc.getText(),
+                    textFieldStaffNumber.getText(),
+                    textFieldStatus.getText(),
+                    textFieldPeriod.getText(),
+                    textFieldSection.getText()
+            );
 
-      } catch (IllegalArgumentException e) {
-         showAlert(Alert.AlertType.WARNING, "Los datos capturados no son validos.");
-      } catch (DaoException e) {
-         showAlert(Alert.AlertType.ERROR, "No se pudo completar la operacion.");
-      }
-   }
+            showAlert(Alert.AlertType.INFORMATION, "Curso registrado correctamente.");
+            clearFields();
 
-   @FXML
-   private void handleCancel() {
-      clearFields();
-   }
+        } catch (ValidationException e) {
+            showAlert(Alert.AlertType.WARNING, e.getMessage());
 
-   private CourseDto getCourseFromFields() {
-      String nrcText = textFieldNrc.getText().trim();
-      String staffNumberText = textFieldStaffNumber.getText().trim();
-      String status = textFieldStatus.getText().trim();
-      String period = textFieldPeriod.getText().trim();
-      String section = textFieldSection.getText().trim();
+        } catch (ServiceException e) {
+            showAlert(Alert.AlertType.ERROR, "No se pudo completar la operación.");
+        }
+    }
 
-      if (nrcText.isEmpty() || staffNumberText.isEmpty() || status.isEmpty()
-               || period.isEmpty() || section.isEmpty()) {
-         throw new IllegalArgumentException("Todos los campos son obligatorios");
-      }
+    private void clearFields() {
+        textFieldNrc.clear();
+        textFieldStaffNumber.clear();
+        textFieldStatus.clear();
+        textFieldPeriod.clear();
+        textFieldSection.clear();
+    }
 
-      if (!nrcText.matches("\\d+")) {
-         throw new IllegalArgumentException("El NRC debe ser numerico");
-      }
-
-      if (!staffNumberText.matches("\\d+")) {
-         throw new IllegalArgumentException("El numero de personal debe ser numerico");
-      }
-
-      CourseDto course = new CourseDto();
-      course.setNrc(Integer.parseInt(nrcText));
-      course.setStaffNumber(Integer.parseInt(staffNumberText));
-      course.setStatus(status);
-      course.setPeriod(period);
-      course.setSection(section);
-      course.setFormatFile(null);
-
-      return course;
-   }
-
-   private void clearFields() {
-      textFieldNrc.clear();
-      textFieldStaffNumber.clear();
-      textFieldStatus.clear();
-      textFieldPeriod.clear();
-      textFieldSection.clear();
-   }
-
-   private void showAlert(Alert.AlertType type, String message) {
-      Alert alert = new Alert(type);
-      alert.setHeaderText(null);
-      alert.setContentText(message);
-      alert.showAndWait();
-   }
+    private void showAlert(Alert.AlertType type, String message) {
+        Alert alert = new Alert(type);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
 }
