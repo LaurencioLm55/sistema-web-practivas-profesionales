@@ -19,11 +19,11 @@ public class CourseService {
             boolean registered = courseDao.registerCourse(course);
 
             if (!registered) {
-                throw new ServiceException("No se pudo registrar el curso.", null);
+                throw new ServiceException("The course could not be registered.", null);
             }
 
         } catch (DaoException e) {
-            throw new ServiceException("Error al registrar el curso.", e);
+            throw new ServiceException("An error occurred while registering the course.", e);
         }
     }
 
@@ -32,11 +32,11 @@ public class CourseService {
 
         if (isBlank(nrcText) || isBlank(staffNumberText)
                 || isBlank(status) || isBlank(period) || isBlank(section)) {
-            throw new ValidationException("Todos los campos son obligatorios.");
+            throw new ValidationException("All fields are required.");
         }
 
-        int nrc = parsePositiveInteger(nrcText, "El NRC debe ser numérico y mayor a cero.");
-        int staffNumber = parsePositiveInteger(staffNumberText, "El número de personal debe ser numérico y mayor a cero.");
+        int nrc = parsePositiveInteger(nrcText, "The NRC must be numeric and greater than zero.");
+        int staffNumber = parsePositiveInteger(staffNumberText, "The staff number must be numeric and greater than zero.");
 
         CourseDto course = new CourseDto();
         course.setNrc(nrc);

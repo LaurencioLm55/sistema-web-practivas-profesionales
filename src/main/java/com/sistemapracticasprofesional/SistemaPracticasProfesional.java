@@ -10,11 +10,11 @@ public class SistemaPracticasProfesional extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         FXMLLoader loader = new FXMLLoader(
-                getClass().getResource("/com/sistemapracticasprofesional/presentation/GuiCourses.fxml")
+                getClass().getResource("/com/sistemapracticasprofesional/presentation/GUIIntern.fxml")
         );
 
         Scene scene = new Scene(loader.load());
-        stage.setTitle("Registro Experiencia Educativa");
+        stage.setTitle("Course Registration");
         stage.setScene(scene);
         stage.show();
     }
