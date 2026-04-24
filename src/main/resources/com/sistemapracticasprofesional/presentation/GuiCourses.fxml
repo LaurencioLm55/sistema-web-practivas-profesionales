@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="516.0" prefWidth="685.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.sistemapracticasprofesional.controllers.CourseController">
+   <children>
+      <TextField fx:id="textFieldNrc" layoutX="270.0" layoutY="115.0" promptText="NRC" />
+      <TextField fx:id="textFieldStaffNumber" layoutX="270.0" layoutY="181.0" promptText="Numero de personal" />
+      <TextField fx:id="textFieldStatus" layoutX="270.0" layoutY="241.0" promptText="Estado" />
+      <Label layoutX="52.0" layoutY="119.0" text="NRC" />
+      <Label layoutX="52.0" layoutY="185.0" text="Num. De personal Profesor asignado" />
+      <Label layoutX="52.0" layoutY="245.0" text="Estado" />
+      <Label layoutX="52.0" layoutY="304.0" text="Periodo" />
+      <TextField fx:id="textFieldPeriod" layoutX="270.0" layoutY="300.0" promptText="Periodo" />
+      <Label layoutX="52.0" layoutY="368.0" text="Seccion" />
+      <TextField fx:id="textFieldSection" layoutX="270.0" layoutY="364.0" promptText="Seccion" />
+      <Label layoutX="38.0" layoutY="27.0" text="Registro Experiencia Educativa">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <Button fx:id="buttonRegister" layoutX="419.0" layoutY="447.0" mnemonicParsing="false" onAction="#handleRegisterCourse" text="Registrar EE" />
+      <Button fx:id="buttonCancel" layoutX="227.0" layoutY="447.0" mnemonicParsing="false" onAction="#handleCancel" text="Cancelar" />
+   </children>
+</Pane>
