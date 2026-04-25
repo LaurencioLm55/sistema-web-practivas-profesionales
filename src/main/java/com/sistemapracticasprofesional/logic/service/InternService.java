@@ -12,7 +12,7 @@ public class InternService {
 
     public void registerIntern(String studentId, String ageText, String name,
                                String indigenousLanguage, String gender, String major)
-            throws ValidationException, ServiceException {
+                                throws ValidationException, ServiceException {
 
         InternDto intern = buildIntern(studentId, ageText, name, indigenousLanguage, gender, major);
 
