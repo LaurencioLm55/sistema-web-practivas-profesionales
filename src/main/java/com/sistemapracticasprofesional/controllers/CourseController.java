@@ -1,9 +1,11 @@
 package com.sistemapracticasprofesional.controllers;
 
-import com.sistemapracticasprofesional.logic.dto.CourseDto;
 import com.sistemapracticasprofesional.logic.exception.ServiceException;
 import com.sistemapracticasprofesional.logic.exception.ValidationException;
 import com.sistemapracticasprofesional.logic.service.CourseService;
+import com.sistemapracticasprofesional.presentation.validation.FormValidator;
+import com.sistemapracticasprofesional.presentation.validation.ValidationResult;
+import java.util.LinkedHashMap;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
@@ -28,7 +30,20 @@ public class CourseController {
    private final CourseService courseService = new CourseService();
 
    @FXML
+   private void initialize() {
+      FormValidator.allowOnlyPositiveIntegers(textFieldNrc);
+      FormValidator.allowOnlyPositiveIntegers(textFieldStaffNumber);
+   }
+
+   @FXML
    private void handleRegisterCourse() {
+      ValidationResult validationResult = validateForm();
+
+      if (!validationResult.isValid()) {
+         showAlert(Alert.AlertType.WARNING, validationResult.getMessage());
+         return;
+      }
+
       try {
          courseService.registerCourse(
                   textFieldNrc.getText(),
@@ -52,6 +67,7 @@ public class CourseController {
    @FXML
    private void handleCancel() {
       clearFields();
+      clearValidationStyles();
    }
 
    private void clearFields() {
@@ -60,6 +76,39 @@ public class CourseController {
       textFieldStatus.clear();
       textFieldPeriod.clear();
       textFieldSection.clear();
+   }
+
+   private ValidationResult validateForm() {
+      LinkedHashMap<TextField, String> requiredFields = new LinkedHashMap<>();
+      requiredFields.put(textFieldNrc, "NRC");
+      requiredFields.put(textFieldStaffNumber, "Staff number");
+      requiredFields.put(textFieldStatus, "Status");
+      requiredFields.put(textFieldPeriod, "Period");
+      requiredFields.put(textFieldSection, "Section");
+
+      ValidationResult requiredValidation = FormValidator.validateRequiredFields(requiredFields);
+
+      if (!requiredValidation.isValid()) {
+         return requiredValidation;
+      }
+
+      ValidationResult nrcValidation = FormValidator.validatePositiveInteger(textFieldNrc, "NRC");
+
+      if (!nrcValidation.isValid()) {
+         return nrcValidation;
+      }
+
+      return FormValidator.validatePositiveInteger(textFieldStaffNumber, "Staff number");
+   }
+
+   private void clearValidationStyles() {
+      FormValidator.clearStyles(
+               textFieldNrc,
+               textFieldStaffNumber,
+               textFieldStatus,
+               textFieldPeriod,
+               textFieldSection
+      );
    }
 
    private void showAlert(Alert.AlertType type, String message) {
