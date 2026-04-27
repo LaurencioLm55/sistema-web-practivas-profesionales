@@ -17,6 +17,8 @@ public class UserLogginController {
     @FXML
     private PasswordField passwordField;
 
+    private Alert alert;
+
     @FXML
     private void isUserRegister(){
         
@@ -30,9 +32,14 @@ public class UserLogginController {
 
             if(success){
 
+                alert = new Alert(AlertType.INFORMATION);
+                alert.setTitle(null);
+                alert.setHeaderText("aaaaaaa");
+                alert.setContentText(null);
+
             }else{
 
-                Alert alert = new Alert(AlertType.INFORMATION);
+                alert = new Alert(AlertType.INFORMATION);
                 alert.setTitle(null);
                 alert.setHeaderText("No se puede iniciar secion");
                 alert.setContentText("Usuario o contraseña incorrecta");
@@ -41,11 +48,11 @@ public class UserLogginController {
 
         }catch (DaoException e){
 
-            Alert alert = new Alert(AlertType.ERROR);
+            alert = new Alert(AlertType.ERROR);
             alert.setTitle(null);
             alert.setHeaderText("No se puede iniciar secion");
             alert.setContentText(null);
-            
+
         }
     }
 
