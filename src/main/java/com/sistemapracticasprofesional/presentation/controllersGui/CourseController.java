@@ -10,74 +10,74 @@ import javafx.scene.control.TextField;
 
 public class CourseController {
 
-    @FXML
-    private TextField textFieldNrc;
+   @FXML
+   private TextField textFieldNrc;
 
-    @FXML
-    private TextField textFieldStaffNumber;
+   @FXML
+   private TextField textFieldStaffNumber;
 
-    @FXML
-    private TextField textFieldStatus;
+   @FXML
+   private TextField textFieldStatus;
 
-    @FXML
-    private TextField textFieldPeriod;
+   @FXML
+   private TextField textFieldPeriod;
 
-    @FXML
-    private TextField textFieldSection;
+   @FXML
+   private TextField textFieldSection;
 
-    private final CourseService courseService = new CourseService();
+   private final CourseService courseService = new CourseService();
 
-    @FXML
-    private void handleRegisterCourse() {
-        try {
-            CourseDto courseDto = createCourseDtoFromFields();
+   @FXML
+   private void handleRegisterCourse() {
+      try {
+         CourseDto courseDto = createCourseDtoFromFields();
 
-            courseService.registerCourse(courseDto);
+         courseService.registerCourse(courseDto);
 
-            showAlert(Alert.AlertType.INFORMATION, "Experiencia educativa registrada correctamente.");
-            clearFields();
+         showAlert(Alert.AlertType.INFORMATION, "Experiencia educativa registrada correctamente.");
+         clearFields();
 
-        } catch (NumberFormatException e) {
-            showAlert(Alert.AlertType.WARNING, "El NRC y el numero de personal deben ser numericos.");
+      } catch (NumberFormatException e) {
+         showAlert(Alert.AlertType.WARNING, "El NRC y el numero de personal deben ser numericos.");
 
-        } catch (ValidationException e) {
-            showAlert(Alert.AlertType.WARNING, e.getMessage());
+      } catch (ValidationException e) {
+         showAlert(Alert.AlertType.WARNING, e.getMessage());
 
-        } catch (ServiceException e) {
-            showAlert(Alert.AlertType.ERROR, "No se pudo registrar la experiencia educativa.");
-        }
-    }
+      } catch (ServiceException e) {
+         showAlert(Alert.AlertType.ERROR, "No se pudo registrar la experiencia educativa.");
+      }
+   }
 
-    private CourseDto createCourseDtoFromFields() {
-        CourseDto courseDto = new CourseDto();
+   private CourseDto createCourseDtoFromFields() {
+      CourseDto courseDto = new CourseDto();
 
-        courseDto.setNrc(Integer.parseInt(textFieldNrc.getText().trim()));
-        courseDto.setStaffNumber(Integer.parseInt(textFieldStaffNumber.getText().trim()));
-        courseDto.setStatus(textFieldStatus.getText());
-        courseDto.setPeriod(textFieldPeriod.getText());
-        courseDto.setSection(textFieldSection.getText());
-        courseDto.setFormatFile(null);
+      courseDto.setNrc(Integer.parseInt(textFieldNrc.getText().trim()));
+      courseDto.setStaffNumber(Integer.parseInt(textFieldStaffNumber.getText().trim()));
+      courseDto.setStatus(textFieldStatus.getText());
+      courseDto.setPeriod(textFieldPeriod.getText());
+      courseDto.setSection(textFieldSection.getText());
+      courseDto.setFormatFile(null);
 
-        return courseDto;
-    }
+      return courseDto;
+   }
 
-    @FXML
-    private void handleCancel() {
-        clearFields();
-    }
+   @FXML
+   private void handleCancel() {
+      clearFields();
+   }
 
-    private void clearFields() {
-        textFieldNrc.clear();
-        textFieldStaffNumber.clear();
-        textFieldStatus.clear();
-        textFieldPeriod.clear();
-        textFieldSection.clear();
-    }
+   private void clearFields() {
+      textFieldNrc.clear();
+      textFieldStaffNumber.clear();
+      textFieldStatus.clear();
+      textFieldPeriod.clear();
+      textFieldSection.clear();
+   }
 
-    private void showAlert(Alert.AlertType type, String message) {
-        Alert alert = new Alert(type);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
-    }
+   private void showAlert(Alert.AlertType type, String message) {
+      Alert alert = new Alert(type);
+      alert.setHeaderText(null);
+      alert.setContentText(message);
+      alert.showAndWait();
+   }
 }
