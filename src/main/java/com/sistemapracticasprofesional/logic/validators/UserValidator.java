@@ -4,7 +4,6 @@ import com.sistemapracticasprofesional.logic.dto.UserDto;
 
 public class UserValidator {
     private UserDto userDto; 
-    private String text;
 
     public UserValidator (UserDto userDto) {
         this.userDto = userDto;
@@ -12,17 +11,14 @@ public class UserValidator {
     }
 
     public boolean isUserNameValid(){
-
-        if (userDto.getUserName().isBlank()){
-            
-        }
-
+        return userDto != null
+                && userDto.getUserName() != null
+                && !userDto.getUserName().isBlank();
     }
 
     public boolean isUserPasswordValid() {
-
+        return userDto != null
+                && userDto.getPassword() != null
+                && !userDto.getPassword().isBlank();
     }
-
-
-
 }
