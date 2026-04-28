@@ -1,4 +1,4 @@
-package com.sistemapracticasprofesional.controllers;
+package com.sistemapracticasprofesional.presentation.controllersGui;
 
 import com.sistemapracticasprofesional.logic.exception.ServiceException;
 import com.sistemapracticasprofesional.logic.exception.ValidationException;

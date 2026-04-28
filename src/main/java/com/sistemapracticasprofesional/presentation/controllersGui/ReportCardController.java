@@ -1,4 +1,4 @@
-package com.sistemapracticasprofesional.controllers;
+package com.sistemapracticasprofesional.controllersGui;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
