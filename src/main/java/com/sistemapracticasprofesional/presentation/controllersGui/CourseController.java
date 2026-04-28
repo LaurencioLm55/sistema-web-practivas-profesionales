@@ -34,17 +34,17 @@ public class CourseController {
 
             courseService.registerCourse(courseDto);
 
-            showAlert(Alert.AlertType.INFORMATION, "Course registered successfully.");
+            showAlert(Alert.AlertType.INFORMATION, "Experiencia educativa registrada correctamente.");
             clearFields();
 
         } catch (NumberFormatException e) {
-            showAlert(Alert.AlertType.WARNING, "NRC and staff number must be numeric.");
+            showAlert(Alert.AlertType.WARNING, "El NRC y el numero de personal deben ser numericos.");
 
         } catch (ValidationException e) {
             showAlert(Alert.AlertType.WARNING, e.getMessage());
 
         } catch (ServiceException e) {
-            showAlert(Alert.AlertType.ERROR, "The course could not be registered.");
+            showAlert(Alert.AlertType.ERROR, "No se pudo registrar la experiencia educativa.");
         }
     }
 

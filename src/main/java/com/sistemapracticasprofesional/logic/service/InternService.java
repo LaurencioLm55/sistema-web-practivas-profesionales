@@ -19,11 +19,11 @@ public class InternService {
             boolean registered = internDao.insertIntern(internDto);
 
             if (!registered) {
-                throw new ServiceException("The intern could not be registered.", null);
+                throw new ServiceException("No se pudo registrar el practicante.", null);
             }
 
         } catch (DaoException e) {
-            throw new ServiceException("An error occurred while registering the intern.", e);
+            throw new ServiceException("Ocurrio un error al registrar el practicante.", e);
         }
     }
 
@@ -31,21 +31,21 @@ public class InternService {
             throws ValidationException {
 
         if (internDto == null) {
-            throw new ValidationException("Intern data is required.");
+            throw new ValidationException("Los datos del practicante son obligatorios.");
         }
 
         if (isBlank(internDto.getStudentId())) {
-            throw new ValidationException("Student ID is required.");
+            throw new ValidationException("La matricula es obligatoria.");
         }
 
         if (internDto.getAge() <= 0) {
-            throw new ValidationException("Age must be greater than zero.");
+            throw new ValidationException("La edad debe ser mayor que cero.");
         }
 
         if (isBlank(internDto.getName())
                 || isBlank(internDto.getGender())
                 || isBlank(internDto.getMajor())) {
-            throw new ValidationException("Name, gender, and major are required.");
+            throw new ValidationException("El nombre, el genero y la carrera son obligatorios.");
         }
 
         internDto.setStudentId(internDto.getStudentId().trim());

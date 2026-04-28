@@ -17,31 +17,31 @@ public class CourseService {
             boolean registered = courseDao.registerCourse(courseDto);
 
             if (!registered) {
-                throw new ServiceException("The course could not be registered.");
+                throw new ServiceException("No se pudo registrar la experiencia educativa.");
             }
 
         } catch (DaoException e) {
-            throw new ServiceException("An error occurred while registering the course.", e);
+            throw new ServiceException("Ocurrio un error al registrar la experiencia educativa.", e);
         }
     }
 
     private void validateCourse(CourseDto courseDto) throws ValidationException {
         if (courseDto == null) {
-            throw new ValidationException("Course data is required.");
+            throw new ValidationException("Los datos de la experiencia educativa son obligatorios.");
         }
 
         if (courseDto.getNrc() <= 0) {
-            throw new ValidationException("The NRC must be greater than zero.");
+            throw new ValidationException("El NRC debe ser mayor que cero.");
         }
 
         if (courseDto.getStaffNumber() <= 0) {
-            throw new ValidationException("The staff number must be greater than zero.");
+            throw new ValidationException("El numero de personal debe ser mayor que cero.");
         }
 
         if (isBlank(courseDto.getStatus())
                 || isBlank(courseDto.getPeriod())
                 || isBlank(courseDto.getSection())) {
-            throw new ValidationException("Status, period, and section are required.");
+            throw new ValidationException("El estado, el periodo y la seccion son obligatorios.");
         }
 
         courseDto.setStatus(courseDto.getStatus().trim());

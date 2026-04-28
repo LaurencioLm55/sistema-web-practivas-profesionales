@@ -37,17 +37,17 @@ public class InternController {
 
          internService.registerIntern(internDto);
 
-         showAlert(Alert.AlertType.INFORMATION, "Intern registered successfully.");
+         showAlert(Alert.AlertType.INFORMATION, "Practicante registrado correctamente.");
          clearFields();
 
       } catch (NumberFormatException e) {
-         showAlert(Alert.AlertType.WARNING, "Age must be numeric.");
+         showAlert(Alert.AlertType.WARNING, "La edad debe ser numerica.");
 
       } catch (ValidationException e) {
          showAlert(Alert.AlertType.WARNING, e.getMessage());
 
       } catch (ServiceException e) {
-         showAlert(Alert.AlertType.ERROR, "The intern could not be registered.");
+         showAlert(Alert.AlertType.ERROR, "No se pudo registrar el practicante.");
       }
    }
 
